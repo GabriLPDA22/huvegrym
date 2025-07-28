@@ -1,13 +1,453 @@
 ---
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 import { ScrollIntro } from '../components/ScrollIntro.jsx';
 ---
 
-<Layout title="Nombre Dúo | Danza Contemporánea">
+<Layout title="Vega & Hugo | Dúo de Danza Contemporánea">
   <main>
     <ScrollIntro client:load />
-    <section class="h-screen bg-background-main flex items-center justify-center">
-      <h2 class="font-serif text-4xl text-text-main">Otra sección</h2>
+
+    <!-- SECCIÓN PRINCIPAL: Historia Épica -->
+    <section id="content-section" class="bg-background-main relative z-10 min-h-screen overflow-hidden">
+      <!-- Fondo animado con Canvas y efectos -->
+      <div class="absolute inset-0 z-0" data-parallax="0.5">
+        <!-- Imagen de fondo con efecto Ken Burns -->
+        <div class="absolute inset-0 overflow-hidden opacity-30">
+          <img
+            src="/images/Duo.webp"
+            alt=""
+            class="w-full h-full object-cover"
+            style="animation: kenBurns 30s ease-in-out infinite; filter: grayscale(100%) contrast(1.5) brightness(0.4);"
+          />
+        </div>
+
+        <!-- Gradientes animados -->
+        <div class="absolute inset-0">
+          <div class="absolute inset-0 bg-gradient-to-b from-black via-black/50 to-black"></div>
+          <div
+            class="absolute inset-0 opacity-20"
+            style="background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.2) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 50%); animation: pulse 10s ease-in-out infinite;"
+          />
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="relative z-10 px-6 py-32 md:py-48">
+        <div class="max-w-[1600px] mx-auto">
+
+          <!-- Título épico con efecto glitch -->
+          <div class="text-center mb-32">
+            <h2 class="font-display text-6xl md:text-8xl lg:text-[10rem] leading-none" data-glitch="random" data-text="LA DANZA QUE NARRA">
+              <span class="text-outline">LA DANZA</span>
+              <br />
+              <span class="text-gradient-gold italic">QUE NARRA</span>
+            </h2>
+            <div class="mt-12 flex items-center justify-center space-x-8">
+              <div class="w-32 h-[2px] bg-gradient-to-r from-transparent to-[#d4af37]"></div>
+              <div class="w-3 h-3 bg-[#d4af37] rounded-full animate-pulse"></div>
+              <div class="w-32 h-[2px] bg-gradient-to-l from-transparent to-[#d4af37]"></div>
+            </div>
+          </div>
+
+          <!-- Grid cinemático con las historias -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+            <!-- Panel izquierdo - Vega -->
+            <div class="lg:col-span-5 space-y-8 animate-on-scroll" data-effect="fade-up">
+              <div class="relative group">
+                <!-- Marco épico -->
+                <div class="absolute -inset-4 bg-gradient-to-r from-[#d4af37]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl"></div>
+
+                <!-- Imagen principal -->
+                <div class="relative overflow-hidden rounded-xl">
+                  <img
+                    src="/images/Vega.jpg"
+                    alt="Vega - Fuerza y Gracia"
+                    class="w-full h-auto object-cover art-filter aspect-[3/4] transform transition-all duration-1000 group-hover:scale-110"
+                    data-parallax="0.3"
+                  />
+
+                  <!-- Overlay con información -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
+                    <div class="absolute bottom-0 left-0 right-0 p-8">
+                      <h3 class="font-display text-4xl text-white mb-2 transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700">VEGA</h3>
+                      <p class="text-[#d4af37] transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700 delay-100">La Fuerza del Movimiento</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Badge flotante -->
+                <div class="absolute -top-6 -right-6 bg-black border-2 border-[#d4af37] rounded-full w-24 h-24 flex items-center justify-center box-glow">
+                  <span class="font-display text-2xl text-[#d4af37]">01</span>
+                </div>
+              </div>
+
+              <!-- Texto descriptivo -->
+              <div class="space-y-6 pl-8 border-l-2 border-[#d4af37]/30">
+                <h4 class="font-display text-2xl text-white uppercase tracking-wider">Técnica Impecable</h4>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                  Con más de <span class="text-[#d4af37] font-bold">15 años</span> de formación clásica y contemporánea,
+                  Vega fusiona la precisión técnica con una expresividad visceral única.
+                </p>
+                <div class="flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-[#d4af37]/10 rounded-full flex items-center justify-center">
+                    <span class="text-[#d4af37] text-xl">∞</span>
+                  </div>
+                  <span class="text-sm uppercase tracking-widest text-gray-500">Movimiento Infinito</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel central - Conexión -->
+            <div class="lg:col-span-2 flex items-center justify-center">
+              <div class="relative">
+                <div class="w-32 h-32 border-4 border-[#d4af37]/20 rounded-full flex items-center justify-center animate-pulse">
+                  <div class="w-20 h-20 border-2 border-[#d4af37]/40 rounded-full flex items-center justify-center">
+                    <div class="w-8 h-8 bg-[#d4af37] rounded-full"></div>
+                  </div>
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl text-[#d4af37]/20 font-display">
+                  &
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel derecho - Hugo -->
+            <div class="lg:col-span-5 space-y-8 animate-on-scroll" data-effect="fade-up">
+              <div class="relative group">
+                <!-- Marco épico -->
+                <div class="absolute -inset-4 bg-gradient-to-l from-[#d4af37]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl"></div>
+
+                <!-- Imagen principal -->
+                <div class="relative overflow-hidden rounded-xl">
+                  <img
+                    src="/images/Hugo.jpg"
+                    alt="Hugo - Pasión y Energía"
+                    class="w-full h-auto object-cover art-filter aspect-[3/4] transform transition-all duration-1000 group-hover:scale-110"
+                    data-parallax="0.3"
+                  />
+
+                  <!-- Overlay con información -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
+                    <div class="absolute bottom-0 left-0 right-0 p-8">
+                      <h3 class="font-display text-4xl text-white mb-2 transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700">HUGO</h3>
+                      <p class="text-[#d4af37] transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700 delay-100">La Pasión Desbordante</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Badge flotante -->
+                <div class="absolute -top-6 -left-6 bg-black border-2 border-[#d4af37] rounded-full w-24 h-24 flex items-center justify-center box-glow">
+                  <span class="font-display text-2xl text-[#d4af37]">02</span>
+                </div>
+              </div>
+
+              <!-- Texto descriptivo -->
+              <div class="space-y-6 pr-8 border-r-2 border-[#d4af37]/30 text-right">
+                <h4 class="font-display text-2xl text-white uppercase tracking-wider">Energía Pura</h4>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                  Hugo aporta una intensidad dramática que transforma cada performance en una
+                  <span class="text-[#d4af37] font-bold">experiencia catártica</span> para el público.
+                </p>
+                <div class="flex items-center justify-end space-x-4">
+                  <span class="text-sm uppercase tracking-widest text-gray-500">Conexión Total</span>
+                  <div class="w-12 h-12 bg-[#d4af37]/10 rounded-full flex items-center justify-center">
+                    <span class="text-[#d4af37] text-xl">⚡</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estadísticas épicas -->
+          <div class="mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 animate-on-scroll" data-effect="zoom">
+            <div class="text-center group hover-scale">
+              <div class="font-display text-6xl md:text-7xl text-[#d4af37] mb-4 neon-text">8+</div>
+              <div class="text-sm uppercase tracking-[0.3em] text-gray-500">Años de Arte</div>
+            </div>
+            <div class="text-center group hover-scale">
+              <div class="font-display text-6xl md:text-7xl text-[#d4af37] mb-4 neon-text">50+</div>
+              <div class="text-sm uppercase tracking-[0.3em] text-gray-500">Performances</div>
+            </div>
+            <div class="text-center group hover-scale">
+              <div class="font-display text-6xl md:text-7xl text-[#d4af37] mb-4 neon-text">15K</div>
+              <div class="text-sm uppercase tracking-[0.3em] text-gray-500">Espectadores</div>
+            </div>
+            <div class="text-center group hover-scale">
+              <div class="font-display text-6xl md:text-7xl text-[#d4af37] mb-4 neon-text">∞</div>
+              <div class="text-sm uppercase tracking-[0.3em] text-gray-500">Pasión</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: Próximas Fechas - Estilo GTA VI -->
+    <section class="relative py-32 overflow-hidden">
+      <!-- Fondo épico -->
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-[#1a1a1a] to-black"></div>
+        <div class="absolute inset-0 opacity-30">
+          <!-- <div class="h-full w-full bg-[url('/images/grid-pattern.svg')] bg-repeat opacity-10"></div> -->
+        </div>
+      </div>
+
+      <div class="relative z-10 max-w-[1600px] mx-auto px-6">
+        <!-- Título sección -->
+        <div class="text-center mb-24">
+          <h2 class="font-display text-6xl md:text-8xl lg:text-[10rem] leading-none mb-8" data-glitch data-text="PRÓXIMAS FECHAS">
+            <span class="text-outline">PRÓXIMAS</span>
+            <br />
+            <span class="text-gradient-gold">FECHAS</span>
+          </h2>
+          <p class="text-xl text-gray-500 uppercase tracking-[0.5em]">Vive la experiencia</p>
+        </div>
+
+        <!-- Grid de eventos estilo tarjetas épicas -->
+        <div class="grid gap-12">
+
+          <!-- Evento destacado -->
+          <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1a1a] to-black border border-[#d4af37]/20 p-8 md:p-16 animate-on-scroll interactive" data-effect="fade-up">
+            <!-- Efecto de hover -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/10 to-[#d4af37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+
+            <!-- Contenido -->
+            <div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <div class="flex items-center space-x-4 mb-6">
+                  <div class="w-2 h-16 bg-[#d4af37]"></div>
+                  <div>
+                    <p class="text-[#d4af37] text-sm uppercase tracking-widest mb-1">Estreno Mundial</p>
+                    <h3 class="font-display text-4xl md:text-6xl text-white">"FRAGMENTOS DE ETERNIDAD"</h3>
+                  </div>
+                </div>
+                <p class="text-xl text-gray-400 mb-8">Una exploración visceral sobre la conexión humana a través del movimiento, donde cada gesto cuenta una historia milenaria.</p>
+                <div class="flex flex-wrap gap-4">
+                  <div class="bg-black/50 px-6 py-3 rounded-full border border-[#d4af37]/30">
+                    <span class="text-[#d4af37]">📍</span> Teatro Principal, Madrid
+                  </div>
+                  <div class="bg-black/50 px-6 py-3 rounded-full border border-[#d4af37]/30">
+                    <span class="text-[#d4af37]">⏰</span> 20:30h
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center md:text-right">
+                <div class="inline-block">
+                  <div class="font-display text-8xl md:text-9xl text-[#d4af37] leading-none epic-shadow">15</div>
+                  <div class="font-display text-3xl md:text-4xl text-white uppercase">Marzo</div>
+                  <div class="text-gray-500 uppercase tracking-widest mt-2">2024</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-8 flex justify-center md:justify-start">
+              <button class="group/btn relative overflow-hidden bg-[#d4af37] text-black px-12 py-4 font-display text-lg uppercase tracking-wider hover:text-white transition-colors duration-500">
+                <span class="relative z-10">Reservar Entradas</span>
+                <div class="absolute inset-0 bg-black transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-500"></div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Eventos adicionales -->
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Evento 1 -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-[#1a1a1a] to-black border border-[#d4af37]/10 p-8 hover-scale animate-on-scroll" data-effect="slide">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-3xl group-hover:w-48 group-hover:h-48 transition-all duration-700"></div>
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 class="font-display text-2xl text-white mb-2">"IMPULSOS"</h4>
+                    <p class="text-gray-500">Performance íntimo</p>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-display text-4xl text-[#d4af37]">22</div>
+                    <div class="text-sm text-gray-500 uppercase">Mar</div>
+                  </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                  <p class="text-gray-400">📍 Centro Cultural Conde Duque</p>
+                  <p class="text-gray-400">⏰ 19:00h</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evento 2 -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-[#1a1a1a] to-black border border-[#d4af37]/10 p-8 hover-scale animate-on-scroll" data-effect="slide">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-[#ff6b6b]/10 rounded-full blur-3xl group-hover:w-48 group-hover:h-48 transition-all duration-700"></div>
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 class="font-display text-2xl text-white mb-2">WORKSHOP INTENSIVO</h4>
+                    <p class="text-gray-500">Plazas limitadas</p>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-display text-4xl text-[#d4af37]">29</div>
+                    <div class="text-sm text-gray-500 uppercase">Mar</div>
+                  </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                  <p class="text-gray-400">📍 Estudio de Danza Luna</p>
+                  <p class="text-gray-400">⏰ 16:00h - 20:00h</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA final -->
+        <div class="text-center mt-20">
+          <a href="#calendario" class="inline-flex items-center space-x-4 text-[#d4af37] hover:text-white transition-colors duration-300 group">
+            <span class="font-display text-xl uppercase tracking-wider">Ver calendario completo</span>
+            <svg class="w-6 h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: Call to Action Final -->
+    <section class="relative py-32 overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <!-- Fondo animado épico sin video -->
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-black via-[#1a1a1a] to-black"></div>
+
+          <!-- Partículas flotantes CSS -->
+          <div class="particles-container absolute inset-0">
+            <div class="particle-bg"></div>
+            <div class="particle-bg" style="animation-delay: -5s;"></div>
+            <div class="particle-bg" style="animation-delay: -10s;"></div>
+          </div>
+
+          <!-- Imagen con efecto de desenfoque y movimiento -->
+          <div class="absolute inset-0 opacity-30 overflow-hidden">
+            <img
+              src="/images/Duo.webp"
+              alt=""
+              class="w-full h-full object-cover scale-110"
+              style="animation: slowPan 20s ease-in-out infinite alternate; filter: blur(10px) grayscale(100%) contrast(1.2);"
+            />
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <h2 class="font-display text-5xl md:text-7xl lg:text-8xl mb-8 animate-on-scroll" data-effect="zoom" data-glitch data-text="ÚNETE AL MOVIMIENTO">
+          ÚNETE AL <span class="text-gradient-gold">MOVIMIENTO</span>
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-400 mb-12 animate-on-scroll" data-effect="fade-up">
+          Sé parte de algo más grande. Experimenta la danza que trasciende.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center animate-on-scroll" data-effect="fade-up">
+          <button class="group relative overflow-hidden bg-[#d4af37] text-black px-12 py-5 font-display text-lg uppercase tracking-wider hover:text-white transition-colors duration-500">
+            <span class="relative z-10">Contáctanos</span>
+            <div class="absolute inset-0 bg-white transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+          </button>
+          <button class="group relative overflow-hidden border-2 border-[#d4af37] text-[#d4af37] px-12 py-5 font-display text-lg uppercase tracking-wider hover:text-black transition-colors duration-500">
+            <span class="relative z-10">Ver Portfolio</span>
+            <div class="absolute inset-0 bg-[#d4af37] transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+          </button>
+        </div>
+      </div>
     </section>
   </main>
 </Layout>
+
+<style>
+  /* Animaciones específicas de la página */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes kenBurns {
+    0% {
+      transform: scale(1) translateX(0) translateY(0);
+    }
+    50% {
+      transform: scale(1.2) translateX(-5%) translateY(-5%);
+    }
+    100% {
+      transform: scale(1) translateX(0) translateY(0);
+    }
+  }
+
+  @keyframes slowPan {
+    0% {
+      transform: scale(1.1) translateX(0);
+    }
+    100% {
+      transform: scale(1.2) translateX(-5%);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Partículas de fondo CSS */
+  .particle-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(circle, rgba(212, 175, 55, 0.1) 1px, transparent 1px),
+      radial-gradient(circle, rgba(212, 175, 55, 0.05) 2px, transparent 2px);
+    background-size: 50px 50px, 100px 100px;
+    background-position: 0 0, 25px 25px;
+    animation: particleFloat 20s linear infinite;
+  }
+
+  @keyframes particleFloat {
+    0% {
+      transform: translateY(0) translateX(0);
+    }
+    100% {
+      transform: translateY(-100px) translateX(50px);
+    }
+  }
+
+  .interactive::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #d4af37, transparent, #d4af37);
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.5s;
+  }
+
+  .interactive:hover::before {
+    opacity: 1;
+    animation: borderRotate 3s linear infinite;
+  }
+
+  @keyframes borderRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
