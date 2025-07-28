@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ScrollIntro } from '../components/ScrollIntro.jsx';
+---
+
+<Layout title="Nombre Dúo | Danza Contemporánea">
+  <main>
+    <ScrollIntro client:load />
+    <section class="h-screen bg-background-main flex items-center justify-center">
+      <h2 class="font-serif text-4xl text-text-main">Otra sección</h2>
+    </section>
+  </main>
+</Layout>
