@@ -1,6 +1,6 @@
 /**
- * @file Script final con tarjetas expandibles inline (sin modal)
- * @summary Solución elegante que expande las tarjetas en su lugar
+ * @file Script principal simplificado y estable
+ * @summary Versión estable sin resets excesivos
  */
 
 // ====================================================================
@@ -96,7 +96,7 @@ function initializeBasicApp(isHomePage) {
 }
 
 // ====================================================================
-// ===== SECCIÓN: HERO Y ANIMACIÓN INICIAL
+// ===== SECCIÓN: HERO Y ANIMACIÓN INICIAL - SIMPLIFICADO
 // ====================================================================
 
 function setupHero() {
@@ -1035,7 +1035,6 @@ if (isMobile()) {
 // ====================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const contactLink = document.getElementById('contact-link');
   const body = document.body;
 
@@ -1052,5 +1051,4 @@ document.addEventListener('DOMContentLoaded', () => {
       body.classList.remove('contact-hover-active');
     });
   }
-
 });

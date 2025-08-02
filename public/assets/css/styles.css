@@ -1524,7 +1524,6 @@ section {
   box-shadow: 0 0 15px var(--color-primary);
 }
 
-
 /* --- CÓDIGO AÑADIDO PARA LA SOLUCIÓN DEFINITIVA --- */
 
 /* 1. Cuando el body tenga esta clase, ocultamos el cursor personalizado */
@@ -2981,4 +2980,449 @@ body:not(.mobile):not(.pieces-slider-container *) {
     background: var(--color-primary) !important;
     color: var(--color-dark) !important;
   }
+}
+
+/* ============================================================ */
+/* POSICIONAMIENTO CONSISTENTE DE CRÉDITOS EN SPLIT PANELS     */
+/* Ambos créditos en la misma posición para mejor UX           */
+/* ============================================================ */
+
+/* Enlace principal del panel */
+.split-panel .panel-link {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+  text-decoration: none;
+  color: inherit;
+  z-index: 1;
+}
+
+.split-panel .panel-link:focus {
+  outline: 3px solid var(--color-primary);
+  outline-offset: -3px;
+}
+
+/* Asegurar que el crédito esté por encima del enlace principal */
+.split-panel .photo-credit {
+  z-index: 10;
+  position: absolute;
+  bottom: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--color-light);
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* AMBOS CRÉDITOS EN LA MISMA POSICIÓN (esquina inferior derecha) */
+.split-panel.hugo .photo-credit,
+.split-panel.vega .photo-credit {
+  right: 30px;
+  left: auto;
+}
+
+/* Efectos de hover */
+.split-panel:hover .photo-credit {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+.split-panel .photo-credit:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--color-primary);
+  border-color: rgba(201, 169, 110, 0.3);
+  box-shadow: 0 4px 15px rgba(201, 169, 110, 0.2);
+  transform: translateY(0) scale(1.05);
+  z-index: 20; /* Mayor z-index en hover */
+}
+
+/* ============================================================ */
+/* RESPONSIVE - TABLETS                                        */
+/* ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .split-panel .panel-link {
+    padding: 30px;
+  }
+
+  .split-panel .photo-credit {
+    bottom: 25px;
+    padding: 7px 11px;
+    font-size: 0.8rem;
+  }
+
+  /* Ambos créditos en la misma posición */
+  .split-panel.hugo .photo-credit,
+  .split-panel.vega .photo-credit {
+    right: 25px;
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE - MÓVIL                                          */
+/* ============================================================ */
+
+@media (max-width: 768px) {
+  .split-panel .panel-link {
+    padding: 20px;
+  }
+
+  .split-panel .photo-credit {
+    bottom: 20px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    /* En móvil, mostrar siempre los créditos */
+    opacity: 0.8;
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(201, 169, 110, 0.3);
+  }
+
+  /* Mantener misma posición en móvil */
+  .split-panel.hugo .photo-credit,
+  .split-panel.vega .photo-credit {
+    right: 20px;
+    left: auto;
+  }
+
+  .split-panel .photo-credit:hover {
+    opacity: 1;
+    color: var(--color-primary);
+    transform: translateY(0) scale(1.02);
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE - MÓVIL PEQUEÑO                                  */
+/* ============================================================ */
+
+@media (max-width: 480px) {
+  .split-panel .panel-link {
+    padding: 15px;
+  }
+
+  .split-panel .photo-credit {
+    bottom: 15px;
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+
+  /* Misma posición en móvil pequeño */
+  .split-panel.hugo .photo-credit,
+  .split-panel.vega .photo-credit {
+    right: 15px;
+  }
+}
+
+/* ============================================================ */
+/* LANDSCAPE MÓVIL - POSICIÓN CONSISTENTE                      */
+/* ============================================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .split-panel .photo-credit {
+    bottom: 15px;
+    right: 15px;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+}
+
+/* ============================================================ */
+/* EFECTOS ADICIONALES                                         */
+/* ============================================================ */
+
+/* Animación suave al hacer hover en el panel */
+.split-panel:hover .photo-credit {
+  animation: slideInCredit 0.5s ease-out;
+}
+
+@keyframes slideInCredit {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+/* Animación uniforme para ambos créditos */
+.split-panel .photo-credit {
+  animation-delay: 0.3s;
+}
+
+/* Focus para accesibilidad */
+.split-panel .photo-credit:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  opacity: 1;
+  transform: translateY(0) scale(1.05);
+  z-index: 20;
+}
+
+
+/* ============================================================ */
+/* CRÉDITOS DE FOTÓGRAFOS EN CAROUSEL DE PIEZAS                */
+/* ============================================================ */
+
+/* Créditos base para slides del carousel */
+.piece-slide .photo-credit {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--color-light);
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 15;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Mostrar crédito en slides activos y en hover */
+.piece-slide.active .photo-credit,
+.piece-slide:hover .photo-credit {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Hover específico del crédito */
+.piece-slide .photo-credit:hover {
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--color-primary);
+  border-color: rgba(201, 169, 110, 0.4);
+  box-shadow: 0 6px 20px rgba(201, 169, 110, 0.3);
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Asegurar que esté por encima del contenido expandido */
+.piece-slide.expanded .photo-credit {
+  z-index: 25;
+  bottom: auto;
+  top: 25px; /* Mover arriba cuando está expandido */
+  opacity: 0.8;
+}
+
+.piece-slide.expanded .photo-credit:hover {
+  opacity: 1;
+  transform: translateY(0) scale(1.05);
+}
+
+/* ============================================================ */
+/* RESPONSIVE - TABLETS                                        */
+/* ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .piece-slide .photo-credit {
+    bottom: 22px;
+    right: 22px;
+    padding: 7px 11px;
+    font-size: 0.8rem;
+    border-radius: 12px;
+  }
+
+  .piece-slide.expanded .photo-credit {
+    top: 22px;
+    right: 22px;
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE - MÓVIL                                          */
+/* ============================================================ */
+
+@media (max-width: 768px) {
+  .piece-slide .photo-credit {
+    bottom: 20px;
+    right: 20px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    /* En móvil, mostrar siempre */
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+  }
+
+  .piece-slide .photo-credit:hover {
+    opacity: 1;
+    color: var(--color-primary);
+    transform: translateY(0) scale(1.03);
+    box-shadow: 0 4px 15px rgba(201, 169, 110, 0.2);
+  }
+
+  /* En expandido móvil, mantener en la parte inferior */
+  .piece-slide.expanded .photo-credit {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+    z-index: 25;
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE - MÓVIL PEQUEÑO                                  */
+/* ============================================================ */
+
+@media (max-width: 480px) {
+  .piece-slide .photo-credit {
+    bottom: 15px;
+    right: 15px;
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+
+  .piece-slide.expanded .photo-credit {
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+/* ============================================================ */
+/* LANDSCAPE MÓVIL                                             */
+/* ============================================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .piece-slide .photo-credit {
+    bottom: 12px;
+    right: 15px;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .piece-slide.expanded .photo-credit {
+    bottom: 12px;
+    right: 15px;
+  }
+}
+
+/* ============================================================ */
+/* EFECTOS ESPECIALES PARA CAROUSEL                           */
+/* ============================================================ */
+
+/* Animación de entrada suave */
+.piece-slide .photo-credit {
+  animation: fadeInCredit 0.6s ease-out;
+}
+
+@keyframes fadeInCredit {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Efecto cuando el slide se activa */
+.piece-slide.active .photo-credit {
+  animation: activateCredit 0.5s ease-out 0.3s both;
+}
+
+@keyframes activateCredit {
+  from {
+    opacity: 0.7;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+/* Pulso sutil para créditos activos */
+.piece-slide.active .photo-credit {
+  animation: creditPulse 3s ease-in-out infinite;
+}
+
+@keyframes creditPulse {
+  0%, 100% {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(201, 169, 110, 0.1);
+  }
+}
+
+/* ============================================================ */
+/* ACCESIBILIDAD                                              */
+/* ============================================================ */
+
+.piece-slide .photo-credit:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  opacity: 1;
+  transform: translateY(-2px) scale(1.05);
+  z-index: 30;
+}
+
+/* ============================================================ */
+/* PERFORMANCE OPTIMIZATIONS                                   */
+/* ============================================================ */
+
+@media (max-width: 768px) {
+  /* Optimizar transforms en móvil */
+  .piece-slide .photo-credit {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Simplificar animaciones en móvil */
+  .piece-slide .photo-credit {
+    animation: none;
+    right: 5px;
+  }
+
+  .piece-slide.active .photo-credit {
+    animation: none;
+  }
+}
+
+/* ============================================================ */
+/* ESTADOS ESPECIALES                                          */
+/* ============================================================ */
+
+/* Cuando el carousel está en transición */
+.pieces-slider.transitioning .photo-credit {
+  transition-duration: 0.6s;
+}
+
+/* Créditos en slides no activos (menos prominentes) */
+.piece-slide:not(.active):not(:hover) .photo-credit {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+/* Evitar conflictos con botones del carousel */
+.carousel-button:hover ~ .piece-slide .photo-credit,
+.piece-slide:has(.carousel-button:hover) .photo-credit {
+  z-index: 5;
 }
