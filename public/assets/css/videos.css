@@ -1,0 +1,899 @@
+/* ============================================================ */
+/* SECCIÓN DE VIDEOS - MOBILE FIRST CON FULLSCREEN             */
+/* ============================================================ */
+
+/* NUCLEAR FIX INTEGRADO - RESETEAR TODO */
+.videos-section,
+.videos-section * {
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* ELIMINAR TODOS LOS PSEUDO-ELEMENTOS */
+.videos-section *::before,
+.videos-section *::after {
+  display: none !important;
+  content: none !important;
+}
+
+.videos-section {
+  padding: 4rem 0;
+  background: #000000 !important; /* Negro sólido */
+  background-image: none !important;
+  position: relative;
+  overflow: hidden;
+  z-index: 100 !important;
+  isolation: isolate !important;
+}
+
+/* Contenedor principal del carousel */
+.videos-carousel-container {
+  position: relative;
+  margin-top: 3rem;
+  max-width: 100%;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+/* Carousel de videos */
+.video-carousel {
+  display: flex;
+  width: 200%;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.video-slide {
+  flex: 0 0 50%;
+  padding: 0 1rem;
+  opacity: 1 !important;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+.video-slide.active {
+  opacity: 1 !important;
+  transform: scale(1);
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+/* Contenedor de cada video */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.5s ease;
+  filter: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+}
+
+.video-slide.active .video-container {
+  border-color: var(--color-primary);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(201, 169, 110, 0.2) !important;
+}
+
+/* ============================================================ */
+/* FUNCIONALIDAD FULLSCREEN                                    */
+/* ============================================================ */
+
+/* Botón de fullscreen */
+.fullscreen-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--color-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 30 !important;
+  opacity: 0.8;
+  visibility: visible;
+  color: var(--color-primary);
+}
+
+.fullscreen-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-dark);
+  transform: scale(1.1);
+  opacity: 1 !important;
+  box-shadow: 0 0 25px var(--color-primary);
+}
+
+.fullscreen-btn svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.fullscreen-btn:hover svg {
+  transform: scale(1.2);
+}
+
+/* Estado fullscreen */
+.video-container.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  background: #000000 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.video-container.fullscreen .video-player {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important; /* Mantener proporción en fullscreen */
+}
+
+/* Controles en fullscreen */
+.video-container.fullscreen .fullscreen-btn {
+  top: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10001 !important;
+}
+
+.video-container.fullscreen .video-info {
+  bottom: 2rem;
+  left: 2rem;
+  right: 6rem; /* Espacio para el botón de fullscreen */
+  z-index: 10001 !important;
+}
+
+.video-container.fullscreen .play-pause-btn {
+  z-index: 10001 !important;
+  width: 100px;
+  height: 100px;
+}
+
+/* Overlay para fullscreen */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.fullscreen-overlay.active {
+  display: block;
+}
+
+/* Indicador de ESC en fullscreen */
+.fullscreen-esc-hint {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--color-light);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 10002;
+  pointer-events: none;
+  border: 1px solid var(--color-primary);
+  display: none; /* Oculto por defecto */
+}
+
+/* Solo mostrar en fullscreen Y solo en desktop/tablet */
+.video-container.fullscreen .fullscreen-esc-hint {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  animation: fadeInOut 4s ease;
+}
+
+/* Ocultar en móviles */
+@media (max-width: 768px) {
+  .fullscreen-esc-hint {
+    display: none !important;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}
+
+/* ============================================================ */
+/* VIDEO PLAYER - 100% VISIBLE                                 */
+/* ============================================================ */
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* FORZAR VISIBILIDAD TOTAL */
+  filter: brightness(1.2) !important;
+  -webkit-filter: brightness(1.2) !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  mix-blend-mode: normal !important;
+  brightness: 1 !important;
+  contrast: 1 !important;
+  saturate: 1 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+  transition: transform 0.3s ease;
+}
+
+/* Video activo */
+.video-slide.active .video-player {
+  filter: brightness(1.2) !important;
+  -webkit-filter: brightness(1.2) !important;
+  opacity: 1 !important;
+  transform: scale(1);
+}
+
+/* Videos no activos */
+.video-slide:not(.active) .video-player {
+  filter: brightness(1.2) !important;
+  -webkit-filter: brightness(1.2) !important;
+  opacity: 1 !important;
+}
+
+/* ELIMINAR OVERLAY COMPLETAMENTE */
+.video-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Información del video */
+.video-info {
+  position: absolute !important;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  color: var(--color-light);
+  z-index: 10 !important;
+  transition: all 0.3s ease;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+
+.video-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.video-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  color: var(--color-light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+/* Botón de play/pause */
+.play-pause-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 20 !important;
+  opacity: 0;
+  visibility: hidden;
+  filter: none !important;
+}
+
+/* Mostrar botón solo cuando está pausado o en hover */
+.video-container.paused .play-pause-btn,
+.video-container:hover .play-pause-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.play-pause-btn:hover {
+  background: rgba(201, 169, 110, 0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 30px var(--color-primary), 0 0 60px rgba(201, 169, 110, 0.4);
+}
+
+.play-pause-btn svg {
+  width: 30px;
+  height: 30px;
+  color: var(--color-primary);
+  transition: all 0.3s ease;
+}
+
+.play-pause-btn:hover svg {
+  color: var(--color-light);
+  transform: scale(1.2);
+}
+
+/* Mostrar/ocultar iconos según estado */
+.video-container:not(.playing) .pause-icon,
+.video-container.playing .play-icon {
+  display: none;
+}
+
+/* Navegación del carousel */
+.video-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 20 !important;
+  opacity: 0.8 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+
+.video-nav-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-dark);
+  transform: translateY(-50%) scale(1.1);
+  opacity: 1 !important;
+  box-shadow: 0 0 25px var(--color-primary);
+}
+
+.prev-btn {
+  left: 1rem;
+}
+
+.next-btn {
+  right: 1rem;
+}
+
+/* Ocultar navegación en fullscreen */
+.video-container.fullscreen ~ .video-nav-btn {
+  display: none;
+}
+
+.video-nav-btn svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.video-nav-btn:hover svg {
+  transform: scale(1.2);
+}
+
+.prev-btn:hover svg {
+  transform: translateX(-2px) scale(1.2);
+}
+
+.next-btn:hover svg {
+  transform: translateX(2px) scale(1.2);
+}
+
+/* Indicadores */
+.video-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Ocultar indicadores en fullscreen */
+.video-container.fullscreen ~ .video-indicators {
+  display: none;
+}
+
+.video-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(201, 169, 110, 0.3);
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.video-indicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.video-indicator.active::before {
+  transform: scale(1);
+}
+
+.video-indicator:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px var(--color-primary);
+}
+
+/* Estados de loading para videos */
+.video-container.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(201, 169, 110, 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: videoLoading 1s linear infinite;
+  z-index: 10;
+}
+
+@keyframes videoLoading {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ============================================================ */
+/* OVERRIDE EFECTOS GLOBALES                                   */
+/* ============================================================ */
+
+/* Asegurar que el body::before no afecte */
+body::before {
+  z-index: -1 !important;
+}
+
+/* Eliminar partículas en la sección */
+.videos-section .floating-particles,
+.videos-section .particle {
+  display: none !important;
+}
+
+/* Eliminar cualquier overlay global */
+.main-content > .overlay,
+body > .overlay,
+.fade-overlay {
+  z-index: 0 !important;
+}
+
+/* Asegurar que NO hay capas encima */
+.videos-section {
+  position: relative !important;
+}
+
+.videos-section > * {
+  position: relative !important;
+  z-index: auto !important;
+}
+
+.video-player {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* ============================================================ */
+/* RESPONSIVE DESIGN - TABLET                                  */
+/* ============================================================ */
+
+@media (min-width: 768px) {
+  .videos-section {
+    padding: 6rem 0;
+  }
+
+  .video-container {
+    height: 70vh;
+    min-height: 400px;
+  }
+
+  .video-title {
+    font-size: 2.2rem;
+  }
+
+  .video-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .play-pause-btn {
+    width: 100px;
+    height: 100px;
+  }
+
+  .play-pause-btn svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .video-nav-btn {
+    width: 70px;
+    height: 70px;
+  }
+
+  .video-nav-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .prev-btn {
+    left: 2rem;
+  }
+
+  .next-btn {
+    right: 2rem;
+  }
+
+  .fullscreen-btn {
+    width: 55px;
+    height: 55px;
+  }
+
+  .fullscreen-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE DESIGN - DESKTOP                                 */
+/* ============================================================ */
+
+@media (min-width: 1024px) {
+  .videos-section {
+    padding: 8rem 0;
+  }
+
+  .videos-carousel-container {
+    margin-top: 4rem;
+  }
+
+  .video-container {
+    height: 75vh;
+    min-height: 500px;
+  }
+
+  .video-slide.active .video-container {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(201, 169, 110, 0.2) !important;
+  }
+
+  .video-slide {
+    padding: 0 2rem;
+  }
+
+  .video-info {
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+  }
+
+  .video-title {
+    font-size: 2.5rem;
+  }
+
+  .video-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .play-pause-btn {
+    width: 120px;
+    height: 120px;
+  }
+
+  .play-pause-btn svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .fullscreen-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .fullscreen-btn svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Hover effects mejorados para desktop */
+  .video-container {
+    transition: all 0.5s ease;
+  }
+
+  .video-container:hover {
+    transform: translateY(-5px);
+  }
+
+  .video-container:hover .video-info {
+    transform: translateY(-5px);
+  }
+
+  .video-container:hover .fullscreen-btn {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  /* Efecto de zoom sutil en hover */
+  .video-player {
+    transition: transform 0.5s ease;
+  }
+
+  .video-container:hover .video-player {
+    transform: scale(1.02);
+  }
+}
+
+/* ============================================================ */
+/* RESPONSIVE DESIGN - MOBILE PEQUEÑO                          */
+/* ============================================================ */
+
+@media (max-width: 480px) {
+  .videos-section {
+    padding: 3rem 0;
+  }
+
+  .video-container {
+    height: 50vh;
+    min-height: 280px;
+    border-radius: 15px;
+  }
+
+  .video-slide {
+    padding: 0 0.5rem;
+  }
+
+  .video-info {
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .video-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .video-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .play-pause-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .play-pause-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .video-nav-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .video-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .prev-btn {
+    left: 0.5rem;
+  }
+
+  .next-btn {
+    right: 0.5rem;
+  }
+
+  .video-indicators {
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .video-indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .fullscreen-btn {
+    width: 45px;
+    height: 45px;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: none; /* Ocultar botón en móvil */
+  }
+
+  .fullscreen-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .video-container.fullscreen .video-info {
+    right: 2rem; /* Sin espacio para botón en móvil */
+  }
+}
+
+/* ============================================================ */
+/* ACCESSIBILITY IMPROVEMENTS                                  */
+/* ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .video-carousel,
+  .video-slide,
+  .play-pause-btn,
+  .video-nav-btn,
+  .video-indicator,
+  .fullscreen-btn {
+    transition: none;
+  }
+
+  .fadeInOut {
+    animation: none;
+  }
+}
+
+/* Focus states */
+.play-pause-btn:focus,
+.video-nav-btn:focus,
+.video-indicator:focus,
+.fullscreen-btn:focus {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+  .play-pause-btn,
+  .video-nav-btn,
+  .fullscreen-btn {
+    background: rgba(0, 0, 0, 0.9);
+    border-width: 3px;
+  }
+}
+
+/* ============================================================ */
+/* ANIMACIONES DE ENTRADA                                      */
+/* ============================================================ */
+
+.video-slide {
+  animation: slideInVideo 0.8s ease-out;
+}
+
+@keyframes slideInVideo {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(0.95);
+  }
+}
+
+.video-slide.active {
+  animation: activateVideo 0.8s ease-out;
+}
+
+@keyframes activateVideo {
+  from {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================================================ */
+/* ESTADOS ESPECIALES                                          */
+/* ============================================================ */
+
+/* Error de carga */
+.video-container.error::before {
+  content: "Error al cargar el video";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-light);
+  font-size: 1rem;
+  text-align: center;
+  z-index: 10;
+}
+
+/* ============================================================ */
+/* ANIMACIONES FULLSCREEN                                      */
+/* ============================================================ */
+
+.video-container.entering-fullscreen {
+  animation: enterFullscreen 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.video-container.exiting-fullscreen {
+  animation: exitFullscreen 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes enterFullscreen {
+  from {
+    border-radius: 20px;
+    transform: scale(1);
+  }
+  to {
+    border-radius: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes exitFullscreen {
+  from {
+    border-radius: 0;
+    transform: scale(1);
+  }
+  to {
+    border-radius: 20px;
+    transform: scale(1);
+  }
+}

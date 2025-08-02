@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title
+      data-lang-es="Fragmentos de Eternidad | Experiencia de Danza"
+      data-lang-en="Fragments of Eternity | Dance Experience"
+    >
+      Huvegrym | Experiencia de Danza
+    </title>
+
+    <link
+      rel="icon"
+      href="/public/images/logos/LOGO.SVG"
+      type="image/svg+xml"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/assets/css/styles.css" />
+    <link rel="stylesheet" href="/public/assets/css/vertical-nav.css" />
+    <link rel="stylesheet" href="/public/assets/css/Colective.css" />
+    <link rel="stylesheet" href="/public/assets/css/Lugares.css" />
+    <link rel="stylesheet" href="/public/assets/css/videos.css" />
+  </head>
+  <body>
+    <div class="fixed-logo">
+      <img src="/public/images/logos/LOGO.SVG" alt="Logo" />
+    </div>
+
+    <div class="nav-wrapper">
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Ampliar el menú de navegación"
+        data-lang-es_aria-label="Ampliar el menú de navegación"
+        data-lang-en_aria-label="Expand navigation menu"
+      >
+        <div class="toggle-icon">
+          <div class="toggle-line"></div>
+          <div class="toggle-line"></div>
+        </div>
+        <span
+          class="toggle-text"
+          data-lang-es="Ampliar el menú de navegación"
+          data-lang-en="Expand navigation menu"
+          >Ampliar el menú de navegación</span
+        >
+      </button>
+
+      <div class="vertical-nav" data-state="collapsed">
+        <div class="nav-images">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="819"
+            height="540"
+            fill="none"
+            aria-hidden="true"
+            viewBox="0 0 819 540"
+            class="logo-overlay"
+          >
+            <path
+              d="M716.875 10.22H723.531V11.7877H721.141V18.3154H719.265V11.7877H716.875V10.22ZM728.748 13.8694L731.935 10.1943H732.835V18.3154H731.036V13.6637L728.928 16.0539H728.543L726.461 13.6894V18.3154H724.636V10.1943H725.536L728.748 13.8694Z"
+              fill="currentColor"
+            />
+          </svg>
+          <img
+            src="/public/images/capas/hero-img-2.JPG"
+            alt=""
+            data-category="obras"
+            loading="eager"
+          />
+          <img
+            src="/public/images/capas/background-duo.jpg"
+            alt=""
+            data-category="artistas"
+            loading="eager"
+          />
+          <img
+            src="/public/images/piezas/Pas_de_trois.jpg"
+            alt=""
+            data-category="videos"
+            loading="eager"
+          />
+          <img
+            src="/public/images/piezas/Cibanal.jpg"
+            alt=""
+            data-category="lugares"
+            loading="eager"
+          />
+        </div>
+
+        <div class="nav-menu">
+          <div role="tablist" aria-orientation="vertical" class="nav-tabs">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              data-state="active"
+              class="nav-tab active"
+              data-lang-es="Obras"
+              data-lang-en="Pieces"
+            >
+              Obras
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-state="inactive"
+              class="nav-tab"
+              data-lang-es="Artistas"
+              data-lang-en="Artists"
+            >
+              Artistas
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-state="inactive"
+              class="nav-tab"
+              data-lang-es="Nuestros Vídeos"
+              data-lang-en="Our Videos"
+            >
+              Nuestros Vídeos
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-state="inactive"
+              class="nav-tab"
+              data-lang-es="Lugares"
+              data-lang-en="Venues"
+            >
+              Lugares
+            </button>
+          </div>
+
+          <div class="nav-panels">
+            <div role="tabpanel" data-state="active" class="nav-panel active">
+              <h3
+                class="panel-title"
+                data-lang-es="Obras"
+                data-lang-en="Pieces"
+              >
+                Obras
+              </h3>
+              <div class="panel-links">
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Piezas Principales"
+                    data-lang-en="Main Pieces"
+                  >
+                    Piezas Principales
+                  </h4>
+                  <a href="#cibanal" class="panel-link">Cibanal</a>
+                  <a href="#pas-de-trois" class="panel-link">Pas de Trois</a>
+                </div>
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Próximos Estrenos"
+                    data-lang-en="Upcoming Premieres"
+                  >
+                    Próximos Estrenos
+                  </h4>
+                  <a
+                    href="#nuevas-obras"
+                    class="panel-link"
+                    data-lang-es="Obras en Desarrollo"
+                    data-lang-en="Works in Development"
+                    >Obras en Desarrollo</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div role="tabpanel" data-state="inactive" class="nav-panel">
+              <h3
+                class="panel-title"
+                data-lang-es="Artistas"
+                data-lang-en="Artists"
+              >
+                Artistas
+              </h3>
+              <div class="panel-links">
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Intérpretes"
+                    data-lang-en="Performers"
+                  >
+                    Intérpretes
+                  </h4>
+                  <a href="portfolio-vega.html" class="panel-link"
+                    >Vega Grimalt Arnal</a
+                  >
+                  <a href="portfolio-hugo.html" class="panel-link"
+                    >Hugo Grimalt Arnal</a
+                  >
+                </div>
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Colectivo"
+                    data-lang-en="Collective"
+                  >
+                    Colectivo
+                  </h4>
+                  <a
+                    href="#colectivo"
+                    class="panel-link"
+                    data-lang-es="El Colectivo"
+                    data-lang-en="The Collective"
+                    >El Colectivo</a
+                  >
+                  <a
+                    href="#biografias"
+                    class="panel-link"
+                    data-lang-es="Biografías"
+                    data-lang-en="Biographies"
+                    >Biografías</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div role="tabpanel" data-state="inactive" class="nav-panel">
+              <h3
+                class="panel-title"
+                data-lang-es="Nuestros Vídeos"
+                data-lang-en="Our Videos"
+              >
+                Nuestros Vídeos
+              </h3>
+              <div class="panel-links">
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Galería Multimedia"
+                    data-lang-en="Multimedia Gallery"
+                  >
+                    Galería Multimedia
+                  </h4>
+                  <a
+                    href="#videos"
+                    class="panel-link"
+                    data-lang-es="Ver Galería de Vídeos"
+                    data-lang-en="View Video Gallery"
+                    >Ver Galería de Vídeos</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div role="tabpanel" data-state="inactive" class="nav-panel">
+              <h3
+                class="panel-title"
+                data-lang-es="Lugares"
+                data-lang-en="Venues"
+              >
+                Lugares
+              </h3>
+              <div class="panel-links">
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Teatros Principales"
+                    data-lang-en="Main Theaters"
+                  >
+                    Teatros Principales
+                  </h4>
+                  <a
+                    href="#auditorio-zaragoza"
+                    class="panel-link"
+                    data-lang-es="Auditorio de Zaragoza"
+                    data-lang-en="Auditorium of Zaragoza"
+                    >Auditorio de Zaragoza</a
+                  >
+                  <a
+                    href="#teatro-pavon"
+                    class="panel-link"
+                    data-lang-es="Teatro Pavón"
+                    data-lang-en="Teatro Pavón"
+                    >Teatro Pavón</a
+                  >
+                  <a
+                    href="#auditorio-xior"
+                    class="panel-link"
+                    data-lang-es="Auditorio Xior"
+                    data-lang-en="Auditorium Xior"
+                    >Auditorium Xior</a
+                  >
+                </div>
+                <div class="panel-section">
+                  <h4
+                    class="panel-section-title"
+                    data-lang-es="Espacios Alternativos"
+                    data-lang-en="Alternative Spaces"
+                  >
+                    Espacios Alternativos
+                  </h4>
+                  <a
+                    href="#villafranca"
+                    class="panel-link"
+                    data-lang-es="Villafranca de Ebro"
+                    data-lang-en="Villafranca de Ebro"
+                    >Villafranca de Ebro</a
+                  >
+                  <a
+                    href="#villanueva"
+                    class="panel-link"
+                    data-lang-es="Villanueva de Gállego"
+                    data-lang-en="Villanueva de Gállego"
+                    >Villanueva de Gállego</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <button type="button" class="lang-button">
+              <svg
+                fill="none"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.25108 9.4002H6.4256C6.54133 7.47705 7.07264 5.61995 7.96906 4.01028C5.47547 4.66616 3.5767 6.78891 3.25108 9.4002ZM9.60156 4.38976C8.70407 5.8373 8.15382 7.57288 8.02886 9.4002H11.1743C11.0493 7.57288 10.4991 5.8373 9.60156 4.38976ZM11.1743 11.0002H8.02886C8.15382 12.8275 8.70407 14.5631 9.60156 16.0106C10.4991 14.5631 11.0493 12.8275 11.1743 11.0002ZM7.96906 16.3901C7.07264 14.7804 6.54133 12.9233 6.4256 11.0002H3.25108C3.5767 13.6115 5.47547 15.7342 7.96906 16.3901ZM11.2341 16.3901C12.1305 14.7804 12.6618 12.9233 12.7775 11.0002H15.952C15.6264 13.6115 13.7277 15.7342 11.2341 16.3901ZM15.952 9.4002H12.7775C12.6618 7.47705 12.1305 5.61995 11.2341 4.01028C13.7277 4.66616 15.6264 6.78891 15.952 9.4002ZM1.60156 10.2002C1.60156 5.78192 5.18328 2.2002 9.60156 2.2002C14.0198 2.2002 17.6016 5.78192 17.6016 10.2002C17.6016 14.6185 14.0198 18.2002 9.60156 18.2002C5.18328 18.2002 1.60156 14.6185 1.60156 10.2002Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span class="lang-text">Español</span>
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="contact-button"
+              data-lang-es="Contacto"
+              data-lang-en="Contact"
+            >
+              Contacto
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="main-content">
+      <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s"></div>
+        <div class="particle" style="left: 70%; animation-delay: 0.5s"></div>
+        <div class="particle" style="left: 80%; animation-delay: 1.5s"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s"></div>
+      </div>
+      <div class="custom-cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+      </div>
+      <div class="progress-indicator"><div class="progress-bar"></div></div>
+
+      <section class="hero" id="inicio">
+        <div class="hero-img-container">
+          <img src="/public/images/capas/hero-img-2.JPG" alt="" />
+          <div class="hero-img-logo">
+            <img
+              src="/public/images/logos/Vector2.svg"
+              alt="Logo del colectivo"
+            />
+          </div>
+          <img src="/public/images/capas/hero-img-layer-2.png" alt="" />
+          <div class="hero-img-copy">
+            <p
+              data-lang-es="Desliza para iniciar la experiencia"
+              data-lang-en="Scroll to begin the experience"
+            >
+              Desliza para iniciar la experiencia
+            </p>
+            <div class="scroll-indicator"><div class="scroll-dot"></div></div>
+          </div>
+        </div>
+        <div class="fade-overlay"></div>
+        <div class="overlay">
+          <svg width="100%" height="100%">
+            <defs>
+              <mask id="logoRevealMask">
+                <rect width="100%" height="100%" fill="white"></rect>
+                <path id="logoMask"></path>
+              </mask>
+            </defs>
+            <rect
+              width="100%"
+              height="100%"
+              fill="#000000"
+              mask="url(#logoRevealMask)"
+            ></rect>
+          </svg>
+        </div>
+        <div class="logo-container"></div>
+        <div class="overlay-copy">
+          <h1 class="split-text">
+            <span
+              data-lang-es="Danza contemporánea"
+              data-lang-en="Contemporary Dance"
+              >Danza contemporánea</span
+            ><br />
+            <span data-lang-es="Circo" data-lang-en="Circus">Circo</span><br />
+            <span data-lang-es="Teatro" data-lang-en="Theater">Teatro</span>
+          </h1>
+        </div>
+      </section>
+
+      <section class="intro-section">
+        <div class="container">
+          <h2 class="section-title fade-in-scale" data-reveal>
+            <span
+              class="title-line"
+              data-lang-es="El arte es magia liberada"
+              data-lang-en="Art is magic unleashed"
+            >
+              El arte es magia liberada
+            </span>
+            <span
+              class="title-line accent"
+              data-lang-es="de la mentira de ser verdad"
+              data-lang-en="of the lie of being true"
+              >de la mentira de ser verdad</span
+            >
+          </h2>
+        </div>
+      </section>
+
+      <section id="quienes-somos" class="about-section-v2">
+        <div class="background-image-container">
+          <div
+            class="parallax-bg"
+            style="
+              background-image: url('/public/images/capas/background-duo.jpg');
+            "
+          ></div>
+        </div>
+        <div class="container">
+          <div class="about-content-v2 fade-in-scale" data-reveal>
+            <h2 class="section-title">
+              <span class="title-line" data-lang-es="Sobre" data-lang-en="About"
+                >Sobre</span
+              >
+              <span
+                class="title-line accent"
+                data-lang-es="Nosotros"
+                data-lang-en="Us"
+                >Nosotros</span
+              >
+            </h2>
+            <p
+              class="about-text-v2"
+              data-lang-es="Somos Vega y Hugo. Más que bailarines, somos narradores de historias sin palabras. Nuestra danza nace de la conexión, del pulso compartido que transforma el escenario en un lienzo de emociones. Exploramos la fuerza en la vulnerabilidad y la belleza en lo efímero, invitándote a un viaje más allá de lo visible, donde cada gesto es un fragmento de eternidad."
+              data-lang-en="We are Vega and Hugo. More than dancers, we are storytellers without words. Our dance is born from connection, from the shared pulse that transforms the stage into a canvas of emotions. We explore the strength in vulnerability and the beauty in the ephemeral, inviting you on a journey beyond the visible, where every gesture is a fragment of eternity."
+            >
+              Desde que éramos niños, jugar juntos siempre fue algo natural. Con
+              el tiempo, ese juego se convirtió en movimiento, y el movimiento
+              en danza. Hoy, como hermanos, usamos esa conexión especial que
+              siempre nos ha unido para contar historias y compartirlas con
+              quienes nos ven.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="colectivo" class="collective-section">
+        <div class="collective-video-background">
+          <video
+            id="collective-main-video"
+            muted
+            autoplay
+            loop
+            playsinline
+            preload="auto"
+          >
+            <source src="/public/videos/Cibanal_trailer.mp4" type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
+          <div class="video-overlay"></div>
+        </div>
+
+        <div class="collective-content">
+          <div class="container">
+            <div class="collective-text-container fade-in-scale" data-reveal>
+              <h2 class="section-title">
+                <span
+                  class="title-line"
+                  data-lang-es="Nuestro"
+                  data-lang-en="Our"
+                  >Nuestro</span
+                >
+                <span
+                  class="title-line accent"
+                  data-lang-es="Colectivo"
+                  data-lang-en="Collective"
+                  >Colectivo</span
+                >
+              </h2>
+
+              <div class="collective-description">
+                <p
+                  class="collective-intro fade-in-up"
+                  data-reveal
+                  data-lang-es="Somos una compañía que fusiona danza, música y palabra para crear un lenguaje escénico propio. Cada disciplina se entrelaza con la siguiente, formando una experiencia artística orgánica, viva y en constante transformación."
+                  data-lang-en="We are a company that fuses dance, music and words to create our own scenic language. Each discipline intertwines with the next, forming an organic, living artistic experience in constant transformation."
+                >
+                  Somos una compañía que fusiona danza, música y palabra para
+                  crear un lenguaje escénico propio. Cada disciplina se
+                  entrelaza con la siguiente, formando una experiencia artística
+                  orgánica, viva y en constante transformación.
+                </p>
+
+                <p
+                  class="collective-philosophy fade-in-up"
+                  data-reveal
+                  data-lang-es="Nuestras obras transitan desde lo cómico hasta lo trágico o incluso lo grotesco, siempre con el propósito de conectar con el público y provocar preguntas más que entregar respuestas. Creemos en el arte como un espacio de encuentro, reflexión y juego."
+                  data-lang-en="Our works transit from the comic to the tragic or even the grotesque, always with the purpose of connecting with the audience and provoking questions rather than delivering answers. We believe in art as a space for encounter, reflection and play."
+                >
+                  Nuestras obras transitan desde lo cómico hasta lo trágico o
+                  incluso lo grotesco, siempre con el propósito de conectar con
+                  el público y provocar preguntas más que entregar respuestas.
+                  Creemos en el arte como un espacio de encuentro, reflexión y
+                  juego.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="biografias" class="biography-section-v2">
+        <div class="container section-title-container">
+          <h2 class="section-title fade-in-scale" data-reveal>
+            <span class="title-line" data-lang-es="Nuestros" data-lang-en="Our"
+              >Nuestros</span
+            >
+            <span
+              class="title-line accent"
+              data-lang-es="Artistas"
+              data-lang-en="Artists"
+              >Artistas</span
+            >
+          </h2>
+        </div>
+        <div class="split-container">
+          <a href="./portfolio-hugo.html" class="split-panel hugo" data-reveal>
+            <div class="split-content">
+              <h3 class="artist-name">Hugo</h3>
+            </div>
+            <span
+              class="artist-discover"
+              data-lang-es="Ver Portfolio"
+              data-lang-en="View Portfolio"
+              >Ver Portfolio</span
+            >
+          </a>
+          <a href="./portfolio-vega.html" class="split-panel vega" data-reveal>
+            <div class="split-content">
+              <h3 class="artist-name">Vega</h3>
+            </div>
+            <span
+              class="artist-discover"
+              data-lang-es="Ver Portfolio"
+              data-lang-en="View Portfolio"
+              >Ver Portfolio</span
+            >
+          </a>
+        </div>
+      </section>
+
+      <section id="piezas" class="gallery-section-v2">
+        <div class="container">
+          <h2
+            class="gallery-title fade-in-scale"
+            data-reveal
+            data-lang-es="Obras"
+            data-lang-en="Pieces"
+          >
+            Obras
+          </h2>
+        </div>
+        <div class="pieces-slider-container">
+          <div class="pieces-slider">
+            <div
+              class="piece-slide"
+              style="background-image: url('/public/images/piezas/Cibanal.jpg')"
+              id="cibanal"
+            >
+              <div class="slide-content">
+                <h4 class="slide-title">Cibanal</h4>
+                <div class="slide-meta">
+                  <span
+                    class="slide-tag"
+                    data-lang-es="Danza-Teatro"
+                    data-lang-en="Dance-Theater"
+                    >Danza-Teatro</span
+                  >
+                  <span class="slide-tag">15 min</span>
+                  <span
+                    class="slide-tag"
+                    data-lang-es="Existencialismo"
+                    data-lang-en="Existentialism"
+                    >Existencialismo</span
+                  >
+                </div>
+                <p
+                  class="slide-preview"
+                  data-lang-es="Una obra que se inspira en el esperpento de Valle-Inclán y el existencialismo de Dostoyevski, explorando los límites entre lo onírico y lo grotesco..."
+                  data-lang-en="A piece inspired by Valle-Inclán's 'esperpento' and Dostoyevsky's existentialism, exploring the boundaries between the dreamlike and the grotesque..."
+                >
+                  Una obra que se inspira en el esperpento de Valle-Inclán y el
+                  existencialismo de Dostoyevski, explorando los límites entre
+                  lo onírico y lo grotesco...
+                </p>
+                <button
+                  class="read-more-btn"
+                  data-piece-id="cibanal"
+                  data-lang-es_readmore="Leer Historia Completa"
+                  data-lang-en_readmore="Read Full Story"
+                  data-lang-es_readless="Leer Menos"
+                  data-lang-en_readless="Read Less"
+                >
+                  Leer Historia Completa
+                </button>
+                <div class="full-story-content" style="display: none">
+                  <p
+                    data-lang-es="Cibanal es una obra de danza-teatro. Tiene una duración aproximada de 15 minutos. Se inspira en el esperpento de Valle-Inclán, así como en el existencialismo presente en las obras de Fiódor Dostoyevski y Andréi Tarkovski."
+                    data-lang-en="Cibanal is a dance-theater piece. It has an approximate duration of 15 minutes. It is inspired by the 'esperpento' of Valle-Inclán, as well as the existentialism present in the works of Fyodor Dostoevsky and Andrei Tarkovsky."
+                  >
+                    Cibanal es una obra de danza-teatro. Tiene una duración
+                    aproximada de 15 minutos. Se inspira en el esperpento de
+                    Valle-Inclán, así como en el existencialismo presente en las
+                    obras de Fiódor Dostoyevski y Andréi Tarkovski.
+                  </p>
+                  <p
+                    data-lang-es="El objetivo del proyecto tiene una doble naturaleza: formal y sustantiva. Desde el punto de vista formal, busca conectar la palabra con el movimiento para que ambos se integren en las intenciones de los personajes."
+                    data-lang-en="The project's objective has a dual nature: formal and substantive. From a formal point of view, it seeks to connect the word with movement so that both are integrated into the characters' intentions."
+                  >
+                    El objetivo del proyecto tiene una doble naturaleza: formal
+                    y sustantiva. Desde el punto de vista formal, busca conectar
+                    la palabra con el movimiento para que ambos se integren en
+                    las intenciones de los personajes.
+                  </p>
+                  <p
+                    data-lang-es="En cuanto al contenido, se utilizará un lenguaje que oscile entre lo onírico y lo grotesco, para abordar temas como la desesperación, el vacío, la muerte y la búsqueda, a través de un camino tortuoso que desgarrará la humanidad de sus personajes."
+                    data-lang-en="As for the content, a language that oscillates between the dreamlike and the grotesque will be used to address themes such as despair, emptiness, death, and the search, through a tortuous path that will tear apart the humanity of its characters."
+                  >
+                    En cuanto al contenido, se utilizará un lenguaje que oscile
+                    entre lo onírico y lo grotesco, para abordar temas como la
+                    desesperación, el vacío, la muerte y la búsqueda, a través
+                    de un camino tortuoso que desgarrará la humanidad de sus
+                    personajes.
+                  </p>
+                  <p
+                    data-lang-es="La pieza actúa como un prólogo de una historia más extensa; por ello, se presenta como una escena de negociación entre los personajes, que se resuelve dando inicio al viaje, el cual nunca es mostrado."
+                    data-lang-en="The piece acts as a prologue to a more extensive story; therefore, it is presented as a negotiation scene between the characters, which is resolved by initiating the journey, which is never shown."
+                  >
+                    La pieza actúa como un prólogo de una historia más extensa;
+                    por ello, se presenta como una escena de negociación entre
+                    los personajes, que se resuelve dando inicio al viaje, el
+                    cual nunca es mostrado.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="piece-slide"
+              style="
+                background-image: url('/public/images/piezas/Pas_de_trois_2.jpg');
+              "
+              id="pas-de-trois"
+            >
+              <div class="slide-content">
+                <h4 class="slide-title">Pas de trois</h4>
+                <div class="slide-meta">
+                  <span
+                    class="slide-tag"
+                    data-lang-es="Contemporáneo"
+                    data-lang-en="Contemporary"
+                    >Contemporáneo</span
+                  >
+                  <span class="slide-tag">Tango</span>
+                  <span
+                    class="slide-tag"
+                    data-lang-es="Humor"
+                    data-lang-en="Humor"
+                    >Humor</span
+                  >
+                </div>
+                <p
+                  class="slide-preview"
+                  data-lang-es="La combinación de danza contemporánea, danza clown y tango crea un enfoque cómico que ofrece una mirada irónica sobre los conflictos de poder..."
+                  data-lang-en="The combination of contemporary dance, clown dance, and tango creates a comic approach that offers an ironic look at power conflicts..."
+                >
+                  La combinación de danza contemporánea, danza clown y tango
+                  crea un enfoque cómico que ofrece una mirada irónica sobre los
+                  conflictos de poder...
+                </p>
+                <button
+                  class="read-more-btn"
+                  data-piece-id="pasdethree"
+                  data-lang-es_readmore="Leer Historia Completa"
+                  data-lang-en_readmore="Read Full Story"
+                  data-lang-es_readless="Leer Menos"
+                  data-lang-en_readless="Read Less"
+                >
+                  Leer Historia Completa
+                </button>
+                <div class="full-story-content" style="display: none">
+                  <p
+                    data-lang-es="En Pas de Trois, la combinación de danza contemporánea, danza clown, tango y, más concretamente, el humor, responde a la búsqueda de un contexto que evite el drama que surge inevitablemente al tratar los conflictos de poder."
+                    data-lang-en="In Pas de Trois, the combination of contemporary dance, clown dance, tango, and more specifically, humor, responds to the search for a context that avoids the drama that inevitably arises when dealing with power conflicts."
+                  >
+                    En Pas de Trois, la combinación de danza contemporánea,
+                    danza clown, tango y, más concretamente, el humor, responde
+                    a la búsqueda de un contexto que evite el drama que surge
+                    inevitablemente al tratar los conflictos de poder.
+                  </p>
+                  <p
+                    data-lang-es="En un intento de escapar de ello, se plantea un enfoque cómico que no suaviza el problema, sino que ofrece una mirada irónica, la cual, en ocasiones, puede ser más útil para la reflexión que la propia tragedia."
+                    data-lang-en="In an attempt to escape this, a comical approach is proposed that does not soften the problem, but rather offers an ironic perspective, which, at times, can be more useful for reflection than tragedy itself."
+                  >
+                    En un intento de escapar de ello, se plantea un enfoque
+                    cómico que no suaviza el problema, sino que ofrece una
+                    mirada irónica, la cual, en ocasiones, puede ser más útil
+                    para la reflexión que la propia tragedia.
+                  </p>
+                  <p
+                    data-lang-es="La obra explora las dinámicas de poder entre tres personajes, utilizando el humor como herramienta de análisis social y como mecanismo de distanciamiento que permite al espectador reflexionar sin caer en el melodrama."
+                    data-lang-en="The play explores the power dynamics between three characters, using humor as a tool for social analysis and as a distancing mechanism that allows the viewer to reflect without falling into melodrama."
+                  >
+                    La obra explora las dinámicas de poder entre tres
+                    personajes, utilizando el humor como herramienta de análisis
+                    social y como mecanismo de distanciamiento que permite al
+                    espectador reflexionar sin caer en el melodrama.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="carousel-button prev"
+            aria-label="Anterior"
+            data-lang-es_aria-label="Anterior"
+            data-lang-en_aria-label="Previous"
+          >
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <button
+            class="carousel-button next"
+            aria-label="Siguiente"
+            data-lang-es_aria-label="Siguiente"
+            data-lang-en_aria-label="Next"
+          >
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="videos" class="videos-section">
+        <div class="container">
+          <h2 class="section-title fade-in-scale" data-reveal>
+            <span class="title-line" data-lang-es="Nuestros" data-lang-en="Our"
+              >Nuestros</span
+            >
+            <span
+              class="title-line accent"
+              data-lang-es="Videos"
+              data-lang-en="Videos"
+              >Videos</span
+            >
+          </h2>
+        </div>
+
+        <div class="videos-carousel-container">
+          <div class="video-carousel">
+            <div class="video-slide active" data-video-id="cibanal-video">
+              <div class="video-container">
+                <video
+                  class="video-player"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  data-video="cibanal"
+                >
+                  <source
+                    src="/public/videos/Cibanal_trailer.mp4"
+                    type="video/mp4"
+                  />
+                  Tu navegador no soporta video HTML5.
+                </video>
+
+                <div class="video-info">
+                  <h3
+                    class="video-title"
+                    data-lang-es="Cibanal"
+                    data-lang-en="Cibanal"
+                  >
+                    Cibanal
+                  </h3>
+                  <p
+                    class="video-subtitle"
+                    data-lang-es="Trailer Oficial"
+                    data-lang-en="Official Trailer"
+                  >
+                    Trailer Oficial
+                  </p>
+                </div>
+
+                <button class="play-pause-btn" aria-label="Reproducir/Pausar">
+                  <svg class="play-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
+                  </svg>
+                  <svg class="pause-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="video-slide" data-video-id="pas-de-trois-video">
+              <div class="video-container">
+                <video
+                  class="video-player"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  data-video="pas-de-trois"
+                >
+                  <source
+                    src="/public/videos/Teaser_pas_de_trois.mp4"
+                    type="video/mp4"
+                  />
+                  Tu navegador no soporta video HTML5.
+                </video>
+
+                <div class="video-info">
+                  <h3
+                    class="video-title"
+                    data-lang-es="Pas de Trois"
+                    data-lang-en="Pas de Trois"
+                  >
+                    Pas de Trois
+                  </h3>
+                  <p
+                    class="video-subtitle"
+                    data-lang-es="Extracto"
+                    data-lang-en="Extract"
+                  >
+                    Extracto
+                  </p>
+                </div>
+
+                <button class="play-pause-btn" aria-label="Reproducir/Pausar">
+                  <svg class="play-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
+                  </svg>
+                  <svg class="pause-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="video-nav-btn prev-btn" aria-label="Video anterior">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M15 18l-6-6 6-6"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </button>
+          <button class="video-nav-btn next-btn" aria-label="Video siguiente">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+
+          <div class="video-indicators">
+            <button
+              class="video-indicator active"
+              data-slide="0"
+              aria-label="Ver video Cibanal"
+            ></button>
+            <button
+              class="video-indicator"
+              data-slide="1"
+              aria-label="Ver video Pas de Trois"
+            ></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="lugares" class="venues-section">
+        <div class="venues-background">
+          <div class="venue-image" data-venue="auditorio-zaragoza">
+            <img
+              src="/public/images/lugares/auditorio_de_zaragoza.jpg"
+              alt="Auditorio de Zaragoza"
+              loading="lazy"
+              id="auditorio-zaragoza"
+            />
+          </div>
+          <div class="venue-image" data-venue="teatro-pavon">
+            <img
+              src="/public/images/lugares/teatro_de_pavon.jpg"
+              alt="Teatro Pavón"
+              loading="lazy"
+              id="teatro-pavon"
+            />
+          </div>
+          <div class="venue-image" data-venue="resad">
+            <img
+              src="/public/images/lugares/resad.jpg"
+              alt="RESAD Madrid"
+              loading="lazy"
+              id="resad"
+            />
+          </div>
+          <div class="venue-image" data-venue="ifema">
+            <img
+              src="/public/images/lugares/ifema.webp"
+              alt="IFEMA Aula"
+              loading="lazy"
+              id="ifema"
+            />
+          </div>
+          <div class="venue-image" data-venue="museo-gargallo">
+            <img
+              src="/public/images/lugares/museo-gargallo.webp"
+              alt="Museo Pablo Gargallo"
+              loading="lazy"
+              id="museo-gargallo"
+            />
+          </div>
+          <div class="venue-image" data-venue="museo-serrano">
+            <img
+              src="/public/images/lugares/Museo_Pablo_Serrano.jpg"
+              alt="Museo Pablo Serrano"
+              loading="lazy"
+              id="museo-serrano"
+            />
+          </div>
+          <div class="venue-image" data-venue="auditorio-xior">
+            <img
+              src="/public/images/lugares/auditorio-xior.jpg"
+              alt="Auditorio Xior"
+              loading="lazy"
+              id="auditorio-xior"
+            />
+          </div>
+          <div class="venue-image" data-venue="villafranca">
+            <img
+              src="/public/images/lugares/villafranca.webp"
+              alt="Villafranca de Ebro"
+              loading="lazy"
+              id="villafranca"
+            />
+          </div>
+          <div class="venue-image" data-venue="villanueva">
+            <img
+              src="/public/images/lugares/Villanueva_de_Gallego.jpg"
+              alt="Villanueva de Gállego"
+              loading="lazy"
+              id="villanueva"
+            />
+          </div>
+          <div class="venues-overlay"></div>
+        </div>
+
+        <div class="venues-content">
+          <div class="container">
+            <h2 class="section-title fade-in-scale" data-reveal>
+              <span
+                class="title-line"
+                data-lang-es="Nuestros"
+                data-lang-en="Our"
+                >Nuestros</span
+              >
+              <span
+                class="title-line accent"
+                data-lang-es="Lugares"
+                data-lang-en="Venues"
+                >Lugares</span
+              >
+            </h2>
+
+            <div class="venues-grid desktop-only">
+              <div class="venues-column venues-column-left">
+                <div class="venue-name teatro" data-venue="auditorio-zaragoza">
+                  <span
+                    data-lang-es="Auditorio de Zaragoza"
+                    data-lang-en="Auditorio de Zaragoza"
+                    >Auditorio de Zaragoza</span
+                  >
+                </div>
+                <div class="venue-name no-convencional" data-venue="ifema">
+                  <span data-lang-es="IFEMA (Aula)" data-lang-en="IFEMA (Aula)"
+                    >IFEMA (Aula)</span
+                  >
+                </div>
+                <div
+                  class="venue-name no-convencional"
+                  data-venue="museo-gargallo"
+                >
+                  <span
+                    data-lang-es="Museo Pablo Gargallo"
+                    data-lang-en="Museo Pablo Gargallo"
+                    >Museo Pablo Gargallo</span
+                  >
+                </div>
+                <div class="venue-name urbano" data-venue="villafranca">
+                  <span
+                    data-lang-es="Villafranca de Ebro"
+                    data-lang-en="Villafranca de Ebro"
+                    >Villafranca de Ebro</span
+                  >
+                </div>
+              </div>
+
+              <div class="venues-column venues-column-right">
+                <div class="venue-name teatro" data-venue="teatro-pavon">
+                  <span data-lang-es="Teatro Pavón" data-lang-en="Teatro Pavón"
+                    >Teatro Pavón</span
+                  >
+                </div>
+                <div class="venue-name teatro" data-venue="resad">
+                  <span
+                    data-lang-es="RESAD (Madrid)"
+                    data-lang-en="RESAD (Madrid)"
+                    >RESAD (Madrid)</span
+                  >
+                </div>
+                <div
+                  class="venue-name no-convencional"
+                  data-venue="museo-serrano"
+                >
+                  <span
+                    data-lang-es="Museo Pablo Serrano"
+                    data-lang-en="Museo Pablo Serrano"
+                    >Museo Pablo Serrano</span
+                  >
+                </div>
+                <div class="venue-name urbano" data-venue="villanueva">
+                  <span
+                    data-lang-es="Villanueva de Gállego"
+                    data-lang-en="Villanueva de Gállego"
+                    >Villanueva de Gállego</span
+                  >
+                </div>
+                <div
+                  class="venue-name no-convencional"
+                  data-venue="auditorio-xior"
+                >
+                  <span
+                    data-lang-es="Auditorio Xior"
+                    data-lang-en="Auditorio Xior"
+                    >Auditorio Xior</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="venues-mobile-sections mobile-only">
+              <div class="venue-category fade-in-up" data-reveal>
+                <h3
+                  class="category-title"
+                  data-lang-es="Teatro"
+                  data-lang-en="Theater"
+                >
+                  Teatro
+                </h3>
+                <div class="category-venues">
+                  <div class="venue-item" data-venue="auditorio-zaragoza">
+                    <span
+                      data-lang-es="Auditorio de Zaragoza"
+                      data-lang-en="Auditorio de Zaragoza"
+                      >Auditorio de Zaragoza</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="teatro-pavon">
+                    <span
+                      data-lang-es="Teatro Pavón"
+                      data-lang-en="Teatro Pavón"
+                      >Teatro Pavón</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="resad">
+                    <span
+                      data-lang-es="RESAD (Madrid)"
+                      data-lang-en="RESAD (Madrid)"
+                      >RESAD (Madrid)</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="venue-category fade-in-up" data-reveal>
+                <h3
+                  class="category-title"
+                  data-lang-es="Espacios no convencionales"
+                  data-lang-en="Unconventional Spaces"
+                >
+                  Espacios no convencionales
+                </h3>
+                <div class="category-venues">
+                  <div class="venue-item" data-venue="ifema">
+                    <span
+                      data-lang-es="IFEMA (Aula)"
+                      data-lang-en="IFEMA (Aula)"
+                      >IFEMA (Aula)</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="museo-gargallo">
+                    <span
+                      data-lang-es="Museo Pablo Gargallo"
+                      data-lang-en="Museo Pablo Gargallo"
+                      >Museo Pablo Gargallo</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="museo-serrano">
+                    <span
+                      data-lang-es="Museo Pablo Serrano"
+                      data-lang-en="Museo Pablo Serrano"
+                      >Museo Pablo Serrano</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="auditorio-xior">
+                    <span
+                      data-lang-es="Auditorio Xior"
+                      data-lang-en="Auditorio Xior"
+                      >Auditorio Xior</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="venue-category fade-in-up" data-reveal>
+                <h3
+                  class="category-title"
+                  data-lang-es="Espacios urbanos"
+                  data-lang-en="Urban Spaces"
+                >
+                  Espacios urbanos
+                </h3>
+                <div class="category-venues">
+                  <div class="venue-item" data-venue="villafranca">
+                    <span
+                      data-lang-es="Villafranca de Ebro"
+                      data-lang-en="Villafranca de Ebro"
+                      >Villafranca de Ebro</span
+                    >
+                  </div>
+                  <div class="venue-item" data-venue="villanueva">
+                    <span
+                      data-lang-es="Villanueva de Gállego"
+                      data-lang-en="Villanueva de Gállego"
+                      >Villanueva de Gállego</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="venues-particles">
+          <div class="venue-particle particle-1"></div>
+          <div class="venue-particle particle-2"></div>
+          <div class="venue-particle particle-3"></div>
+          <div class="venue-particle particle-4"></div>
+        </div>
+      </section>
+
+      <section class="dates-section">
+        <div class="container">
+          <h2 class="section-title fade-in-scale" data-reveal>
+            <span
+              class="title-line"
+              data-lang-es="Próximas"
+              data-lang-en="Upcoming"
+              >Próximas</span
+            >
+            <span
+              class="title-line accent"
+              data-lang-es="Actividades"
+              data-lang-en="Activities"
+              >Actividades</span
+            >
+          </h2>
+
+          <div class="no-dates-container fade-in-up" data-reveal>
+            <p
+              class="no-dates-text"
+              data-lang-es="De momento no tenemos fechas programadas. ¡Pero estamos preparando cosas nuevas!"
+              data-lang-en="We have no scheduled dates at the moment. But we are preparing new things!"
+            >
+              De momento no tenemos fechas programadas. ¡Pero estamos preparando
+              cosas nuevas!
+            </p>
+            <p
+              class="no-dates-follow"
+              data-lang-es="Síguenos en redes sociales para no perderte ninguna novedad."
+              data-lang-en="Follow us on social media so you don't miss any news."
+            >
+              Síguenos en redes sociales para no perderte ninguna novedad.
+            </p>
+            <div class="dates-action-wrapper">
+              <a
+                href="https://www.instagram.com/huvegrym/"
+                class="btn-instagram-dates"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote-section">
+        <div class="quote-bg"></div>
+        <div class="container">
+          <blockquote class="main-quote fade-in-scale" data-reveal>
+            <p
+              data-lang-es='"Todo comienza con el cuerpo. Antes de que una palabra sea dicha, el cuerpo ya ha hablado."'
+              data-lang-en='"Everything begins with the body. Before a word is spoken, the body has already spoken."'
+            >
+              "Todo comienza con el cuerpo. Antes de que una palabra sea dicha,
+              el cuerpo ya ha hablado."
+            </p>
+            <cite>Peter Brook</cite>
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contacto">
+        <div class="container">
+          <h2 class="section-title fade-in-scale" data-reveal>
+            <span
+              class="title-line"
+              data-lang-es="Contacta"
+              data-lang-en="Contact"
+              >Contacta</span
+            >
+            <span
+              class="title-line accent"
+              data-lang-es="con Nosotros"
+              data-lang-en="with Us"
+              >con Nosotros</span
+            >
+          </h2>
+          <div class="contact-content">
+            <p
+              class="contact-text fade-in-up"
+              data-reveal
+              data-lang-es="¿Quieres ser parte de esta experiencia transformadora?"
+              data-lang-en="Do you want to be part of this transformative experience?"
+            >
+              ¿Quieres ser parte de esta experiencia transformadora?
+            </p>
+
+            <div class="contact-buttons fade-in-up" data-reveal>
+              <a
+                id="contact-link"
+                href="mailto:hugogrimaltarnal@gmail.com"
+                class="btn btn-primary hover-glow"
+              >
+                <span data-lang-es="Contáctanos" data-lang-en="Contact Us"
+                  >Contáctanos</span
+                >
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M5 12h14m-7-7l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+            <div class="social-links fade-in-up" data-reveal>
+              <a href="https://www.instagram.com/huvegrym/" class="social-link"
+                >Instagram</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="container">
+          <p
+            data-lang-es="&copy; 2025 Fragmentos de Eternidad. Todos los derechos reservados."
+            data-lang-en="&copy; 2025 Fragments of Eternity. All rights reserved."
+          >
+            &copy; 2025 Huvegrym. Todos los derechos reservados.
+          </p>
+
+          <p class="footer-credits">
+            <span
+              data-lang-es="Diseño y desarrollo web por"
+              data-lang-en="Web design and development by"
+            >
+              Diseño y desarrollo web por
+            </span>
+            <a href="https://gabrielcodes.dev/" class="developer-link"
+              >Gabriel Saiz</a
+            >
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <script type="module" src="/public/assets/js/logo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="module" src="/public/assets/js/script.js"></script>
+    <script src="/public/assets/js/vertical-nav.js"></script>
+    <script src="/public/assets/js/Colective.js"></script>
+    <script src="/public/assets/js/Lugares.js"></script>
+    <script src="/public/assets/js/videos.js"></script>
+  </body>
+</html>
