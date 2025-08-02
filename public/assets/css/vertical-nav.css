@@ -88,7 +88,7 @@ body {
   border: 0;
 }
 
-/* ** NUEVO: Botón flotante de idioma estilo GTA VI ** */
+/* ** NUEVO: Botón flotante de idioma ** */
 .floating-lang-button {
   position: fixed;
   top: 2rem;
@@ -698,7 +698,7 @@ body.nav-open .floating-lang-button {
   }
 }
 
-/* Additional GTA VI Effects */
+/* Additional Effects */
 .nav-images::before {
   content: '';
   position: absolute;

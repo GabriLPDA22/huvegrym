@@ -1,7 +1,6 @@
 {
-  "name": "codegrid-gta-vi-landing-page-scroll-javascript",
+  "name": "huvegrym",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -12,7 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "gsap": "^3.13.0",
-    "lenis": "^1.3.8",
-    "vite": "^6.3.5"
+    "lenis": "^1.3.8"
+  },
+  "description": "",
+  "devDependencies": {
+    "vite": "^7.0.6"
   }
 }
