@@ -1183,7 +1183,7 @@ section {
     transparent
   );
   opacity: 0;
-  animation: cardRotate 6s linear infinite;
+  /* animation: cardRotate 6s linear infinite; */ /* DESACTIVADO */
   transition: opacity 0.3s;
 }
 
@@ -3176,7 +3176,6 @@ body:not(.mobile):not(.pieces-slider-container *) {
   z-index: 20;
 }
 
-
 /* ============================================================ */
 /* CRÉDITOS DE FOTÓGRAFOS EN CAROUSEL DE PIEZAS                */
 /* ============================================================ */
@@ -3364,7 +3363,8 @@ body:not(.mobile):not(.pieces-slider-container *) {
 }
 
 @keyframes creditPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
   50% {
