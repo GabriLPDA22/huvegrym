@@ -9,6 +9,51 @@
     >
       HUGO | Fragmentos de Eternidad
     </title>
+
+    <link rel="icon" href="/public/images/logos/LOGO.SVG" type="image/svg+xml" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Hugo Grimalt Arnal es bailarín y coreógrafo integrante de Huvegrym. Descubre su trayectoria, formación y obras de danza contemporánea." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://huvegrym.com/pages/portfolio-hugo.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://huvegrym.com/pages/portfolio-hugo.html" />
+    <meta property="og:title" content="Hugo Grimalt Arnal | Bailarín y Coreógrafo — Huvegrym" />
+    <meta property="og:description" content="Bailarín y coreógrafo de danza contemporánea. Trayectoria, formación y obras de Hugo Grimalt Arnal, integrante de Huvegrym." />
+    <meta property="og:image" content="https://huvegrym.com/public/images/personas/Hugo.jpg" />
+    <meta property="og:site_name" content="Huvegrym" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hugo Grimalt Arnal | Huvegrym" />
+    <meta name="twitter:description" content="Bailarín y coreógrafo de danza contemporánea. Integrante de Huvegrym." />
+    <meta name="twitter:image" content="https://huvegrym.com/public/images/personas/Hugo.jpg" />
+
+    <!-- Datos Estructurados JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Hugo Grimalt Arnal",
+      "jobTitle": "Bailarín y coreógrafo",
+      "url": "https://huvegrym.com/pages/portfolio-hugo.html",
+      "image": "https://huvegrym.com/public/images/personas/Hugo.jpg",
+      "description": "Bailarín y coreógrafo de danza contemporánea, integrante del dúo Huvegrym.",
+      "memberOf": {
+        "@type": "PerformingGroup",
+        "name": "Huvegrym",
+        "url": "https://huvegrym.com"
+      },
+      "sameAs": ["https://www.instagram.com/huvegrym/"]
+    }
+    </script>
+
+    <!-- Preconexión Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
       rel="stylesheet"
@@ -17,9 +62,9 @@
     <link rel="stylesheet" href="/public/assets/css/portfolio-styles.css" />
   </head>
   <body class="portfolio-page hugo-portfolio">
-    <!-- LOGO FIJO EN LA ESQUINA DERECHA -->
+
     <div class="fixed-logo">
-      <img src="/public/images/logos/LOGO.SVG" alt="Logo" />
+      <img src="/public/images/logos/LOGO.SVG" alt="Logo Huvegrym" />
     </div>
 
     <div class="custom-cursor">
@@ -31,150 +76,310 @@
       <div class="progress-bar"></div>
     </div>
 
+    <!-- ===================== HEADER ===================== -->
     <header class="portfolio-header">
       <div class="container">
         <a href="index.html" class="back-link hover-glow">
           <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
-          <span data-lang-es="Volver" data-lang-en="Back">Volver</span>
+          <span data-lang-es="Volver a Huvegrym" data-lang-en="Back to Huvegrym">Volver a Huvegrym</span>
         </a>
       </div>
     </header>
 
-    <section class="character-intro hugo-intro">
-      <div class="intro-background">
-        <div class="animated-gradient hugo-gradient"></div>
-        <div class="particle-system energy-particles"></div>
+    <!-- ===================== HERO ===================== -->
+    <section class="pf-hero hugo-hero">
+      <div class="pf-hero-photo"></div>
+      <div class="pf-hero-overlay"></div>
+      <div class="pf-hero-content">
+        <span class="pf-hero-label pf-e1">Huvegrym</span>
+        <h1 class="pf-hero-name pf-e2">HUGO</h1>
+        <p
+          class="pf-hero-sub pf-e3"
+          data-lang-es="Bailarín, Coreógrafo & Artista Escénico"
+          data-lang-en="Dancer, Choreographer & Performing Artist"
+        >Bailarín, Coreógrafo & Artista Escénico</p>
+        <p
+          class="pf-hero-tagline pf-e4"
+          data-lang-es="Zaragoza · Madrid · Conservatorio Superior de Danza"
+          data-lang-en="Zaragoza · Madrid · Superior Conservatory of Dance"
+        >Zaragoza · Madrid · Conservatorio Superior de Danza</p>
+        <div class="pf-hero-divider pf-e5"></div>
+        <a href="mailto:huvegrym@gmail.com" class="btn btn-primary pf-e6">
+          <span data-lang-es="Contactar" data-lang-en="Get in Touch">Contactar</span>
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"></path></svg>
+        </a>
       </div>
+    </section>
 
-      <div class="character-presentation hugo-layout">
-        <div class="character-info">
-          <div class="name-display">
-            <h1 class="character-name">HUGO</h1>
-            <span
-              class="character-title"
-              data-lang-es="Bailarín, Coreógrafo & Artista Escénico"
-              data-lang-en="Dancer, Choreographer & Performing Artist"
-              >Bailarín, Coreógrafo & Artista Escénico</span
-            >
-          </div>
+    <!-- ===================== BIO ===================== -->
+    <section class="pf-bio-section">
+      <div class="pf-bio-inner">
 
-          <div class="bio-content">
+        <!-- Columna izquierda: texto -->
+        <div class="pf-bio-col" data-reveal>
+          <span class="pf-label" data-lang-es="Sobre el artista" data-lang-en="About the artist">Sobre el artista</span>
+          <h2 class="pf-section-title">
+            <span data-lang-es="Cuerpo," data-lang-en="Body,">Cuerpo,</span><br>
+            <span class="accent" data-lang-es="emoción & escena" data-lang-en="emotion & stage">emoción & escena</span>
+          </h2>
+
+          <div class="pf-bio-text">
             <p
-              class="bio-highlight"
               data-lang-es="Hugo Grimalt Arnal, nacido en Zaragoza en 2002 y residente en Madrid. Formado en el Conservatorio Municipal de Zaragoza y el Conservatorio Superior de Danza de Madrid."
               data-lang-en="Hugo Grimalt Arnal, born in Zaragoza in 2002 and based in Madrid. Trained at the Municipal Conservatory of Zaragoza and the Superior Conservatory of Dance of Madrid."
             >
-              Hugo Grimalt Arnal, nacido en Zaragoza en 2002 y residente en
-              Madrid. Formado en el Conservatorio Municipal de Zaragoza y el
-              Conservatorio Superior de Danza de Madrid.
+              Hugo Grimalt Arnal, nacido en Zaragoza en 2002 y residente en Madrid. Formado en el Conservatorio Municipal de Zaragoza y el Conservatorio Superior de Danza de Madrid.
             </p>
-            <p class="bio-text">
+            <p>
               <span
-                data-lang-es="He ampliado mi visión del movimiento con creadores como Chevi Muraday, Richard Siegal, Jorge Crecis, La Chula y Fabian Thomé. He trabajado en obras como"
-                data-lang-en="I have broadened my vision of movement with creators like Chevi Muraday, Richard Siegal, Jorge Crecis, La Chula, and Fabian Thomé. I have worked on productions such as"
-                >He ampliado mi visión del movimiento con creadores como Chevi
-                Muraday, Richard Siegal, Jorge Crecis, La Chula y Fabian Thomé.
-                He trabajado en obras como</span
-              >
-              <span class="project-name">El Cascanueces</span>,
-              <span class="project-name">Don Quijote en Nueva York</span>
+                data-lang-es="Ha ampliado su visión del movimiento con creadores como"
+                data-lang-en="He has broadened his vision of movement with creators like"
+              >Ha ampliado su visión del movimiento con creadores como</span>
+              <span class="project-name">Chevi Muraday</span>,
+              <span class="project-name">Richard Siegal</span>,
+              <span class="project-name">Jorge Crecis</span>,
+              <span class="project-name">La Chula</span>
               <span data-lang-es="y" data-lang-en="and">y</span>
-              <span class="project-name">Los domingos no</span>,
-              <span
-                data-lang-es="ganadora del Premio Madroño."
-                data-lang-en="winner of the Madroño Award."
-                >ganadora del Premio Madroño.</span
-              >
+              <span class="project-name">Fabian Thomé</span>.
             </p>
-            <p class="bio-text">
+            <p>
               <span
-                data-lang-es="También tengo experiencia audiovisual en films como"
-                data-lang-en="I also have audiovisual experience in films like"
-                >También tengo experiencia audiovisual en films como</span
-              >
+                data-lang-es="También cuenta con experiencia audiovisual en films como"
+                data-lang-en="He also has audiovisual experience in films such as"
+              >También cuenta con experiencia audiovisual en films como</span>
               <span class="project-name">La novia</span>
-              <span
-                data-lang-es="de Paula Ortiz y"
-                data-lang-en="by Paula Ortiz and"
-                >de Paula Ortiz y</span
-              >
+              <span data-lang-es="de Paula Ortiz y" data-lang-en="by Paula Ortiz and">de Paula Ortiz y</span>
               <span class="project-name">Cariñena, el vino del mar</span>
               <span
                 data-lang-es="de Javier Calvo, trabajando con compañías como PAI y Teatro Borboleta."
-                data-lang-en="by Javier Calvo, working with companies like PAI and Teatro Borboleta."
-                >de Javier Calvo, trabajando con compañías como PAI y Teatro
-                Borboleta.</span
-              >
+                data-lang-en="by Javier Calvo, working with companies such as PAI and Teatro Borboleta."
+              >de Javier Calvo, trabajando con compañías como PAI y Teatro Borboleta.</span>
             </p>
           </div>
 
-          <div class="philosophy-quote">
-            <blockquote
-              data-lang-es="Mi enfoque artístico se basa en la fusión del cuerpo, la emoción y la interpretación, buscando siempre nuevos lenguajes escénicos que me permitan crecer y conectar con el público."
-              data-lang-en="My artistic approach is based on the fusion of body, emotion, and interpretation, always seeking new scenic languages that allow me to grow and connect with the audience."
-            >
-              "Mi enfoque artístico se basa en la fusión del cuerpo, la emoción
-              y la interpretación, buscando siempre nuevos lenguajes escénicos
-              que me permitan crecer y conectar con el público."
-            </blockquote>
+          <div class="pf-bio-meta">
+            <div class="pf-bio-meta-item">
+              <span class="pf-bio-meta-label" data-lang-es="Origen" data-lang-en="Origin">Origen</span>
+              <span class="pf-bio-meta-value">Zaragoza, 2002</span>
+            </div>
+            <div class="pf-bio-meta-item">
+              <span class="pf-bio-meta-label" data-lang-es="Residencia" data-lang-en="Based in">Residencia</span>
+              <span class="pf-bio-meta-value">Madrid</span>
+            </div>
+            <div class="pf-bio-meta-item">
+              <span class="pf-bio-meta-label" data-lang-es="Compañía" data-lang-en="Company">Compañía</span>
+              <span class="pf-bio-meta-value">Huvegrym</span>
+            </div>
           </div>
         </div>
 
-        <div class="character-visual">
-          <div class="portrait-container">
-            <img
-              src="/public/images/personas/Hugo-2-removebg-preview.png"
-              alt="Hugo"
-              class="character-portrait"
-            />
-            <div class="portrait-effects hugo-effects">
-              <div class="glow-pulse hugo-glow"></div>
-              <div class="energy-lines"></div>
+        <!-- Columna derecha: cita sticky -->
+        <div class="pf-sticky-col" data-reveal>
+          <div class="pf-pull-quote">
+            <p
+              data-lang-es="Mi enfoque artístico se basa en la fusión del cuerpo, la emoción y la interpretación, buscando siempre nuevos lenguajes escénicos que me permitan crecer y conectar con el público."
+              data-lang-en="My artistic approach is based on the fusion of body, emotion, and interpretation, always seeking new scenic languages that allow me to grow and connect with the audience."
+            >
+              "Mi enfoque artístico se basa en la fusión del cuerpo, la emoción y la interpretación, buscando siempre nuevos lenguajes escénicos que me permitan crecer y conectar con el público."
+            </p>
+          </div>
+
+          <div class="pf-bio-meta">
+            <div class="pf-bio-meta-item">
+              <span class="pf-bio-meta-label" data-lang-es="Instagram" data-lang-en="Instagram">Instagram</span>
+              <a href="https://www.instagram.com/huvegrym/" target="_blank" rel="noopener noreferrer" class="pf-bio-meta-value social-link">@huvegrym</a>
+            </div>
+            <div class="pf-bio-meta-item">
+              <span class="pf-bio-meta-label">Email</span>
+              <a href="mailto:huvegrym@gmail.com" class="pf-bio-meta-value social-link">huvegrym@gmail.com</a>
             </div>
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== PROYECTOS DESTACADOS ===================== -->
+    <section class="pf-works-section">
+      <div class="pf-works-inner">
+        <div class="pf-section-header">
+          <div>
+            <span class="pf-label" data-lang-es="Trayectoria" data-lang-en="Career">Trayectoria</span>
+            <h2
+              class="pf-section-title"
+              data-lang-es="Proyectos Destacados"
+              data-lang-en="Notable Projects"
+            >Proyectos Destacados</h2>
+          </div>
+          <span class="pf-section-count" data-lang-es="5 obras" data-lang-en="5 works">5 obras</span>
+        </div>
+
+        <div class="pf-works-grid">
+
+          <div class="pf-work-card" data-reveal>
+            <p class="pf-work-type" data-lang-es="Danza escénica" data-lang-en="Stage dance">Danza escénica</p>
+            <h3 class="pf-work-title">Los Domingos No</h3>
+            <p
+              class="pf-work-desc"
+              data-lang-es="Pieza de Cecilia Vincent presentada en escenarios de referencia. Intérprete destacado en una obra que explora el tiempo y el vacío cotidiano."
+              data-lang-en="A piece by Cecilia Vincent presented at leading venues. Featured performer in a work exploring time and everyday emptiness."
+            >Pieza de Cecilia Vincent presentada en escenarios de referencia. Intérprete destacado en una obra que explora el tiempo y el vacío cotidiano.</p>
+            <span class="pf-work-award">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span data-lang-es="Premio Madroño" data-lang-en="Madroño Award">Premio Madroño</span>
+            </span>
+          </div>
+
+          <div class="pf-work-card" data-reveal>
+            <p class="pf-work-type" data-lang-es="Danza escénica" data-lang-en="Stage dance">Danza escénica</p>
+            <h3 class="pf-work-title">El Cascanueces</h3>
+            <p
+              class="pf-work-desc"
+              data-lang-es="Clásico del repertorio internacional. Participación como intérprete en una producción de gran formato que amplió su experiencia en danza de repertorio."
+              data-lang-en="Classic of the international repertoire. Performer in a large-scale production that expanded his experience in repertory dance."
+            >Clásico del repertorio internacional. Participación como intérprete en una producción de gran formato que amplió su experiencia en danza de repertorio.</p>
+          </div>
+
+          <div class="pf-work-card" data-reveal>
+            <p class="pf-work-type" data-lang-es="Danza escénica" data-lang-en="Stage dance">Danza escénica</p>
+            <h3 class="pf-work-title">Don Quijote en Nueva York</h3>
+            <p
+              class="pf-work-desc"
+              data-lang-es="Reinterpretación contemporánea del mito cervantino. Una propuesta escénica que fusiona el imaginario clásico con el lenguaje del movimiento actual."
+              data-lang-en="Contemporary reinterpretation of the Cervantine myth. A scenic proposal that merges classical imagery with the language of current movement."
+            >Reinterpretación contemporánea del mito cervantino. Una propuesta escénica que fusiona el imaginario clásico con el lenguaje del movimiento actual.</p>
+          </div>
+
+          <div class="pf-work-card" data-reveal>
+            <p class="pf-work-type" data-lang-es="Cine & audiovisual" data-lang-en="Film & audiovisual">Cine & audiovisual</p>
+            <h3 class="pf-work-title">La Novia</h3>
+            <p
+              class="pf-work-desc"
+              data-lang-es="Largometraje de Paula Ortiz. Una experiencia audiovisual que conecta cuerpo y cámara, explorando el movimiento como lenguaje cinematográfico."
+              data-lang-en="Feature film by Paula Ortiz. An audiovisual experience connecting body and camera, exploring movement as cinematic language."
+            >Largometraje de Paula Ortiz. Una experiencia audiovisual que conecta cuerpo y cámara, explorando el movimiento como lenguaje cinematográfico.</p>
+          </div>
+
+          <div class="pf-work-card" data-reveal>
+            <p class="pf-work-type" data-lang-es="Cine & audiovisual" data-lang-en="Film & audiovisual">Cine & audiovisual</p>
+            <h3 class="pf-work-title">Cariñena, el Vino del Mar</h3>
+            <p
+              class="pf-work-desc"
+              data-lang-es="Producción audiovisual de Javier Calvo. Participación que amplió su visión interdisciplinar entre danza, imagen y narración visual."
+              data-lang-en="Audiovisual production by Javier Calvo. A participation that broadened his interdisciplinary vision between dance, image, and visual storytelling."
+            >Producción audiovisual de Javier Calvo. Participación que amplió su visión interdisciplinar entre danza, imagen y narración visual.</p>
+          </div>
+
         </div>
       </div>
     </section>
 
+    <!-- ===================== FORMACIÓN & REFERENTES ===================== -->
+    <section class="pf-formation-section">
+      <div class="pf-formation-inner">
+        <span class="pf-label" data-lang-es="Raíces" data-lang-en="Roots">Raíces</span>
+        <h2
+          class="pf-section-title"
+          data-lang-es="Formación & Referentes"
+          data-lang-en="Training & References"
+        >Formación & Referentes</h2>
+
+        <div class="pf-formation-grid">
+
+          <!-- Escuelas -->
+          <div class="pf-formation-block" data-reveal>
+            <h3 data-lang-es="Formación académica" data-lang-en="Academic training">Formación académica</h3>
+
+            <div class="pf-school-item">
+              <p class="pf-school-name" data-lang-es="Conservatorio Superior de Danza de Madrid" data-lang-en="Superior Conservatory of Dance of Madrid">Conservatorio Superior de Danza de Madrid</p>
+              <p class="pf-school-sub" data-lang-es="Grado Superior · Madrid" data-lang-en="Higher Degree · Madrid">Grado Superior · Madrid</p>
+            </div>
+
+            <div class="pf-school-item">
+              <p class="pf-school-name" data-lang-es="Conservatorio Municipal de Danza de Zaragoza" data-lang-en="Municipal Conservatory of Dance of Zaragoza">Conservatorio Municipal de Danza de Zaragoza</p>
+              <p class="pf-school-sub" data-lang-es="Formación inicial · Zaragoza" data-lang-en="Initial training · Zaragoza">Formación inicial · Zaragoza</p>
+            </div>
+
+            <p class="pf-companies-header" data-lang-es="Compañías con las que ha trabajado" data-lang-en="Companies he has worked with">Compañías con las que ha trabajado</p>
+            <div class="pf-companies">
+              <span class="pf-company-tag">PAI</span>
+              <span class="pf-company-tag">Teatro Borboleta</span>
+              <span class="pf-company-tag">Huvegrym</span>
+            </div>
+          </div>
+
+          <!-- Referentes -->
+          <div class="pf-formation-block" data-reveal>
+            <h3 data-lang-es="Creadores con los que ha trabajado" data-lang-en="Creators he has worked with">Creadores con los que ha trabajado</h3>
+
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>Chevi Muraday</span>
+            </div>
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>Richard Siegal</span>
+            </div>
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>Jorge Crecis</span>
+            </div>
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>La Chula</span>
+            </div>
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>Fabian Thomé</span>
+            </div>
+            <div class="pf-mentor-item">
+              <span class="pf-mentor-dot"></span>
+              <span>Cecilia Vincent</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GALERÍA EN MOVIMIENTO ===================== -->
     <section class="photo-showcase hugo-showcase">
       <div class="showcase-header">
         <h2
           class="showcase-title"
           data-lang-es="EN MOVIMIENTO"
           data-lang-en="IN MOTION"
-        >
-          EN MOVIMIENTO
-        </h2>
+        >EN MOVIMIENTO</h2>
       </div>
 
       <div class="photos-carousel">
         <div class="photo-slide active">
           <img
             src="/public/images/personas/Portfolio_2.jpg"
-            alt="Hugo en ensayo"
+            alt="Hugo Grimalt Arnal en ensayo"
+            loading="lazy"
           />
           <a href="https://instagram.com/ado_ra_s" target="_blank" rel="noopener noreferrer" class="photo-credit">@ado_ra_s</a>
         </div>
-
         <div class="photo-slide">
           <img
             src="/public/images/personas/Portfolio_1.jpg"
             alt="Hugo interpretando Cibanal"
+            loading="lazy"
           />
-          <!-- <a href="https://instagram.com/dancing_shots" target="_blank" rel="noopener noreferrer" class="photo-credit">@dancing_shots</a> -->
         </div>
-
         <div class="photo-slide">
           <img
             src="/public/images/personas/Portfolio_3.jpeg"
             alt="Hugo y Vega en dúo"
+            loading="lazy"
           />
           <a href="https://instagram.com/sandrinecosny" target="_blank" rel="noopener noreferrer" class="photo-credit">@sandrinecosny</a>
         </div>
       </div>
 
       <div class="carousel-navigation">
-        <button class="nav-btn prev-btn">
+        <button class="nav-btn prev-btn" aria-label="Foto anterior">
           <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
         <div class="carousel-indicators">
@@ -182,19 +387,42 @@
           <span class="indicator" data-slide="1"></span>
           <span class="indicator" data-slide="2"></span>
         </div>
-        <button class="nav-btn next-btn">
+        <button class="nav-btn next-btn" aria-label="Foto siguiente">
           <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
         </button>
       </div>
     </section>
 
-    <footer class="portfolio-footer">
-      <div class="footer-content">
+    <!-- ===================== CITA ===================== -->
+    <section class="pf-quote-section">
+      <span class="pf-quote-glyph" aria-hidden="true">"</span>
+      <blockquote>
         <p
-          data-lang-es="&copy; 2025 Fragmentos de Eternidad"
-          data-lang-en="&copy; 2025 Fragments of Eternity"
+          class="pf-quote-text"
+          data-lang-es="Mi enfoque artístico se basa en la fusión del cuerpo, la emoción y la interpretación, buscando siempre nuevos lenguajes escénicos que me permitan crecer y conectar con el público."
+          data-lang-en="My artistic approach is based on the fusion of body, emotion, and interpretation, always seeking new scenic languages that allow me to grow and connect with the audience."
         >
-          &copy; 2025 Huvegrym
+          "Mi enfoque artístico se basa en la fusión del cuerpo, la emoción y la interpretación, buscando siempre nuevos lenguajes escénicos que me permitan crecer y conectar con el público."
+        </p>
+        <cite class="pf-quote-byline">Hugo Grimalt Arnal</cite>
+      </blockquote>
+    </section>
+
+    <!-- ===================== FOOTER (igual que index.html) ===================== -->
+    <footer class="footer">
+      <div class="container">
+        <p
+          data-lang-es="&copy; 2026 Fragmentos de Eternidad. Todos los derechos reservados."
+          data-lang-en="&copy; 2026 Fragments of Eternity. All rights reserved."
+        >
+          &copy; 2026 Huvegrym. Todos los derechos reservados.
+        </p>
+        <p class="footer-credits">
+          <span
+            data-lang-es="Diseño y desarrollo web por"
+            data-lang-en="Web design and development by"
+          >Diseño y desarrollo web por</span>
+          <a href="https://gabrielcodes.dev/" class="developer-link">Gabriel Saiz</a>
         </p>
       </div>
     </footer>

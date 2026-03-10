@@ -103,19 +103,9 @@ function setupHero() {
   const overlay = document.querySelector(".overlay");
   const logoMask = document.getElementById("logoMask");
 
-  // Verificar que los elementos existen
   if (!overlay) {
     console.log("No se encontró .overlay, saltando setupHero");
     return;
-  }
-
-  if (overlay) {
-    overlay.style.width = "100vw";
-    overlay.style.height = "100vh";
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.transform = "none";
   }
 
   if (logoMask && logoData) {
@@ -123,13 +113,50 @@ function setupHero() {
     updateLogoMask();
   }
 
-  const initialOverlayScale = 500;
+  if (isMobile()) {
+    // En móvil: ocultamos el overlay y overlay-copy de inmediato.
+    overlay.style.display = "none";
+    overlay.style.visibility = "hidden";
+    overlay.style.pointerEvents = "none";
+
+    const overlayCopyEl = document.querySelector(".overlay-copy");
+    if (overlayCopyEl) {
+      overlayCopyEl.style.display = "none";
+      overlayCopyEl.style.visibility = "hidden";
+      overlayCopyEl.style.pointerEvents = "none";
+    }
+
+    // Animación de entrada: zoom suave + fade del hero
+    gsap.fromTo(
+      ".hero-img-container",
+      { scale: 1.15, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1.4, ease: "power3.out", delay: 0.1 }
+    );
+
+    // El logo SVG y el texto "DESLIZA..." aparecen tras la imagen
+    gsap.fromTo(
+      [".hero-img-logo", ".hero-img-copy"],
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.8, delay: 0.9, ease: "power2.out" }
+    );
+
+    return; // Sin ScrollTrigger en móvil
+  }
+
+  // ── Desktop: animación completa ligada al scroll ──────────────────
+  // Configurar el overlay para el efecto de revelado con scroll
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.transform = "none";
+
   gsap.set(".overlay", {
     transformOrigin: "50% 50%",
-    scale: initialOverlayScale,
+    scale: 500,
   });
 
-  // Verificar que existe el trigger antes de crear ScrollTrigger
   const heroElement = document.querySelector(".hero");
   if (heroElement) {
     ScrollTrigger.create({
@@ -151,7 +178,8 @@ function animateHeroElements(scrollProgress) {
   const fadeOverlay = document.querySelector(".fade-overlay");
   const svgOverlay = document.querySelector(".overlay");
   const overlayCopy = document.querySelector(".overlay-copy h1");
-  const initialOverlayScale = 500;
+  // Debe coincidir con el valor usado en setupHero
+  const initialOverlayScale = isMobile() ? 50 : 500;
 
   // Verificar que los elementos existen antes de animarlos
   if (heroImgLogo && heroImgCopy) {
@@ -204,7 +232,8 @@ function animateHeroElements(scrollProgress) {
         delay: index * 0.1,
       });
     });
-  } else if (scrollProgress < 0.7 && overlayCopy) {
+  } else if (overlayCopy) {
+    // Fuera de la ventana 0.70–0.85 (tanto antes como después): ocultar siempre
     gsap.set(overlayCopy, { opacity: 0 });
   }
 }
@@ -243,6 +272,12 @@ function updateLogoMask() {
 function setupCustomCursor() {
   const cursor = document.querySelector(".custom-cursor");
   if (!cursor) return;
+
+  // Skip cursor entirely on mobile — avoid a persistent rAF loop
+  if (isMobile()) {
+    cursor.style.display = "none";
+    return;
+  }
 
   let mouseX = 0,
     mouseY = 0;
@@ -311,15 +346,36 @@ function setupCustomCursor() {
 function setupProgressBar() {
   const progressBar = document.querySelector(".progress-bar");
   if (!progressBar) return;
+  let ticking = false;
   window.addEventListener("scroll", () => {
-    const totalHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.pageYOffset / totalHeight) * 100;
-    progressBar.style.width = `${progress}%`;
-  });
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const totalHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.pageYOffset / totalHeight) * 100;
+        progressBar.style.width = `${progress}%`;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 }
 
 function setupScrollAnimations() {
+  // Animación rápida propia para la sección de fechas (sin delay acumulado global)
+  const datesObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          datesObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll(".dates-reveal").forEach((el) => datesObserver.observe(el));
+
   document.querySelectorAll("[data-reveal]").forEach((element, index) => {
     ScrollTrigger.create({
       trigger: element,
@@ -358,32 +414,35 @@ function setupScrollAnimations() {
     });
   });
 
-  const aboutBg = document.querySelector(".about-section-v2 .parallax-bg");
-  if (aboutBg) {
-    gsap.to(aboutBg, {
-      yPercent: -15,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".about-section-v2",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
+  // Parallax basado en scroll — muy costoso en móvil, se omite
+  if (!isMobile()) {
+    const aboutBg = document.querySelector(".about-section-v2 .parallax-bg");
+    if (aboutBg) {
+      gsap.to(aboutBg, {
+        yPercent: -15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".about-section-v2",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
+
+    document.querySelectorAll(".image-wrapper img").forEach((img) => {
+      gsap.to(img, {
+        yPercent: -25,
+        ease: "none",
+        scrollTrigger: {
+          trigger: img.parentElement,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
     });
   }
-
-  document.querySelectorAll(".image-wrapper img").forEach((img) => {
-    gsap.to(img, {
-      yPercent: -25,
-      ease: "none",
-      scrollTrigger: {
-        trigger: img.parentElement,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1.5,
-      },
-    });
-  });
 
   const quote = document.querySelector(".main-quote p");
   if (quote) {
@@ -437,12 +496,22 @@ function setupBasicScrollAnimations() {
 // ====================================================================
 
 function setupSpectacularArtists() {
-  window.addEventListener("scroll", () => {
-    const scrolled = window.pageYOffset;
-    document.querySelectorAll(".cinema-background").forEach((element) => {
-      element.style.transform = `translateY(${-(scrolled * 0.5)}px)`;
-    });
-  });
+  // Parallax CSS en la sección artistas — solo en escritorio con throttle via rAF
+  if (!isMobile()) {
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset;
+          document.querySelectorAll(".cinema-background").forEach((element) => {
+            element.style.transform = `translateY(${-(scrolled * 0.5)}px)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
 
   document.querySelectorAll(".artist-panel").forEach((panel) => {
     panel.addEventListener("mousemove", function (e) {
@@ -556,23 +625,33 @@ function enhanceCarouselEffects() {
   const slides = document.querySelectorAll(".piece-slide");
   if (!slides.length || !slider) return;
 
-  slider.addEventListener("scroll", () => {
-    slides.forEach((slide) => {
-      // Solo aplicar efectos parallax a slides no expandidos
-      if (!slide.classList.contains("expanded")) {
-        const rect = slide.getBoundingClientRect();
-        const distance = Math.abs(
-          window.innerWidth / 2 - (rect.left + rect.width / 2)
-        );
-        const maxDist = window.innerWidth;
-        const parallaxOffset = (distance / maxDist) * 20;
-        slide.style.backgroundPosition = `${50 + parallaxOffset}% center`;
-        slide.style.transform = `scale(${1 - (distance / maxDist) * 0.1})`;
-        slide.style.opacity = 1 - (distance / maxDist) * 0.3;
-        slide.classList.toggle("active", distance < rect.width / 2);
+  // En móvil se omite el parallax del carrusel — modifica estilos en cada evento
+  // scroll y es muy costoso. En escritorio se limita con requestAnimationFrame.
+  if (!isMobile()) {
+    let ticking = false;
+    slider.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          slides.forEach((slide) => {
+            if (!slide.classList.contains("expanded")) {
+              const rect = slide.getBoundingClientRect();
+              const distance = Math.abs(
+                window.innerWidth / 2 - (rect.left + rect.width / 2)
+              );
+              const maxDist = window.innerWidth;
+              const parallaxOffset = (distance / maxDist) * 20;
+              slide.style.backgroundPosition = `${50 + parallaxOffset}% center`;
+              slide.style.transform = `scale(${1 - (distance / maxDist) * 0.1})`;
+              slide.style.opacity = 1 - (distance / maxDist) * 0.3;
+              slide.classList.toggle("active", distance < rect.width / 2);
+            }
+          });
+          ticking = false;
+        });
+        ticking = true;
       }
     });
-  });
+  }
 
   slides.forEach((slide) => {
     slide.addEventListener("mousemove", (e) => {
@@ -866,6 +945,7 @@ function setupAdditionalEffects() {
 }
 
 function createFloatingParticles() {
+  if (isMobile()) return; // Las partículas CSS animadas son costosas en móvil
   const container = document.querySelector(".floating-particles");
   if (!container) return;
   for (let i = 0; i < 15; i++) {
@@ -1016,18 +1096,9 @@ document.addEventListener("visibilitychange", () => {
     : "running";
 });
 
-// Optimizaciones para móvil
+// Marca CSS en el body para poder usar selectores .mobile en estilos
 if (isMobile()) {
   document.body.classList.add("mobile");
-  document.querySelectorAll(".particle").forEach((particle) => {
-    if (Math.random() > 0.5) particle.style.display = "none";
-  });
-
-  // Desactivar cursor personalizado en móvil
-  const cursor = document.querySelector(".custom-cursor");
-  if (cursor) {
-    cursor.style.display = "none";
-  }
 }
 
 // ====================================================================

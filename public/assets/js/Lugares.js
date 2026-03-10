@@ -282,6 +282,8 @@ function activateVenue(venueId, duration = null) {
 
   // Animación GSAP si está disponible
   if (typeof gsap !== "undefined") {
+    // Matar cualquier tween previo sobre este elemento para evitar conflictos
+    gsap.killTweensOf(venueImage);
     gsap.fromTo(
       venueImage,
       {
@@ -318,6 +320,9 @@ function deactivateVenue(venueId, dispatchEvent = true) {
 
   // Animación GSAP si está disponible
   if (typeof gsap !== "undefined") {
+    // Matar cualquier tween previo (ej. el fromTo de activación aún en curso)
+    // para que el fade-out tenga prioridad y no sea sobreescrito
+    gsap.killTweensOf(venueImage);
     gsap.to(venueImage, {
       opacity: 0,
       scale: 1,

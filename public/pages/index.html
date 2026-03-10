@@ -10,12 +10,35 @@
       Huvegrym | Experiencia de Danza
     </title>
 
-    <link
-      rel="icon"
-      href="/public/images/logos/LOGO.SVG"
-      type="image/svg+xml"
-    />
+    <link rel="icon" href="/public/images/logos/LOGO.SVG" type="image/svg+xml" />
 
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Huvegrym es un dúo de danza contemporánea formado por Vega y Hugo Grimalt Arnal. Experiencias escénicas que fusionan cuerpo, movimiento y emoción en escenarios de toda España." />
+    <meta name="keywords" content="danza contemporánea, Huvegrym, Vega Grimalt, Hugo Grimalt, performance, artes escénicas, danza España, compañía de danza" />
+    <meta name="author" content="Huvegrym" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://huvegrym.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://huvegrym.com/" />
+    <meta property="og:title" content="Huvegrym | Danza Contemporánea — Vega &amp; Hugo Grimalt" />
+    <meta property="og:description" content="Compañía de danza contemporánea. Experiencias escénicas únicas que fusionan cuerpo, movimiento y emoción en escenarios de toda España." />
+    <meta property="og:image" content="https://huvegrym.com/public/images/capas/background-duo.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Huvegrym" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Huvegrym | Danza Contemporánea" />
+    <meta name="twitter:description" content="Compañía de danza contemporánea. Experiencias escénicas que fusionan cuerpo, movimiento y emoción." />
+    <meta name="twitter:image" content="https://huvegrym.com/public/images/capas/background-duo.jpg" />
+
+    <!-- Preconexión Google Fonts para cargar antes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
       rel="stylesheet"
@@ -25,6 +48,39 @@
     <link rel="stylesheet" href="/public/assets/css/Colective.css" />
     <link rel="stylesheet" href="/public/assets/css/Lugares.css" />
     <link rel="stylesheet" href="/public/assets/css/videos.css" />
+
+    <!-- Datos Estructurados JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PerformingGroup",
+      "name": "Huvegrym",
+      "alternateName": "Fragmentos de Eternidad",
+      "url": "https://huvegrym.com",
+      "logo": "https://huvegrym.com/public/images/logos/LOGO.SVG",
+      "image": "https://huvegrym.com/public/images/capas/background-duo.jpg",
+      "description": "Huvegrym es un dúo de danza contemporánea formado por Vega y Hugo Grimalt Arnal. Crean experiencias escénicas únicas que fusionan cuerpo, movimiento y emoción.",
+      "email": "huvegrym@gmail.com",
+      "sameAs": [
+        "https://www.instagram.com/huvegrym/"
+      ],
+      "genre": "Danza Contemporánea",
+      "member": [
+        {
+          "@type": "Person",
+          "name": "Vega Grimalt",
+          "jobTitle": "Bailarina y coreógrafa",
+          "url": "https://huvegrym.com/pages/portfolio-vega.html"
+        },
+        {
+          "@type": "Person",
+          "name": "Hugo Grimalt Arnal",
+          "jobTitle": "Bailarín y coreógrafo",
+          "url": "https://huvegrym.com/pages/portfolio-hugo.html"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div class="fixed-logo">
@@ -71,25 +127,25 @@
             src="/public/images/capas/hero-img-2.JPG"
             alt=""
             data-category="obras"
-            loading="eager"
+            loading="lazy"
           />
           <img
             src="/public/images/capas/background-duo.jpg"
             alt=""
             data-category="artistas"
-            loading="eager"
+            loading="lazy"
           />
           <img
             src="/public/images/piezas/Pas_de_trois.jpg"
             alt=""
             data-category="videos"
-            loading="eager"
+            loading="lazy"
           />
           <img
             src="/public/images/piezas/Cibanal.jpg"
             alt=""
             data-category="lugares"
-            loading="eager"
+            loading="lazy"
           />
         </div>
 
@@ -1277,48 +1333,38 @@
         </div>
       </section>
 
-      <section class="dates-section">
+
+      <section id="fechas" class="dates-section">
         <div class="container">
-          <h2 class="section-title fade-in-scale" data-reveal>
-            <span
-              class="title-line"
-              data-lang-es="Próximas"
-              data-lang-en="Upcoming"
-              >Próximas</span
-            >
-            <span
-              class="title-line accent"
-              data-lang-es="Actividades"
-              data-lang-en="Activities"
-              >Actividades</span
-            >
+          <h2 class="section-title fade-in-scale dates-reveal">
+            <span class="title-line" data-lang-es="Próximas" data-lang-en="Upcoming">Próximas</span>
+            <span class="title-line accent" data-lang-es="Actuaciones" data-lang-en="Performances">Actuaciones</span>
           </h2>
 
-          <div class="dates-grid">
-            <div class="date-card featured fade-in-up" data-reveal>
-              <div class="date-header">
-                <div class="date-tag">
-                  <span data-lang-es="Actuación" data-lang-en="Performance">Actuación</span>
-                </div>
-                <div class="date-number">
-                  <span class="day">14</span>
-                  <span class="month" data-lang-es="Noviembre" data-lang-en="November">Noviembre</span>
-                  <span class="year">2025</span>
-                </div>
-              </div>
-              <div class="date-content">
-                <h3 data-lang-es="Descalzinha" data-lang-en="Descalzinha">Descalzinha</h3>
-                <p class="venue">Madrid</p>
-                <p class="time" data-lang-es="Más información próximamente" data-lang-en="More information coming soon">Más información próximamente</p>
-                <a 
-                  href="https://www.instagram.com/descalzinha/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="btn-tickets"
-                >
-                  <span data-lang-es="Más Info" data-lang-en="More Info">Más Info</span>
-                </a>
-              </div>
+          <div class="no-dates-container dates-reveal dates-reveal--delay">
+            <p
+              class="no-dates-text"
+              data-lang-es="Estamos preparando nuestra próxima temporada. ¡Muy pronto nuevas fechas!"
+              data-lang-en="We are preparing our next season. New dates coming very soon!"
+            >
+              Estamos preparando nuestra próxima temporada. ¡Muy pronto nuevas fechas!
+            </p>
+            <p
+              class="no-dates-follow"
+              data-lang-es="Síguenos en Instagram para estar al tanto de todas las novedades."
+              data-lang-en="Follow us on Instagram to stay up to date with all the news."
+            >
+              Síguenos en Instagram para estar al tanto de todas las novedades.
+            </p>
+            <div class="dates-action-wrapper">
+              <a
+                href="https://www.instagram.com/huvegrym/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-instagram-dates"
+                data-lang-es="@huvegrym en Instagram"
+                data-lang-en="@huvegrym on Instagram"
+              >@huvegrym en Instagram</a>
             </div>
           </div>
         </div>
@@ -1392,10 +1438,10 @@
       <footer class="footer">
         <div class="container">
           <p
-            data-lang-es="&copy; 2025 Fragmentos de Eternidad. Todos los derechos reservados."
-            data-lang-en="&copy; 2025 Fragments of Eternity. All rights reserved."
+            data-lang-es="&copy; 2026 Fragmentos de Eternidad. Todos los derechos reservados."
+            data-lang-en="&copy; 2026 Fragments of Eternity. All rights reserved."
           >
-            &copy; 2025 Huvegrym. Todos los derechos reservados.
+            &copy; 2026 Huvegrym. Todos los derechos reservados.
           </p>
 
           <p class="footer-credits">
