@@ -18,12 +18,12 @@ export const site = {
 export const seo = {
   home: {
     title: {
-      es: 'Huvegrym | Compañía de danza contemporánea · Vega y Hugo Grimalt',
-      en: 'Huvegrym | Contemporary dance company · Vega & Hugo Grimalt',
+      es: 'Huvegrym | Danza contemporánea de Vega y Hugo Grimalt',
+      en: 'Huvegrym | Contemporary dance by Vega & Hugo Grimalt',
     },
     description: {
-      es: 'Huvegrym es la compañía de danza contemporánea de los hermanos Vega y Hugo Grimalt Arnal (Zaragoza · Madrid). Danza-teatro, humor y emoción: Cibanal, Pas de Trois y nuevas creaciones.',
-      en: 'Huvegrym is the contemporary dance company of siblings Vega and Hugo Grimalt Arnal (Zaragoza · Madrid). Dance-theatre, humour and emotion: Cibanal, Pas de Trois and new creations.',
+      es: 'Compañía de danza contemporánea de los hermanos Vega y Hugo Grimalt Arnal (Zaragoza · Madrid). Danza-teatro, humor y emoción: Cibanal y Pas de Trois.',
+      en: 'Contemporary dance company of siblings Vega and Hugo Grimalt Arnal (Zaragoza · Madrid). Dance-theatre, humour and emotion: Cibanal and Pas de Trois.',
     },
     ogImage: '/og/huvegrym.jpg',
   },
