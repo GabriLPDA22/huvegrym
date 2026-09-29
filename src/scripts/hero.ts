@@ -18,8 +18,8 @@ const FOCUS_X = 684.77;
 const FOCUS_Y = 221.25;
 const FOCUS_HALF_W = 13.8;
 const FOCUS_HALF_H = 65.4;
-// Caja final del logotipo (sincronizado con .hero__logo en CSS; la Y sale de --final-y)
-const FINAL_WIDTH_RATIO = 0.9;
+// Caja final del logotipo: ancho, Y y corrección óptica salen de las variables CSS
+// --logo-w, --final-y y --logo-shift de .hero (misma caja que .hero__logo)
 const FINAL_MAX_WIDTH = 1180;
 // Tramos de la animación
 const PHASE_B_START = 0.28;
@@ -49,11 +49,16 @@ export function initHero() {
   let visible = true;
   let veilShown = false;
   let finalCenterY = 0.46;
+  let widthRatio = 0.9;
+  let opticalShift = 0;
 
   const measure = () => {
     vw = sticky.clientWidth;
     vh = sticky.clientHeight;
-    finalCenterY = (parseFloat(getComputedStyle(hero).getPropertyValue('--final-y')) || 46) / 100;
+    const cs = getComputedStyle(hero);
+    finalCenterY = (parseFloat(cs.getPropertyValue('--final-y')) || 46) / 100;
+    widthRatio = (parseFloat(cs.getPropertyValue('--logo-w')) || 90) / 100;
+    opticalShift = parseFloat(cs.getPropertyValue('--logo-shift')) || 0;
     heroTop = hero.getBoundingClientRect().top + window.scrollY;
     scrollRange = Math.max(1, hero.offsetHeight - vh);
     target = clamp01((window.scrollY - heroTop) / scrollRange);
@@ -70,9 +75,9 @@ export function initHero() {
     }
     if (!show) return;
 
-    const finalW = Math.min(vw * FINAL_WIDTH_RATIO, FINAL_MAX_WIDTH);
+    const finalW = Math.min(vw * widthRatio, FINAL_MAX_WIDTH);
     const fs = finalW / LOGO_W;
-    const finalX = (vw - finalW) / 2;
+    const finalX = (vw - finalW) / 2 + finalW * opticalShift;
     const finalY = vh * finalCenterY - (LOGO_H * fs) / 2;
 
     // Escala inicial: el asta de la B cubre todo el viewport (+10 %)

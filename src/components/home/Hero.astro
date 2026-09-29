@@ -150,6 +150,10 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     --logo-y: 46%;
     /* Centro final del logotipo-máscara (lo lee scripts/hero.ts) */
     --final-y: 46%;
+    /* Ancho del logotipo (% del viewport) y corrección óptica hacia la derecha:
+       HUVEGRYM y DANZA cargan el peso a la izquierda. Lo lee scripts/hero.ts */
+    --logo-w: 90;
+    --logo-shift: 0.025;
     position: relative;
     height: 100svh;
     background: var(--ink);
@@ -218,7 +222,8 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
   @media (orientation: portrait) {
     .hero {
       --logo-y: 30%;
-      --final-y: 62%;
+      --final-y: 44%;
+      --logo-w: 82;
     }
     .hero__layer {
       --ar: 0.947;
@@ -249,9 +254,9 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     position: absolute;
     left: 50%;
     top: calc(var(--logo-y) + (var(--final-y) - var(--logo-y)) * var(--m));
-    width: min(90%, 1180px);
+    width: min(var(--logo-w) * 1%, 1180px);
     color: var(--bone);
-    translate: -50% calc(-50% + 5svh * (var(--a) - var(--m)));
+    translate: calc(-50% + var(--logo-shift) * 100%) calc(-50% + 5svh * (var(--a) - var(--m)));
     scale: calc(1.06 - 0.06 * var(--a));
     opacity: calc(1 - var(--b) + 0.28 * var(--c));
     filter: drop-shadow(0 0.4rem 2rem rgb(0 0 0 / 0.35));
@@ -292,7 +297,7 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
   .hero__copy {
     position: absolute;
     inset: auto 0 0;
-    top: calc(var(--final-y) + min(90vw, 1180px) * 0.1624 + clamp(1.25rem, 4vw, 2.5rem));
+    top: calc(var(--final-y) + min(var(--logo-w) * 1vw, 1180px) * 0.1624 + clamp(1.25rem, 4vw, 2.5rem));
     display: grid;
     justify-items: center;
     padding-inline: var(--gutter);
