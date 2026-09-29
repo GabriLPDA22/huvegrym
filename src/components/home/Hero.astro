@@ -93,6 +93,21 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
       </picture>
     </div>
 
+    <!-- Vídeo que aparece dentro de las letras al final (se carga solo al llegar) -->
+    <video
+      class="hero__reel"
+      data-hero-reel
+      data-src="/media/video/reel-letters.mp4"
+      data-src-webm="/media/video/reel-letters.webm"
+      muted
+      loop
+      playsinline
+      preload="none"
+      width="960"
+      height="778"
+      aria-hidden="true"
+      tabindex="-1"></video>
+
     <svg class="hero__veil" data-hero-veil aria-hidden="true" focusable="false">
       <defs>
         <mask id="hero-hole" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
@@ -117,11 +132,6 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
   </div>
 </section>
 
-<script>
-  import { initHero } from '@/scripts/hero';
-  initHero();
-</script>
-
 <style>
   /*
    * Fases (derivadas de --p ∈ [0,1], que actualiza scripts/hero.ts):
@@ -135,6 +145,7 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     --b: clamp(0, (var(--p) - 0.28) / 0.08, 1);
     --c: clamp(0, (var(--p) - 0.8) / 0.15, 1);
     --m: clamp(0, (var(--p) - 0.28) / 0.52, 1);
+    --r: clamp(0, (var(--p) - 0.6) / 0.22, 1);
     /* Altura del logotipo en el primer fotograma (en vertical va sobre la figura) */
     --logo-y: 46%;
     /* Centro final del logotipo-máscara (lo lee scripts/hero.ts) */
@@ -249,6 +260,21 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
   .hero__logo :global(svg) {
     width: 100%;
     height: auto;
+  }
+
+  .hero__reel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s linear;
+    pointer-events: none;
+  }
+
+  .hero__reel:global(.is-playing) {
+    opacity: var(--r);
   }
 
   .hero__veil {

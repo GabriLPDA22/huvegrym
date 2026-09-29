@@ -1,4 +1,5 @@
 ---
+import PhotoCredit from '@/components/PhotoCredit.astro';
 /** Carrusel con scroll-snap nativo (funciona sin JS; los botones son mejora progresiva). */
 import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
@@ -47,9 +48,7 @@ const { items, lang, title, id } = Astro.props;
             <figcaption class="gallery__caption">
               <span>{it.alt[lang]}</span>
               {it.credit && (
-                <a class="credit" href={it.credit.url} target="_blank" rel="noopener">
-                  {ui.photo[lang]}: {it.credit.handle}
-                </a>
+                <PhotoCredit credit={it.credit} lang={lang} />
               )}
             </figcaption>
           </figure>
@@ -58,24 +57,6 @@ const { items, lang, title, id } = Astro.props;
     }
   </ul>
 </section>
-
-<script>
-  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
-    const track = g.querySelector<HTMLElement>('[data-gallery-track]');
-    const prev = g.querySelector<HTMLButtonElement>('[data-gallery-prev]');
-    const next = g.querySelector<HTMLButtonElement>('[data-gallery-next]');
-    if (!track || !prev || !next) return;
-    const step = () => (track.querySelector('li')?.getBoundingClientRect().width ?? 300) + 16;
-    const update = () => {
-      prev.disabled = track.scrollLeft <= 4;
-      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    };
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-    track.addEventListener('scroll', update, { passive: true });
-    update();
-  });
-</script>
 
 <style>
   .gallery {

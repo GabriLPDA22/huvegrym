@@ -1,4 +1,5 @@
 ---
+import PhotoCredit from '@/components/PhotoCredit.astro';
 import { Picture } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -53,7 +54,7 @@ const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${a.fullName} â
   <article class="artist">
     <!-- Hero -->
     <header class="a-hero">
-      <div class="a-hero__media">
+      <div class="a-hero__media" style={`view-transition-name: artist-${a.slug}; view-transition-class: morph`}>
         <Picture
           src={a.portrait.src}
           formats={['avif']}
@@ -66,9 +67,7 @@ const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${a.fullName} â
         />
         {
           a.portrait.credit && (
-            <a class="credit a-hero__credit" href={a.portrait.credit.url} target="_blank" rel="noopener">
-              {ui.photo[lang]}: {a.portrait.credit.handle}
-            </a>
+            <PhotoCredit credit={a.portrait.credit} lang={lang} class="a-hero__credit" />
           )
         }
       </div>

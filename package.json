@@ -11,6 +11,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "audit": "astro build && astro preview",
     "check": "astro check"
   },
   "dependencies": {

@@ -15,8 +15,8 @@ const [first, second] = lines;
 <header class:list={['section-heading', className]} data-reveal>
   <p class="kicker">{index !== undefined && <span class="section-heading__index">{String(index).padStart(2, '0')}</span>}{kicker}</p>
   <Tag id={id} class="section-title">
-    <span>{first}</span>
-    {second && <span class="accent">{second}</span>}
+    <span><span>{first}</span></span>
+    {second && <span class="accent"><span>{second}</span></span>}
   </Tag>
 </header>
 

@@ -69,3 +69,49 @@ export function initAmbientVideos() {
   );
   videos.forEach((v) => io.observe(v));
 }
+
+/**
+ * Vistas previas de las obras: en escritorio se reproducen al pasar el ratón por
+ * la tarjeta; en táctil, mientras la tarjeta está visible. Carga diferida.
+ */
+export function initPreviews() {
+  const videos = document.querySelectorAll<HTMLVideoElement>('video[data-preview]');
+  if (!videos.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (reduce || saveData) return;
+
+  const start = (v: HTMLVideoElement) => {
+    if (!v.src) {
+      const webm = v.dataset.srcWebm;
+      v.src = webm && v.canPlayType('video/webm; codecs="vp9"') ? webm : (v.dataset.src ?? '');
+      v.addEventListener('playing', () => v.classList.add('is-playing'));
+      v.addEventListener('pause', () => v.classList.remove('is-playing'));
+    }
+    void v.play().catch(() => undefined);
+  };
+  const stop = (v: HTMLVideoElement) => {
+    if (!v.paused) v.pause();
+  };
+
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    videos.forEach((v) => {
+      const card = v.closest('li') ?? v.parentElement;
+      card?.addEventListener('mouseenter', () => start(v));
+      card?.addEventListener('mouseleave', () => stop(v));
+    });
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const { target, isIntersecting } of entries) {
+        const v = target as HTMLVideoElement;
+        if (isIntersecting) start(v);
+        else stop(v);
+      }
+    },
+    { threshold: 0.6 },
+  );
+  videos.forEach((v) => io.observe(v));
+}

@@ -17,6 +17,21 @@ npm run preview   # sirve dist/
 
 Requiere Node ≥ 22.12.
 
+> **Windows y `UNABLE_TO_VERIFY_LEAF_SIGNATURE` en `npm install`:** algo (antivirus, proxy o VPN)
+> intercepta el HTTPS. Solución segura: `$env:NODE_OPTIONS="--use-system-ca"; npm install`
+> (Node ≥ 22.15). No desactives `strict-ssl`.
+
+### Medir Lighthouse correctamente
+
+`npm run dev` es el modo desarrollo (código sin optimizar y barra de herramientas): **no sirve para
+medir**. Para auditar:
+
+```bash
+npm run audit     # build + preview en http://localhost:4321
+```
+
+y pasar Lighthouse en una ventana de incógnito (las extensiones del navegador también restan puntos).
+
 ## Estructura
 
 ```
@@ -58,6 +73,27 @@ se encoge hasta enmarcar la escena dentro de las letras. Es el mismo efecto en m
 - `src/scripts/hero.ts` — progreso de scroll y transformación de la máscara (geometría SVG, sin
   rasterizar capas gigantes; por eso funciona fluido en móvil).
 - Respeta `prefers-reduced-motion` y funciona sin JavaScript (primer fotograma estático).
+
+## Efectos
+
+- **Vídeo dentro de las letras:** al final del hero, el logotipo-máscara muestra un clip en bucle
+  (`public/media/video/reel-letters.*`, < 1 MB). Solo se descarga al llegar a esa fase.
+- **Transiciones entre páginas:** la foto de la tarjeta se transforma en la cabecera de la página de
+  artista u obra (View Transitions nativas). Se activan tras la carga o al llegar desde la propia
+  web, para no penalizar el LCP de la primera visita.
+- **Vista previa de las obras:** clip corto sin sonido al pasar el ratón (escritorio) o al verse la
+  tarjeta (móvil).
+- **Grano de película** sutil y titulares que aparecen línea a línea.
+- Todo respeta `prefers-reduced-motion` y el modo ahorro de datos.
+
+## Créditos fotográficos
+
+Los fotógrafos se definen en `src/data/credits.ts` y se asignan a cada foto con el campo `credit`
+en `src/data/*.ts`. Se muestran como píldora enlazada a su Instagram.
+
+> Los vídeos originales de la v1 no tienen pista de audio. Si existen versiones con sonido, basta
+> con sustituir los MP4 de `public/media/video/` y quitar `muted` en `src/scripts/media.ts`
+> (`initPlayers`).
 
 ## SEO
 

@@ -163,6 +163,7 @@ export const artists: Artist[] = [
       {
         src: hugoEscena,
         alt: { es: 'Hugo Grimalt Arnal en escena junto a otros intérpretes', en: 'Hugo Grimalt Arnal on stage with other performers' },
+        credit: photographers.dancingShots,
       },
       {
         src: duoEnsayo,
@@ -289,6 +290,7 @@ export const artists: Artist[] = [
       {
         src: duoEscena,
         alt: { es: 'Vega Grimalt Arnal en escena junto a otros intérpretes', en: 'Vega Grimalt Arnal on stage with other performers' },
+        credit: photographers.danzaVisual,
       },
     ],
     ogImage: '/og/vega-grimalt-arnal.jpg',

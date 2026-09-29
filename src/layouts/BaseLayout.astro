@@ -36,6 +36,21 @@ const { lang, alternates, bodyClass, preloadSerif = true, ...seo } = Astro.props
     <meta name="format-detection" content="telephone=no" />
     <script is:inline>
       document.documentElement.classList.add('js');
+      /*
+       * View Transitions entre páginas. Ambas páginas deben activarlas:
+       * - Llegando desde la propia web: se activa antes del primer pintado.
+       * - Primera visita: se activa tras la carga (main.ts), sin coste en el LCP.
+       */
+      window.__enableViewTransitions = function () {
+        if (document.getElementById('vt-optin') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var st = document.createElement('style');
+        st.id = 'vt-optin';
+        st.textContent = '@view-transition{navigation:auto}';
+        document.head.appendChild(st);
+      };
+      try {
+        if (document.referrer && new URL(document.referrer).origin === location.origin) window.__enableViewTransitions();
+      } catch (e) {}
     </script>
 
     <slot name="preload" />
@@ -60,8 +75,7 @@ const { lang, alternates, bodyClass, preloadSerif = true, ...seo } = Astro.props
     <Footer lang={lang} alternates={alternates} />
     <Consent lang={lang} />
     <script>
-      import { initReveal } from '@/scripts/reveal';
-      initReveal();
+      import '@/scripts/main';
     </script>
   </body>
 </html>

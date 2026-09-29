@@ -30,6 +30,8 @@ export interface Piece {
   credit?: Credit;
   secondaryImage?: { src: ImageMetadata; alt: Localized };
   video: PieceVideo;
+  /** Clip corto sin sonido para la vista previa de la tarjeta (mp4 + webm). */
+  clip: { mp4: string; webm: string };
   ogImage: string;
   seoDescription: Localized;
 }
@@ -76,6 +78,7 @@ export const pieces: Piece[] = [
       width: 1280,
       height: 720,
     },
+    clip: { mp4: '/media/video/preview-cibanal.mp4', webm: '/media/video/preview-cibanal.webm' },
     ogImage: '/og/cibanal.jpg',
     seoDescription: {
       es: 'Cibanal, obra de danza-teatro de Huvegrym (15 min) inspirada en el esperpento de Valle-Inclán y el existencialismo de Dostoyevski y Tarkovski. Tráiler y dossier.',
@@ -112,6 +115,7 @@ export const pieces: Piece[] = [
       es: 'Intérpretes de Pas de Trois sentados ante un fondo rojo',
       en: 'Pas de Trois performers seated against a red backdrop',
     },
+    credit: photographers.adoras,
     secondaryImage: {
       src: pasDeTroisAlt,
       alt: {
@@ -126,6 +130,7 @@ export const pieces: Piece[] = [
       width: 1280,
       height: 720,
     },
+    clip: { mp4: '/media/video/preview-pas-de-trois.mp4', webm: '/media/video/preview-pas-de-trois.webm' },
     ogImage: '/og/pas-de-trois.jpg',
     seoDescription: {
       es: 'Pas de Trois, pieza de Huvegrym que mezcla danza contemporánea, danza clown y tango para mirar con humor e ironía los conflictos de poder. Vídeo y dossier.',

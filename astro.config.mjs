@@ -10,6 +10,8 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   compressHTML: true,
+  // La barra de dev inyecta enlaces propios que falsean Lighthouse en `npm run dev`
+  devToolbar: { enabled: false },
   // Clases en lugar de atributos data-astro-cid-*: HTML más ligero
   scopedStyleStrategy: 'class',
   prefetch: {

@@ -33,6 +33,7 @@ export function initHero() {
   const sticky = hero?.querySelector<HTMLElement>('[data-hero-sticky]');
   const veil = hero?.querySelector<SVGSVGElement>('[data-hero-veil]');
   const hole = hero?.querySelector<SVGUseElement>('[data-hero-hole]');
+  const reel = hero?.querySelector<HTMLVideoElement>('[data-hero-reel]');
   if (!hero || !sticky || !veil || !hole) return;
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -88,12 +89,24 @@ export function initHero() {
     hole.setAttribute('transform', `matrix(${s} 0 0 ${s} ${tx} ${ty})`);
   };
 
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  // Vídeo dentro de las letras: se descarga solo al acercarse a la fase final
+  const loadReel = () => {
+    if (!reel || saveData || reel.src) return;
+    const webm = reel.dataset.srcWebm;
+    reel.src = webm && reel.canPlayType('video/webm; codecs="vp9"') ? webm : (reel.dataset.src ?? '');
+    reel.addEventListener('playing', () => reel.classList.add('is-playing'), { once: true });
+    void reel.play().catch(() => undefined);
+  };
+
   let late = false;
   const render = () => {
     hero.style.setProperty('--p', current.toFixed(4));
     if (!late && current > 0.45) {
       late = true;
       hero.classList.add('is-late');
+      loadReel();
     }
     renderVeil(current);
   };
@@ -115,6 +128,10 @@ export function initHero() {
   new IntersectionObserver(([entry]) => {
     visible = entry?.isIntersecting ?? true;
     if (visible) onScroll();
+    if (reel?.src) {
+      if (visible) void reel.play().catch(() => undefined);
+      else reel.pause();
+    }
   }).observe(hero);
 
   new ResizeObserver(measure).observe(sticky);
