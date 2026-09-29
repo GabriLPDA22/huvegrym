@@ -1,0 +1,107 @@
+---
+import SectionHeading from '@/components/SectionHeading.astro';
+import Icon from '@/components/Icon.astro';
+import type { Lang } from '@/i18n/config';
+import { SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { site } from '@/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id={SECTION.contact} class="section contact" aria-labelledby="contact-title">
+  <div class="container">
+    <SectionHeading id="contact-title" index={8} kicker={ui.contactKicker[lang]} lines={ui.contactTitle[lang]} />
+
+    <div class="contact__grid">
+      <div data-reveal>
+        <p class="lead">{ui.contactText[lang]}</p>
+        <p class="contact__sub">{ui.contactProgrammers[lang]}</p>
+      </div>
+
+      <div class="contact__actions" data-reveal style="--i:1">
+        <a class="contact__mail" href={`mailto:${site.email}`}>
+          <span class="contact__mail-label">Email</span>
+          <span class="contact__mail-value">{site.email}</span>
+        </a>
+        <div class="contact__buttons">
+          <a class="btn" href={`mailto:${site.email}`}>
+            {ui.contactCta[lang]}
+            <Icon name="arrow" />
+          </a>
+          <a class="btn btn--ghost" href={site.instagram.url} target="_blank" rel="noopener">
+            <Icon name="instagram" />
+            Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    border-top: 1px solid var(--line);
+  }
+
+  .contact__grid {
+    display: grid;
+    gap: 3rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .contact__sub {
+    margin-top: 1rem;
+    color: var(--muted);
+  }
+
+  .contact__mail {
+    display: grid;
+    gap: 0.4rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line-strong);
+    transition: border-color 0.4s;
+  }
+
+  .contact__mail-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .contact__mail-value {
+    font-family: var(--ff-serif);
+    font-size: clamp(1.75rem, 0.9rem + 4.2vw, 4rem);
+    line-height: 1.05;
+    word-break: break-word;
+    transition: color 0.3s;
+  }
+
+  .contact__mail:hover {
+    border-color: var(--gold);
+  }
+
+  .contact__mail:hover .contact__mail-value {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .contact__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 64em) {
+    .contact__grid {
+      grid-template-columns: 1fr 1.3fr;
+      align-items: end;
+    }
+  }
+</style>

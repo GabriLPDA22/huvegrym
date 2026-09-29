@@ -1,0 +1,119 @@
+---
+import { getImage } from 'astro:assets';
+import SectionHeading from '@/components/SectionHeading.astro';
+import type { Lang } from '@/i18n/config';
+import { SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { collective } from '@/data/site';
+import poster from '@/assets/images/pieces/ambient-poster.jpg';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const posterImg = await getImage({ src: poster, width: 960, format: 'webp', quality: 60 });
+---
+
+<section id={SECTION.collective} class="collective" aria-labelledby="collective-title">
+  <div class="collective__bg" aria-hidden="true">
+    <video
+      data-ambient
+      data-src="/media/video/ambient-cibanal.mp4"
+      data-src-webm="/media/video/ambient-cibanal.webm"
+      data-poster={posterImg.src}
+      muted
+      loop
+      playsinline
+      preload="none"
+      width="960"
+      height="540"
+      tabindex="-1"
+    ></video>
+  </div>
+
+  <div class="container collective__inner section">
+    <SectionHeading id="collective-title" index={2} kicker={ui.collectiveKicker[lang]} lines={ui.collectiveTitle[lang]} />
+
+    <ul class="collective__pillars" role="list" aria-label={ui.collectiveKicker[lang]} data-reveal>
+      {collective.pillars[lang].map((p) => <li>{p}</li>)}
+    </ul>
+
+    <div class="collective__text">
+      <p class="lead" data-reveal>{collective.intro[lang]}</p>
+      <p data-reveal style="--i:1">{collective.philosophy[lang]}</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initAmbientVideos } from '@/scripts/media';
+  initAmbientVideos();
+</script>
+
+<style>
+  .collective {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+  }
+
+  .collective__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .collective__bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.35) brightness(0.55);
+  }
+
+  .collective__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(var(--ink), transparent 25%, transparent 70%, var(--ink)),
+      radial-gradient(ellipse at 30% 50%, rgb(12 11 10 / 0.55), transparent 70%);
+  }
+
+  .collective__pillars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin-top: clamp(2rem, 5vw, 4rem);
+    font-family: var(--ff-serif);
+    font-size: clamp(1.6rem, 1rem + 3vw, 3.5rem);
+    line-height: 1.1;
+    color: var(--bone-dim);
+  }
+
+  .collective__pillars li:not(:last-child)::after {
+    content: '·';
+    margin-left: 1.25rem;
+    color: var(--gold);
+  }
+
+  .collective__text {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: clamp(2rem, 5vw, 4rem);
+    max-width: 60ch;
+  }
+
+  .collective__text p:not(.lead) {
+    color: var(--bone-dim);
+  }
+
+  @media (min-width: 64em) {
+    .collective__text {
+      margin-left: auto;
+      max-width: 44rem;
+    }
+  }
+</style>

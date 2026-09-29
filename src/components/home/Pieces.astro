@@ -1,0 +1,160 @@
+---
+import { Picture } from 'astro:assets';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Icon from '@/components/Icon.astro';
+import type { Lang } from '@/i18n/config';
+import { routes, SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { pieces } from '@/data/pieces';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id={SECTION.pieces} class="section pieces" aria-labelledby="pieces-title">
+  <div class="container">
+    <SectionHeading id="pieces-title" index={4} kicker={ui.piecesKicker[lang]} lines={ui.piecesTitle[lang]} />
+
+    <ol class="pieces__list" role="list">
+      {
+        pieces.map((p, i) => (
+          <li class="piece">
+            <a class="piece__media" href={routes.piece(p.slug)[lang]} tabindex="-1" aria-hidden="true" data-reveal>
+              <Picture
+                src={p.image}
+                formats={['avif']}
+                fallbackFormat="webp"
+                widths={[480, 800, 1200, 1600]}
+                sizes="(min-width: 64em) 58vw, 100vw"
+                alt=""
+                loading="lazy"
+              />
+            </a>
+            <div class="piece__body" data-reveal style="--i:1">
+              <span class="piece__index">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="piece__title">
+                <a href={routes.piece(p.slug)[lang]}>{p.title}</a>
+              </h3>
+              <ul class="piece__tags" role="list">
+                {p.tags.map((t) => (
+                  <li class="tag">{t[lang]}</li>
+                ))}
+              </ul>
+              <p class="piece__preview">{p.preview[lang]}</p>
+              <a class="link-arrow" href={routes.piece(p.slug)[lang]}>
+                {ui.viewPiece[lang]}
+                <span class="sr-only">: {p.title}</span>
+                <Icon name="arrow" />
+              </a>
+            </div>
+            {p.credit && (
+              <a class="credit piece__credit" href={p.credit.url} target="_blank" rel="noopener">
+                {ui.photo[lang]}: {p.credit.handle}
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pieces__list {
+    display: grid;
+    gap: clamp(4rem, 10vw, 9rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .piece {
+    position: relative;
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .piece__media {
+    display: block;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .piece__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 1.4s var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .piece:hover .piece__media :global(img) {
+      scale: 1.04;
+    }
+  }
+
+  .piece__index {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+
+  .piece__title {
+    margin-top: 0.5rem;
+    font-family: var(--ff-serif);
+    font-size: clamp(3rem, 1.8rem + 6vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .piece__title a {
+    transition: color 0.3s;
+  }
+
+  .piece__title a:hover {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .piece__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .piece__preview {
+    margin-block: 1.5rem 1.75rem;
+    max-width: 44ch;
+    color: var(--bone-dim);
+  }
+
+  .piece__credit {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+
+  @media (min-width: 64em) {
+    .piece {
+      grid-template-columns: 7fr 5fr;
+      align-items: end;
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+
+    .piece:nth-child(even) {
+      grid-template-columns: 5fr 7fr;
+    }
+
+    .piece:nth-child(even) .piece__media {
+      order: 2;
+    }
+
+    .piece:nth-child(even) .piece__credit {
+      left: auto;
+      right: 0.75rem;
+    }
+  }
+</style>

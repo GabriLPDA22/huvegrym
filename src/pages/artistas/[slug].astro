@@ -1,0 +1,12 @@
+---
+import ArtistView from '@/components/artist/ArtistView.astro';
+import { artists, type Artist } from '@/data/artists';
+
+export function getStaticPaths() {
+  return artists.map((artist) => ({ params: { slug: artist.slug }, props: { artist } }));
+}
+
+const { artist } = Astro.props as { artist: Artist };
+---
+
+<ArtistView artist={artist} lang="es" />

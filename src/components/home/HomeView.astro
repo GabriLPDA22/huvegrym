@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Collective from './Collective.astro';
+import Artists from './Artists.astro';
+import Pieces from './Pieces.astro';
+import Videos from './Videos.astro';
+import Venues from './Venues.astro';
+import Dates from './Dates.astro';
+import Contact from './Contact.astro';
+import Quote from '@/components/Quote.astro';
+import type { Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { seo, quote } from '@/data/site';
+import { artists } from '@/data/artists';
+import { pieces } from '@/data/pieces';
+import { upcomingEvents } from '@/data/events';
+import { eventSchema, graph, organizationSchema, personSchema, pieceSchema, websiteSchema } from '@/lib/schema';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const jsonLd = graph(
+  websiteSchema(),
+  organizationSchema(lang, seo.home.description[lang]),
+  ...artists.map((a) => personSchema(a, lang)),
+  ...pieces.map((p) => pieceSchema(p, lang)),
+  ...upcomingEvents().map((e) => eventSchema(e, lang)),
+);
+---
+
+<BaseLayout
+  lang={lang}
+  title={seo.home.title[lang]}
+  description={seo.home.description[lang]}
+  alternates={routes.home}
+  ogImage={seo.home.ogImage}
+  jsonLd={jsonLd}
+  bodyClass="page-home"
+  preloadSerif={false}
+>
+  <Hero lang={lang} />
+  <About lang={lang} />
+  <Collective lang={lang} />
+  <Artists lang={lang} />
+  <Pieces lang={lang} />
+  <Videos lang={lang} />
+  <Venues lang={lang} />
+  <Dates lang={lang} />
+  <Quote text={quote.text[lang]} author={quote.author} lang={lang === 'es' ? 'es' : 'en'} />
+  <Contact lang={lang} />
+</BaseLayout>

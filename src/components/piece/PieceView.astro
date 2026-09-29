@@ -1,0 +1,350 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import VideoPlayer from '@/components/VideoPlayer.astro';
+import Icon from '@/components/Icon.astro';
+import type { Lang } from '@/i18n/config';
+import { routes, SECTION, sectionHref } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { seo, site } from '@/data/site';
+import { pieces, type Piece } from '@/data/pieces';
+import { breadcrumbSchema, graph, organizationSchema, pieceSchema } from '@/lib/schema';
+
+interface Props {
+  piece: Piece;
+  lang: Lang;
+}
+
+const { piece: p, lang } = Astro.props;
+const url = routes.piece(p.slug);
+const others = pieces.filter((x) => x.slug !== p.slug);
+const crumbs = [
+  { name: site.name, url: routes.home[lang] },
+  { name: ui.nav.pieces[lang], url: sectionHref(lang, SECTION.pieces) },
+  { name: p.title, url: url[lang] },
+];
+const jsonLd = graph(
+  pieceSchema(p, lang),
+  organizationSchema(lang, seo.home.description[lang]),
+  breadcrumbSchema(crumbs),
+);
+const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${p.title} — ${site.name}`)}`;
+const facts = [
+  { label: ui.genre[lang], value: p.genre[lang] },
+  ...(p.durationMin ? [{ label: ui.duration[lang], value: `${p.durationMin} min` }] : []),
+  { label: ui.company[lang], value: site.name },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${p.title} | ${p.genre[lang]} · ${site.name}`}
+  description={p.seoDescription[lang]}
+  alternates={url}
+  ogImage={p.ogImage}
+  ogImageAlt={p.imageAlt[lang]}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="p-hero">
+      <div class="p-hero__media">
+        <Picture
+          src={p.image}
+          formats={['avif']}
+          fallbackFormat="webp"
+          widths={[640, 960, 1440, 1920]}
+          sizes="100vw"
+          alt={p.imageAlt[lang]}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      {
+        p.credit && (
+          <a class="credit p-hero__credit" href={p.credit.url} target="_blank" rel="noopener">
+            {ui.photo[lang]}: {p.credit.handle}
+          </a>
+        )
+      }
+      <div class="p-hero__text container">
+        <Breadcrumbs items={crumbs} label={lang === 'es' ? 'Ruta de navegación' : 'Breadcrumb'} />
+        <h1 class="p-hero__title">{p.title}</h1>
+        <ul class="p-hero__tags" role="list">
+          {p.tags.map((t) => <li class="tag">{t[lang]}</li>)}
+        </ul>
+      </div>
+    </header>
+
+    <section class="section p-body" aria-labelledby="piece-about">
+      <div class="container p-body__grid">
+        <div>
+          <p class="kicker" data-reveal>{ui.aboutPiece[lang]}</p>
+          <p id="piece-about" class="lead p-body__lead" data-reveal>{p.preview[lang]}</p>
+          <div class="prose p-body__story" data-reveal>
+            {p.story[lang].map((para) => <p>{para}</p>)}
+          </div>
+        </div>
+        <aside class="p-body__aside" data-reveal>
+          <dl class="p-facts">
+            {
+              facts.map((f) => (
+                <div>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <div class="p-book">
+            <p class="p-book__title">{ui.bookPiece[lang](p.title)}</p>
+            <p class="p-book__text">{ui.bookPieceText[lang]}</p>
+            <a class="btn" href={mail}>
+              {ui.contactCta[lang]}
+              <Icon name="arrow" />
+            </a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section p-video" aria-labelledby="piece-video">
+      <div class="container">
+        <p class="kicker" id="piece-video" data-reveal>{ui.watchTrailer[lang]}</p>
+        <div class="p-video__player" data-reveal>
+          <VideoPlayer video={p.video} title={p.title} lang={lang} sizes="(min-width: 80em) 1200px, 100vw" headingLevel="p" />
+        </div>
+      </div>
+    </section>
+
+    {
+      p.secondaryImage && (
+        <figure class="container p-still" data-reveal>
+          <Picture
+            src={p.secondaryImage.src}
+            formats={['avif']}
+            fallbackFormat="webp"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 64em) 60vw, 100vw"
+            alt={p.secondaryImage.alt[lang]}
+            loading="lazy"
+          />
+        </figure>
+      )
+    }
+
+    <nav class="p-next" aria-label={ui.otherPieces[lang]}>
+      {
+        others.map((o) => (
+          <a class="p-next__link container" href={routes.piece(o.slug)[lang]}>
+            <span class="kicker">{ui.otherPieces[lang]}</span>
+            <span class="p-next__name">
+              {o.title}
+              <Icon name="arrow" />
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .p-hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: min(100svh, 62rem);
+    isolation: isolate;
+  }
+
+  .p-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ink-3);
+  }
+
+  .p-hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .p-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgb(12 11 10 / 0.55), transparent 30%, transparent 45%, var(--ink)),
+      linear-gradient(90deg, rgb(12 11 10 / 0.5), transparent 70%);
+  }
+
+  .p-hero__credit {
+    position: absolute;
+    right: var(--gutter);
+    top: calc(var(--header-h) + 1rem);
+  }
+
+  .p-hero__text {
+    padding-block: calc(var(--header-h) + 4rem) clamp(3rem, 8vw, 6rem);
+  }
+
+  .p-hero__title {
+    margin-top: 1rem;
+    font-family: var(--ff-serif);
+    font-size: clamp(4.5rem, 2rem + 13vw, 15rem);
+    line-height: 0.82;
+    letter-spacing: -0.035em;
+  }
+
+  .p-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .p-hero__tags :global(.tag) {
+    background: rgb(12 11 10 / 0.45);
+  }
+
+  .p-body__grid {
+    display: grid;
+    gap: 3.5rem;
+  }
+
+  .p-body__lead {
+    margin-top: 1.5rem;
+    max-width: 30ch;
+    font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
+    line-height: 1.2;
+  }
+
+  .p-body__story {
+    margin-top: 2.5rem;
+    font-size: 1.125rem;
+  }
+
+  .p-body__aside {
+    display: grid;
+    gap: 2rem;
+    align-content: start;
+  }
+
+  .p-facts {
+    display: grid;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .p-facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .p-facts dt {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .p-facts dd {
+    margin: 0;
+    font-family: var(--ff-serif);
+    font-size: 1.3rem;
+    text-align: right;
+  }
+
+  .p-book {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    background: radial-gradient(circle at 100% 0, rgb(201 169 110 / 0.14), transparent 60%), var(--ink-2);
+  }
+
+  .p-book__title {
+    font-family: var(--ff-serif);
+    font-size: 1.9rem;
+    line-height: 1.1;
+  }
+
+  .p-book__text {
+    color: var(--bone-dim);
+    font-size: var(--fs-sm);
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 64em) {
+    .p-body__grid {
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: clamp(3rem, 7vw, 8rem);
+    }
+
+    .p-body__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .p-video {
+    background: var(--ink-2);
+  }
+
+  .p-video__player {
+    margin-top: 2rem;
+  }
+
+  .p-still {
+    padding-block: var(--section-y) 0;
+  }
+
+  .p-still :global(img) {
+    width: min(100%, 56rem);
+    margin-inline: auto;
+  }
+
+  .p-next {
+    margin-top: var(--section-y);
+    border-top: 1px solid var(--line);
+  }
+
+  .p-next__link {
+    display: grid;
+    gap: 1rem;
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+
+  .p-next__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--ff-serif);
+    font-size: clamp(3rem, 1.5rem + 7vw, 8rem);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .p-next__name :global(svg) {
+    width: 0.5em;
+    height: 0.5em;
+    flex: none;
+    transition: translate 0.6s var(--ease-out);
+  }
+
+  .p-next__link:hover .p-next__name {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .p-next__link:hover .p-next__name :global(svg) {
+    translate: 0.3em 0;
+  }
+</style>

@@ -1,0 +1,12 @@
+---
+import PieceView from '@/components/piece/PieceView.astro';
+import { pieces, type Piece } from '@/data/pieces';
+
+export function getStaticPaths() {
+  return pieces.map((piece) => ({ params: { slug: piece.slug }, props: { piece } }));
+}
+
+const { piece } = Astro.props as { piece: Piece };
+---
+
+<PieceView piece={piece} lang="en" />

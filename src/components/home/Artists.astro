@@ -1,0 +1,174 @@
+---
+import { Picture } from 'astro:assets';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Icon from '@/components/Icon.astro';
+import type { Lang } from '@/i18n/config';
+import { routes, SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { artists } from '@/data/artists';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id={SECTION.artists} class="section artists" aria-labelledby="artists-title">
+  <div class="container">
+    <SectionHeading id="artists-title" index={3} kicker={ui.artistsKicker[lang]} lines={ui.artistsTitle[lang]} />
+  </div>
+
+  <ul class="artists__list container" role="list">
+    {
+      artists.map((a, i) => (
+        <li class="artist-card" data-reveal style={`--i:${i}`}>
+          <a class="artist-card__link" href={routes.artist(a.slug)[lang]}>
+            <div class="artist-card__media">
+              <Picture
+                src={a.portrait.src}
+                formats={['avif']}
+                fallbackFormat="webp"
+                widths={[400, 600, 800, 1000]}
+                sizes="(min-width: 48em) 46vw, 100vw"
+                alt={a.portrait.alt[lang]}
+                loading="lazy"
+              />
+            </div>
+            <div class="artist-card__body">
+              <h3 class="artist-card__name">
+                <span>{a.shortName}</span>
+                <small>{a.fullName.replace(`${a.shortName} `, '')}</small>
+              </h3>
+              <p class="artist-card__role">{a.role[lang]}</p>
+              <span class="artist-card__cta">
+                {ui.viewPortfolio[lang]}
+                <Icon name="arrow" />
+              </span>
+            </div>
+          </a>
+          {a.portrait.credit && (
+            <a class="credit artist-card__credit" href={a.portrait.credit.url} target="_blank" rel="noopener">
+              {ui.photo[lang]}: {a.portrait.credit.handle}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .artists__list {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .artist-card {
+    position: relative;
+  }
+
+  .artist-card__link {
+    display: block;
+    position: relative;
+  }
+
+  .artist-card__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .artist-card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05) brightness(0.85);
+    transition:
+      scale 1.4s var(--ease-out),
+      filter 0.8s;
+  }
+
+  .artist-card__body {
+    position: absolute;
+    inset: auto 0 0;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: linear-gradient(transparent, rgb(12 11 10 / 0.9));
+  }
+
+  .artist-card__name {
+    font-family: var(--ff-serif);
+    font-size: var(--fs-display);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+  }
+
+  .artist-card__name span {
+    display: block;
+    transition: translate 0.8s var(--ease-out);
+  }
+
+  .artist-card__name small {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+  }
+
+  .artist-card__role {
+    margin-top: 0.4rem;
+    font-size: var(--fs-sm);
+    color: var(--gold);
+  }
+
+  .artist-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .artist-card__cta :global(svg) {
+    width: 1.2em;
+    height: 1.2em;
+    transition: translate 0.5s var(--ease-out);
+  }
+
+  .artist-card__credit {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  @media (hover: hover) {
+    .artist-card__link:hover :global(img) {
+      scale: 1.05;
+      filter: grayscale(0.2) contrast(1.05) brightness(0.95);
+    }
+    .artist-card__link:hover .artist-card__name span {
+      translate: 0.15em 0;
+      font-style: italic;
+      color: var(--gold);
+    }
+    .artist-card__link:hover .artist-card__cta :global(svg) {
+      translate: 0.3rem 0;
+    }
+  }
+
+  @media (min-width: 48em) {
+    .artists__list {
+      grid-template-columns: 1fr 1fr;
+    }
+    .artist-card:nth-child(2) {
+      margin-top: clamp(4rem, 10vw, 9rem);
+    }
+  }
+</style>

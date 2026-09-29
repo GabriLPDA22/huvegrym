@@ -1,0 +1,90 @@
+---
+/**
+ * Consentimiento de cookies para Google Analytics 4 (RGPD / LSSI, criterios AEPD):
+ * - GA no se descarga hasta que el usuario acepta → 0 KB de terceros en la carga inicial.
+ * - "Rechazar" con el mismo peso visual que "Aceptar".
+ * - Consent Mode v2 con todo denegado por defecto.
+ * Solo se renderiza si existe PUBLIC_GA_ID.
+ */
+import type { Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const gaId = import.meta.env.PUBLIC_GA_ID;
+---
+
+{
+  gaId && (
+    <>
+      <div class="consent" role="region" aria-label={ui.consentLabel[lang]} data-consent data-ga-id={gaId} hidden>
+        <p>
+          {ui.consentText[lang]} <a href={routes.cookies[lang]}>{ui.consentMore[lang]}</a>
+        </p>
+        <div class="consent__actions">
+          <button type="button" class="btn btn--ghost" data-consent-choice="denied">
+            {ui.consentReject[lang]}
+          </button>
+          <button type="button" class="btn btn--ghost" data-consent-choice="granted">
+            {ui.consentAccept[lang]}
+          </button>
+        </div>
+      </div>
+      <script>
+        import {initConsent} from '@/scripts/consent';
+        initConsent();
+      </script>
+    </>
+  )
+}
+
+<style>
+  .consent {
+    position: fixed;
+    inset: auto 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+    z-index: 60;
+    display: grid;
+    gap: 1rem;
+    max-width: 34rem;
+    padding: 1.25rem;
+    background: var(--ink-2);
+    border: 1px solid var(--line-strong);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--bone-dim);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
+  }
+
+  .consent[hidden] {
+    display: none;
+  }
+
+  .consent a {
+    color: var(--bone);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .consent__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .consent .btn {
+    min-height: 2.75rem;
+    padding: 0.6rem 1rem;
+  }
+
+  @media (min-width: 40em) {
+    .consent {
+      left: auto;
+      right: 1.5rem;
+      bottom: 1.5rem;
+    }
+  }
+</style>

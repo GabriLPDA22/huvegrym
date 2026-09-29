@@ -1,0 +1,38 @@
+---
+/**
+ * Logotipo tipográfico HUVEGRYM / BORBOLETA / DANZA como vector inline.
+ * - `mode="symbol"` declara el <symbol> una sola vez por página.
+ * - `mode="use"` lo reutiliza (0 bytes extra por instancia).
+ */
+import wordmark from '@/assets/brand-wordmark.json';
+
+interface Props {
+  mode?: 'symbol' | 'use';
+  class?: string;
+  title?: string;
+}
+
+const { mode = 'use', class: className, title } = Astro.props;
+---
+
+{
+  mode === 'symbol' ? (
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="wordmark" viewBox={wordmark.viewBox}>
+        <path d={wordmark.d} />
+      </symbol>
+    </svg>
+  ) : (
+    <svg
+      class={className}
+      viewBox={wordmark.viewBox}
+      role={title ? 'img' : undefined}
+      aria-label={title}
+      aria-hidden={title ? undefined : 'true'}
+      focusable="false"
+      fill="currentColor"
+    >
+      <use href="#wordmark" />
+    </svg>
+  )
+}

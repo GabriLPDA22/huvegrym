@@ -1,0 +1,651 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Gallery from '@/components/Gallery.astro';
+import Quote from '@/components/Quote.astro';
+import Icon from '@/components/Icon.astro';
+import type { Lang } from '@/i18n/config';
+import { routes, SECTION, sectionHref } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { site } from '@/data/site';
+import { artists, type Artist } from '@/data/artists';
+import { breadcrumbSchema, graph, organizationSchema, personSchema } from '@/lib/schema';
+import { seo } from '@/data/site';
+
+interface Props {
+  artist: Artist;
+  lang: Lang;
+}
+
+const { artist: a, lang } = Astro.props;
+const other = artists.find((x) => x.slug !== a.slug)!;
+const url = routes.artist(a.slug);
+const surname = a.fullName.replace(`${a.shortName} `, '');
+const crumbs = [
+  { name: site.name, url: routes.home[lang] },
+  { name: ui.nav.artists[lang], url: sectionHref(lang, SECTION.artists) },
+  { name: a.fullName, url: url[lang] },
+];
+const jsonLd = graph(
+  personSchema(a, lang),
+  organizationSchema(lang, seo.home.description[lang]),
+  breadcrumbSchema(crumbs.map((c) => ({ name: c.name, url: c.url }))),
+);
+const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${a.fullName} — ${site.name}`)}`;
+---
+
+<BaseLayout
+  lang={lang}
+  title={a.seo.title[lang]}
+  description={a.seo.description[lang]}
+  alternates={url}
+  ogImage={a.ogImage}
+  ogImageAlt={a.portrait.alt[lang]}
+  ogType="profile"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="head">
+    <meta property="profile:first_name" content={a.shortName} />
+    <meta property="profile:last_name" content={surname} />
+  </Fragment>
+
+  <article class="artist">
+    <!-- Hero -->
+    <header class="a-hero">
+      <div class="a-hero__media">
+        <Picture
+          src={a.portrait.src}
+          formats={['avif']}
+          fallbackFormat="webp"
+          widths={[420, 640, 900, 1200]}
+          sizes="(min-width: 64em) 45vw, 100vw"
+          alt={a.portrait.alt[lang]}
+          loading="eager"
+          fetchpriority="high"
+        />
+        {
+          a.portrait.credit && (
+            <a class="credit a-hero__credit" href={a.portrait.credit.url} target="_blank" rel="noopener">
+              {ui.photo[lang]}: {a.portrait.credit.handle}
+            </a>
+          )
+        }
+      </div>
+      <div class="a-hero__text container">
+        <Breadcrumbs items={crumbs} label={lang === 'es' ? 'Ruta de navegación' : 'Breadcrumb'} />
+        <p class="kicker">{site.name}</p>
+        <h1 class="a-hero__name">
+          <span>{a.shortName}</span>
+          <span class="a-hero__surname">{surname}</span>
+        </h1>
+        <p class="a-hero__role">{a.role[lang]}</p>
+        <p class="a-hero__tagline">{a.tagline[lang]}</p>
+        <a class="btn" href={mail}>
+          {ui.getInTouch[lang]}
+          <Icon name="arrow" />
+        </a>
+      </div>
+    </header>
+
+    <!-- Bio -->
+    <section class="section a-bio" aria-labelledby="bio-title">
+      <div class="container a-bio__grid">
+        <div>
+          <p class="kicker" data-reveal>{ui.aboutArtist[lang][a.gender]}</p>
+          <h2 id="bio-title" class="section-title a-bio__title" data-reveal>
+            <span>{a.headline[lang][0]}</span>
+            <span class="accent">{a.headline[lang][1]}</span>
+          </h2>
+          <div class="prose a-bio__text" data-reveal>
+            {a.bio[lang].map((p) => <p set:html={p} />)}
+          </div>
+          <dl class="facts" data-reveal>
+            {
+              a.facts.map((f) => (
+                <div>
+                  <dt>{ui[f.label][lang]}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <aside class="a-bio__aside" data-reveal>
+          <figure class="a-bio__portrait">
+            <Picture
+              src={a.portraitAlt.src}
+              formats={['avif']}
+              fallbackFormat="webp"
+              widths={[360, 540, 720]}
+              sizes="(min-width: 64em) 30vw, 100vw"
+              alt={a.portraitAlt.alt[lang]}
+              loading="lazy"
+            />
+          </figure>
+          <blockquote class="a-bio__quote">
+            <p>“{a.quote[lang]}”</p>
+          </blockquote>
+          <ul class="a-bio__contact" role="list">
+            <li>
+              <a href={site.instagram.url} target="_blank" rel="noopener"><Icon name="instagram" />{site.instagram.handle}</a>
+            </li>
+            <li>
+              <a href={mail}><Icon name="mail" />{site.email}</a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Proyectos -->
+    <section class="section a-works" aria-labelledby="works-title">
+      <div class="container">
+        <div class="a-works__head">
+          <div>
+            <p class="kicker" data-reveal>{ui.career[lang]}</p>
+            <h2 id="works-title" class="section-title" data-reveal>{ui.notableProjects[lang]}</h2>
+          </div>
+          <p class="a-works__count" data-reveal>{ui.works[lang](a.projects.length)}</p>
+        </div>
+        <ol class="a-works__grid" role="list">
+          {
+            a.projects.map((p, i) => (
+              <li class="work" data-reveal style={`--i:${i % 3}`}>
+                <span class="work__index">{String(i + 1).padStart(2, '0')}</span>
+                <p class="work__type">{p.type[lang]}</p>
+                <h3 class="work__title">{p.title}</h3>
+                <p class="work__desc">{p.description[lang]}</p>
+                {p.award && (
+                  <p class="work__award">
+                    <Icon name="star" />
+                    {p.award[lang]}
+                  </p>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Formación -->
+    <section class="section a-training" aria-labelledby="training-title">
+      <div class="container">
+        <p class="kicker" data-reveal>{ui.roots[lang]}</p>
+        <h2 id="training-title" class="section-title" data-reveal>{ui.training[lang]}</h2>
+        <div class="a-training__grid">
+          <div class="a-training__block" data-reveal>
+            <h3>{ui.academic[lang]}</h3>
+            <ul role="list" class="schools">
+              {
+                a.schools.map((s) => (
+                  <li>
+                    <p class="schools__name">{s.name[lang]}</p>
+                    <p class="schools__detail">{s.detail[lang]}</p>
+                  </li>
+                ))
+              }
+            </ul>
+            <h3 class="a-training__sub">{ui.companies[lang][a.gender]}</h3>
+            <ul role="list" class="chips">
+              {a.companies.map((c) => <li class="tag">{c}</li>)}
+            </ul>
+          </div>
+          <div class="a-training__block" data-reveal style="--i:1">
+            <h3>{a.creatorsTitle[lang]}</h3>
+            <ul role="list" class="creators">
+              {a.creators.map((c) => <li>{c}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Gallery items={a.gallery} lang={lang} title={ui.inMotion[lang]} id="gallery-title" />
+
+    <Quote text={a.quote[lang]} author={a.fullName} lang={lang === 'es' ? 'es' : 'en'} />
+
+    <!-- Siguiente artista -->
+    <section class="a-next" aria-label={ui.otherArtist[lang]}>
+      <a class="a-next__link container" href={routes.artist(other.slug)[lang]}>
+        <span class="kicker">{ui.otherArtist[lang]}</span>
+        <span class="a-next__name">
+          {other.fullName}
+          <Icon name="arrow" />
+        </span>
+      </a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .a-hero {
+    display: grid;
+    padding-top: var(--header-h);
+  }
+
+  .a-hero__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: 78svh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .a-hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 25%;
+  }
+
+  .a-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 55%, var(--ink));
+    pointer-events: none;
+  }
+
+  .a-hero__credit {
+    position: absolute;
+    right: 1rem;
+    top: calc(var(--header-h) + 0.5rem);
+    z-index: 1;
+  }
+
+  .a-hero__text {
+    position: relative;
+    margin-top: -5rem;
+    padding-bottom: var(--section-y);
+  }
+
+  .a-hero__text .kicker {
+    margin-top: 1rem;
+  }
+
+  .a-hero__name {
+    margin-top: 1rem;
+    font-family: var(--ff-serif);
+    font-size: var(--fs-display);
+    line-height: 0.82;
+    letter-spacing: -0.03em;
+  }
+
+  .a-hero__name span {
+    display: block;
+  }
+
+  .a-hero__surname {
+    margin-top: 0.3em;
+    font-size: 0.32em;
+    font-style: italic;
+    letter-spacing: 0;
+    color: var(--gold);
+  }
+
+  .a-hero__role {
+    margin-top: 1.75rem;
+    font-size: var(--fs-lead);
+    font-family: var(--ff-serif);
+    line-height: 1.2;
+  }
+
+  .a-hero__tagline {
+    margin-block: 0.75rem 2rem;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (min-width: 64em) {
+    .a-hero {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      min-height: 100svh;
+      padding-top: 0;
+    }
+
+    .a-hero__media {
+      order: 2;
+      height: 100svh;
+      max-height: none;
+      aspect-ratio: auto;
+    }
+
+    .a-hero__media::after {
+      background: linear-gradient(90deg, var(--ink), transparent 30%);
+    }
+
+    .a-hero__text {
+      width: auto;
+      margin: 0;
+      padding: calc(var(--header-h) + 3rem) clamp(2rem, 5vw, 5rem) clamp(3rem, 8vh, 6rem) max(var(--gutter), (100vw - var(--maxw)) / 2);
+    }
+  }
+
+  /* ---------- Bio ---------- */
+  .a-bio {
+    border-top: 1px solid var(--line);
+  }
+
+  .a-bio__grid {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .a-bio__title {
+    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5.5rem);
+  }
+
+  .a-bio__text {
+    margin-top: 2.5rem;
+    font-size: 1.125rem;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .facts dt {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .facts dd {
+    margin: 0.4rem 0 0;
+    font-family: var(--ff-serif);
+    font-size: 1.5rem;
+  }
+
+  .a-bio__aside {
+    display: grid;
+    gap: 2rem;
+    align-content: start;
+  }
+
+  .a-bio__portrait {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .a-bio__portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .a-bio__quote {
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--gold);
+    font-family: var(--ff-serif);
+    font-size: 1.45rem;
+    line-height: 1.3;
+    font-style: italic;
+  }
+
+  .a-bio__contact {
+    display: grid;
+    gap: 0.25rem;
+    font-size: var(--fs-sm);
+  }
+
+  .a-bio__contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    color: var(--bone-dim);
+    transition: color 0.3s;
+  }
+
+  .a-bio__contact a:hover {
+    color: var(--gold);
+  }
+
+  .a-bio__contact :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  @media (min-width: 64em) {
+    .a-bio__grid {
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: clamp(3rem, 7vw, 8rem);
+    }
+
+    .a-bio__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  /* ---------- Proyectos ---------- */
+  .a-works {
+    background: var(--ink-2);
+  }
+
+  .a-works__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .a-works__head .section-title {
+    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5.5rem);
+  }
+
+  .a-works__count {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .a-works__grid {
+    display: grid;
+    gap: 1px;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .work {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--ink-2);
+    transition: background-color 0.4s;
+  }
+
+  .work:hover {
+    background: var(--ink-3);
+  }
+
+  .work__index {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+  }
+
+  .work__type {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .work__title {
+    font-family: var(--ff-serif);
+    font-size: clamp(1.8rem, 1.4rem + 1.5vw, 2.4rem);
+    line-height: 1.05;
+  }
+
+  .work__desc {
+    color: var(--bone-dim);
+    font-size: 0.975rem;
+  }
+
+  .work__award {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .work__award :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (min-width: 48em) {
+    .a-works__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 72em) {
+    .a-works__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ---------- Formación ---------- */
+  .a-training .section-title {
+    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5.5rem);
+  }
+
+  .a-training__grid {
+    display: grid;
+    gap: 3rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .a-training__block h3 {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line-strong);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    line-height: 1.4;
+  }
+
+  .a-training__sub {
+    margin-top: 2.5rem;
+  }
+
+  .schools li {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .schools__name {
+    font-family: var(--ff-serif);
+    font-size: 1.6rem;
+    line-height: 1.15;
+  }
+
+  .schools__detail {
+    margin-top: 0.3rem;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .creators li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--ff-serif);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    line-height: 1.1;
+  }
+
+  .creators li::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  @media (min-width: 64em) {
+    .a-training__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+  }
+
+  /* ---------- Siguiente ---------- */
+  .a-next {
+    border-top: 1px solid var(--line);
+  }
+
+  .a-next__link {
+    display: grid;
+    gap: 1rem;
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+
+  .a-next__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--ff-serif);
+    font-size: clamp(2.5rem, 1.5rem + 5vw, 6rem);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .a-next__name :global(svg) {
+    width: 0.6em;
+    height: 0.6em;
+    flex: none;
+    transition: translate 0.6s var(--ease-out);
+  }
+
+  .a-next__link:hover .a-next__name {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .a-next__link:hover .a-next__name :global(svg) {
+    translate: 0.3em 0;
+  }
+</style>

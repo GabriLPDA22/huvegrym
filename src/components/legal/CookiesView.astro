@@ -1,0 +1,141 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { seo, site } from '@/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const gaEnabled = Boolean(import.meta.env.PUBLIC_GA_ID);
+const es = lang === 'es';
+---
+
+<BaseLayout
+  lang={lang}
+  title={seo.cookies.title[lang]}
+  description={seo.cookies.description[lang]}
+  alternates={routes.cookies}
+  ogImage={seo.home.ogImage}
+>
+  <article class="section legal">
+    <div class="container legal__inner">
+      <p class="kicker">{site.name}</p>
+      <h1 class="section-title">{ui.cookiePolicy[lang]}</h1>
+      {
+        es ? (
+          <div class="prose legal__body">
+            <p>
+              Esta web ({site.url}) no utiliza cookies propias. Solo emplea cookies de analítica de terceros
+              (Google Analytics 4, de Google Ireland Ltd.) <strong>si das tu consentimiento</strong> en el aviso de cookies.
+              Mientras no aceptes, no se carga ningún script de analítica.
+            </p>
+            <h2>¿Qué cookies se usan si aceptas?</h2>
+            <ul>
+              <li><strong>_ga</strong>: distingue usuarios de forma anónima. Duración: 2 años.</li>
+              <li><strong>_ga_&lt;ID&gt;</strong>: mantiene el estado de la sesión. Duración: 2 años.</li>
+            </ul>
+            <p>
+              La finalidad es exclusivamente estadística: saber qué contenidos se visitan para mejorar la web. No se usan
+              con fines publicitarios.
+            </p>
+            <p>
+              Tu elección se guarda en el almacenamiento local de tu navegador (clave <code>hvg-consent-v1</code>), que
+              no es una cookie ni se envía a ningún servidor.
+            </p>
+            <h2>¿Cómo cambiar o retirar el consentimiento?</h2>
+            <p>
+              Puedes cambiar tu decisión en cualquier momento desde el enlace «{ui.cookieSettings.es}» del pie de página,
+              o borrar las cookies desde la configuración de tu navegador.
+            </p>
+            <p>
+              Para cualquier consulta: <a href={`mailto:${site.email}`}>{site.email}</a>.
+            </p>
+          </div>
+        ) : (
+          <div class="prose legal__body">
+            <p>
+              This website ({site.url}) does not use first-party cookies. It only uses third-party analytics cookies
+              (Google Analytics 4, by Google Ireland Ltd.) <strong>if you give your consent</strong> in the cookie notice.
+              Until you accept, no analytics script is loaded.
+            </p>
+            <h2>Which cookies are used if you accept?</h2>
+            <ul>
+              <li><strong>_ga</strong>: distinguishes users anonymously. Duration: 2 years.</li>
+              <li><strong>_ga_&lt;ID&gt;</strong>: keeps session state. Duration: 2 years.</li>
+            </ul>
+            <p>
+              Their only purpose is statistical: understanding which content is visited in order to improve the site. They
+              are not used for advertising.
+            </p>
+            <p>
+              Your choice is stored in your browser's local storage (key <code>hvg-consent-v1</code>), which is not a
+              cookie and is never sent to any server.
+            </p>
+            <h2>How to change or withdraw consent?</h2>
+            <p>
+              You can change your decision at any time from the “{ui.cookieSettings.en}” link in the footer, or delete
+              cookies from your browser settings.
+            </p>
+            <p>
+              For any questions: <a href={`mailto:${site.email}`}>{site.email}</a>.
+            </p>
+          </div>
+        )
+      }
+      {
+        gaEnabled && (
+          <button type="button" class="btn btn--ghost legal__btn" data-consent-open>
+            {ui.cookieSettings[lang]}
+          </button>
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-top: calc(var(--header-h) + var(--section-y) / 2);
+  }
+
+  .legal__inner {
+    max-width: 52rem;
+  }
+
+  .legal .section-title {
+    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5rem);
+  }
+
+  .legal__body {
+    margin-top: 2.5rem;
+  }
+
+  .legal__body :global(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--ff-serif);
+    font-size: 1.9rem;
+    color: var(--bone);
+  }
+
+  .legal__body :global(ul) {
+    padding-left: 1.25rem;
+    margin-block: 1rem;
+  }
+
+  .legal__body :global(a) {
+    color: var(--gold);
+    text-decoration: underline;
+  }
+
+  .legal__body :global(strong) {
+    color: var(--bone);
+  }
+
+  .legal__btn {
+    margin-top: 2.5rem;
+  }
+</style>

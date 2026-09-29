@@ -1,0 +1,49 @@
+---
+import SectionHeading from '@/components/SectionHeading.astro';
+import VideoPlayer from '@/components/VideoPlayer.astro';
+import type { Lang } from '@/i18n/config';
+import { SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { pieces } from '@/data/pieces';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section id={SECTION.videos} class="section videos" aria-labelledby="videos-title">
+  <div class="container">
+    <SectionHeading id="videos-title" index={5} kicker={ui.videosKicker[lang]} lines={ui.videosTitle[lang]} />
+    <div class="videos__grid">
+      {
+        pieces.map((p, i) => (
+          <div data-reveal style={`--i:${i}`}>
+            <VideoPlayer video={p.video} title={p.title} lang={lang} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .videos {
+    background: var(--ink-2);
+  }
+
+  .videos__grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 3rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 64em) {
+    .videos__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .videos__grid > :nth-child(2) {
+      margin-top: 6rem;
+    }
+  }
+</style>

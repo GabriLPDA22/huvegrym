@@ -1,0 +1,67 @@
+---
+import { Font } from 'astro:assets';
+import '@/styles/global.css';
+import Seo from '@/components/Seo.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Consent from '@/components/Consent.astro';
+import Wordmark from '@/components/Wordmark.astro';
+import { HTML_LANG, type Alternates, type Lang } from '@/i18n/config';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  alternates: Alternates;
+  ogImage: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'profile' | 'article';
+  jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
+  bodyClass?: string;
+  /** Precargar la serif (desactivar si no aparece above-the-fold, p. ej. la home). */
+  preloadSerif?: boolean;
+}
+
+const { lang, alternates, bodyClass, preloadSerif = true, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang={HTML_LANG[lang]} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0c0b0a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <slot name="preload" />
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-serif" preload={preloadSerif} />
+
+    <Seo lang={lang} alternates={alternates} {...seo} />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/icons/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <Wordmark mode="symbol" />
+    <Header lang={lang} alternates={alternates} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} alternates={alternates} />
+    <Consent lang={lang} />
+    <script>
+      import { initReveal } from '@/scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

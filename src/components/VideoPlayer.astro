@@ -1,0 +1,144 @@
+---
+/**
+ * Fachada de vídeo: solo se descarga el póster (optimizado). El MP4 se pide
+ * al pulsar → 0 bytes de vídeo en la carga inicial.
+ */
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { PieceVideo } from '@/data/pieces';
+import type { Lang } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+
+interface Props {
+  video: PieceVideo;
+  title: string;
+  lang: Lang;
+  sizes?: string;
+  headingLevel?: 'h3' | 'p';
+}
+
+const { video, title, lang, sizes = '(min-width: 64em) 50vw, 100vw', headingLevel: Heading = 'h3' } = Astro.props;
+const label = `${ui.play[lang]}: ${title} — ${video.label[lang]}`;
+---
+
+<figure class="player" data-player>
+  <div class="player__frame">
+    <Picture
+      src={video.poster}
+      formats={['avif']}
+      fallbackFormat="webp"
+      widths={[480, 800, 1280]}
+      sizes={sizes}
+      alt=""
+      class="player__poster"
+      loading="lazy"
+    />
+    <button
+      type="button"
+      class="player__play"
+      data-player-play
+      data-src={video.src}
+      data-width={video.width}
+      data-height={video.height}
+      aria-label={label}
+    >
+      <span class="player__icon"><Icon name="play" /></span>
+    </button>
+  </div>
+  <figcaption class="player__caption">
+    <Heading class="player__title">{title}</Heading>
+    <span class="player__label">{video.label[lang]}</span>
+  </figcaption>
+</figure>
+
+<script>
+  import { initPlayers } from '@/scripts/media';
+  initPlayers();
+</script>
+
+<style>
+  .player__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .player__frame :global(img),
+  .player__frame :global(video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .player__frame :global(img) {
+    transition:
+      scale 1.2s var(--ease-out),
+      filter 0.6s;
+    filter: brightness(0.8);
+  }
+
+  .player__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .player__icon {
+    display: grid;
+    place-items: center;
+    width: clamp(4rem, 10vw, 6rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgb(239 232 220 / 0.6);
+    background: rgb(12 11 10 / 0.35);
+    backdrop-filter: blur(6px);
+    transition:
+      background-color 0.4s,
+      scale 0.6s var(--ease-out),
+      border-color 0.4s;
+  }
+
+  .player__icon :global(svg) {
+    width: 38%;
+    height: 38%;
+    translate: 6% 0;
+  }
+
+  @media (hover: hover) {
+    .player__play:hover .player__icon {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink);
+      scale: 1.08;
+    }
+    .player__frame:hover :global(img) {
+      scale: 1.04;
+      filter: brightness(0.95);
+    }
+  }
+
+  .player__caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1rem;
+  }
+
+  .player__title {
+    font-family: var(--ff-serif);
+    font-size: var(--fs-h3);
+    line-height: 1;
+  }
+
+  .player__label {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+</style>

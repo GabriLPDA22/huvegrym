@@ -1,0 +1,189 @@
+---
+/** Carrusel con scroll-snap nativo (funciona sin JS; los botones son mejora progresiva). */
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { GalleryItem } from '@/data/artists';
+import type { Lang } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+
+interface Props {
+  items: GalleryItem[];
+  lang: Lang;
+  title: string;
+  id: string;
+}
+const { items, lang, title, id } = Astro.props;
+---
+
+<section class="gallery section" aria-labelledby={id} data-gallery>
+  <div class="container gallery__head">
+    <h2 id={id} class="gallery__title" data-reveal>{title}</h2>
+    <div class="gallery__nav">
+      <button type="button" class="gallery__btn" data-gallery-prev aria-label={ui.galleryPrev[lang]}>
+        <Icon name="chevron-left" />
+      </button>
+      <button type="button" class="gallery__btn" data-gallery-next aria-label={ui.galleryNext[lang]}>
+        <Icon name="chevron-right" />
+      </button>
+    </div>
+  </div>
+
+  <ul class="gallery__track" role="list" data-gallery-track tabindex="0" aria-label={title}>
+    {
+      items.map((it) => (
+        <li class="gallery__item">
+          <figure>
+            <div class="gallery__media">
+              <Picture
+                src={it.src}
+                formats={['avif']}
+                fallbackFormat="webp"
+                widths={[400, 700, 1000, 1400]}
+                sizes="(min-width: 64em) 45vw, 85vw"
+                alt={it.alt[lang]}
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="gallery__caption">
+              <span>{it.alt[lang]}</span>
+              {it.credit && (
+                <a class="credit" href={it.credit.url} target="_blank" rel="noopener">
+                  {ui.photo[lang]}: {it.credit.handle}
+                </a>
+              )}
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
+    const track = g.querySelector<HTMLElement>('[data-gallery-track]');
+    const prev = g.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+    const next = g.querySelector<HTMLButtonElement>('[data-gallery-next]');
+    if (!track || !prev || !next) return;
+    const step = () => (track.querySelector('li')?.getBoundingClientRect().width ?? 300) + 16;
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    update();
+  });
+</script>
+
+<style>
+  .gallery {
+    overflow: clip;
+  }
+
+  .gallery__head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .gallery__title {
+    font-family: var(--ff-serif);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .gallery__nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .gallery__btn {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      opacity 0.3s;
+  }
+
+  .gallery__btn :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .gallery__btn:hover:not(:disabled) {
+    background: var(--bone);
+    color: var(--ink);
+  }
+
+  .gallery__btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .gallery__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 85%;
+    gap: 1rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding-inline: max(var(--gutter), (100% - var(--maxw)) / 2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: max(var(--gutter), (100% - var(--maxw)) / 2);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .gallery__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery__item {
+    scroll-snap-align: start;
+  }
+
+  .gallery__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+
+  .gallery__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery__caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding-top: 0.9rem;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+
+  @media (min-width: 48em) {
+    .gallery__track {
+      grid-auto-columns: 46%;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .gallery__track {
+      grid-auto-columns: calc((min(100vw, var(--maxw)) - 2 * var(--gutter)) / 2.4);
+      gap: 1.5rem;
+    }
+  }
+</style>

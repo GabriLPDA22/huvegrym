@@ -1,0 +1,86 @@
+---
+interface Props {
+  text: string;
+  author: string;
+  lang: string;
+}
+const { text, author, lang } = Astro.props;
+const words = text.split(' ');
+---
+
+<section class="quote section" aria-label={author}>
+  <figure class="container quote__inner">
+    <span class="quote__glyph" aria-hidden="true">“</span>
+    <blockquote lang={lang}>
+      <p class="quote__text" data-reveal>
+        {words.map((w, i) => <span style={`--w:${i}`}>{w} </span>)}
+      </p>
+    </blockquote>
+    <figcaption class="quote__author" data-reveal>— {author}</figcaption>
+  </figure>
+</section>
+
+<style>
+  .quote {
+    overflow: clip;
+    text-align: center;
+  }
+
+  .quote__inner {
+    position: relative;
+    max-width: 62rem;
+  }
+
+  .quote__glyph {
+    position: absolute;
+    top: -0.35em;
+    left: 50%;
+    translate: -50% 0;
+    font-family: var(--ff-serif);
+    font-size: clamp(10rem, 30vw, 22rem);
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .quote__text {
+    position: relative;
+    font-family: var(--ff-serif);
+    font-size: clamp(1.9rem, 1.2rem + 3vw, 4rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* Palabra a palabra al entrar */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .quote__text[data-reveal] {
+      opacity: 1;
+      translate: none;
+    }
+    :global(.js) .quote__text span {
+      display: inline-block;
+      white-space: pre;
+      opacity: 0;
+      translate: 0 0.5em;
+      transition:
+        opacity 0.8s var(--ease-out),
+        translate 0.8s var(--ease-out);
+      transition-delay: calc(var(--w) * 45ms);
+    }
+    :global(.js) .quote__text:global(.is-in) span {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  .quote__author {
+    margin-top: 2rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+</style>

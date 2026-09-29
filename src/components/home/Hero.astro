@@ -1,0 +1,356 @@
+---
+/**
+ * Hero "GTA VI": escena en capas (fondo limpio · logotipo · intérprete recortado)
+ * con parallax y revelado del logotipo como máscara al hacer scroll.
+ * Idéntico en móvil y escritorio; en móvil se usa un encuadre vertical dirigido.
+ *
+ * Sin JS o con prefers-reduced-motion se muestra el primer fotograma estático.
+ */
+import { getImage } from 'astro:assets';
+import Wordmark from '@/components/Wordmark.astro';
+import type { Lang } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+
+import plate from '@/assets/images/hero/hero-plate.jpg';
+import platePortrait from '@/assets/images/hero/hero-plate-portrait.jpg';
+import dancer from '@/assets/images/hero/hero-dancer.webp';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const PORTRAIT = '(orientation: portrait)';
+// Relación de aspecto de cada encuadre (debe coincidir con --ar en CSS)
+const AR_LANDSCAPE = 1.5784;
+const AR_PORTRAIT = 0.947;
+// Anchura del intérprete relativa a la escena (ver --fg-w en CSS)
+const FG_W_LANDSCAPE = 0.3364;
+const FG_W_PORTRAIT = 0.5607;
+
+const sceneSize = (ar: number) => `max(100vw, ${Math.round(ar * 100 * 100) / 100}vh)`;
+
+const srcset = async (src: ImageMetadata, widths: number[], format: 'avif' | 'webp', quality: number) =>
+  (await getImage({ src, widths, format, quality })).srcSet.attribute;
+
+const [plateL, plateLw, plateP, platePw, dancerA, dancerW, fallback] = await Promise.all([
+  srcset(plate, [960, 1440, 1920, 2560], 'avif', 50),
+  srcset(plate, [960, 1440, 1920, 2560], 'webp', 70),
+  srcset(platePortrait, [640, 960, 1280, 1680], 'avif', 50),
+  srcset(platePortrait, [640, 960, 1280, 1680], 'webp', 70),
+  srcset(dancer, [360, 540, 720, 942], 'avif', 50),
+  srcset(dancer, [360, 540, 720, 942], 'webp', 78),
+  getImage({ src: plate, width: 1440, format: 'jpg', quality: 72 }),
+]);
+
+// En vertical la escena se limita a 135vw (ver CSS)
+const portraitScene = `max(100vw, min(${Math.round(AR_PORTRAIT * 10000) / 100}vh, 135vw))`;
+const sizesPlateP = portraitScene;
+const sizesPlateL = sceneSize(AR_LANDSCAPE);
+const sizesDancerP = `calc(${portraitScene} * ${FG_W_PORTRAIT})`;
+const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
+---
+
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="hero__sticky" data-hero-sticky>
+    <div class="hero__layer hero__layer--bg">
+      <picture>
+        <source media={PORTRAIT} type="image/avif" srcset={plateP} sizes={sizesPlateP} />
+        <source media={PORTRAIT} type="image/webp" srcset={platePw} sizes={sizesPlateP} />
+        <source type="image/avif" srcset={plateL} sizes={sizesPlateL} />
+        <source type="image/webp" srcset={plateLw} sizes={sizesPlateL} />
+        <img
+          src={fallback.src}
+          alt=""
+          width={plate.width}
+          height={plate.height}
+          fetchpriority="high"
+          loading="eager"
+        />
+      </picture>
+    </div>
+
+    <div class="hero__logo" data-hero-logo aria-hidden="true">
+      <Wordmark />
+    </div>
+
+    <div class="hero__layer hero__layer--fg">
+      <picture class="hero__dancer">
+        <source media={PORTRAIT} type="image/avif" srcset={dancerA} sizes={sizesDancerP} />
+        <source media={PORTRAIT} type="image/webp" srcset={dancerW} sizes={sizesDancerP} />
+        <source type="image/avif" srcset={dancerA} sizes={sizesDancerL} />
+        <img
+          srcset={dancerW}
+          sizes={sizesDancerL}
+          alt={lang === 'es'
+            ? 'Intérpretes de Huvegrym en un portés sobre un escenario con humo'
+            : 'Huvegrym performers in a lift on a smoky stage'}
+          width={dancer.width}
+          height={dancer.height}
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
+    </div>
+
+    <svg class="hero__veil" data-hero-veil aria-hidden="true" focusable="false">
+      <defs>
+        <mask id="hero-hole" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#fff"></rect>
+          <use href="#wordmark" width="1366.21" height="443.7" fill="#000" data-hero-hole></use>
+        </mask>
+      </defs>
+      <rect class="hero__veil-fill" width="100%" height="100%" mask="url(#hero-hole)"></rect>
+    </svg>
+
+    <div class="hero__copy">
+      <h1 id="hero-title" class="sr-only">{ui.heroH1[lang]}</h1>
+      <p class="hero__tagline">
+        <span>{ui.heroTagline[lang]}</span>
+      </p>
+    </div>
+
+    <div class="hero__cue" aria-hidden="true">
+      <span>{ui.heroScroll[lang]}</span>
+      <i></i>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initHero } from '@/scripts/hero';
+  initHero();
+</script>
+
+<style>
+  /*
+   * Fases (derivadas de --p ∈ [0,1], que actualiza scripts/hero.ts):
+   *   A  0.00–0.28  parallax de capas y salida del indicador
+   *   B  0.28–0.80  el logotipo pasa a ser máscara y se encoge (JS)
+   *   C  0.80–0.95  aparece el titular
+   */
+  .hero {
+    --p: 0;
+    --a: clamp(0, var(--p) / 0.28, 1);
+    --b: clamp(0, (var(--p) - 0.28) / 0.08, 1);
+    --c: clamp(0, (var(--p) - 0.8) / 0.15, 1);
+    --m: clamp(0, (var(--p) - 0.28) / 0.52, 1);
+    /* Altura del logotipo en el primer fotograma (en vertical va sobre la figura) */
+    --logo-y: 46%;
+    /* Centro final del logotipo-máscara (lo lee scripts/hero.ts) */
+    --final-y: 46%;
+    position: relative;
+    height: 100svh;
+    background: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero {
+      height: 360svh;
+    }
+  }
+
+  .hero__sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    contain: layout paint;
+  }
+
+  /* Escena con la misma geometría para fondo y figura → alineación exacta */
+  .hero__layer {
+    --ar: 1.5784;
+    --fg-l: 32.643%;
+    --fg-t: 5.975%;
+    --fg-w: 33.643%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 100svh * var(--ar));
+    aspect-ratio: var(--ar);
+    translate: -50% -50%;
+    pointer-events: none;
+  }
+
+  .hero__layer--bg {
+    scale: calc(1.14 - 0.14 * var(--a));
+  }
+
+  .hero__layer--bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__layer--fg {
+    transform-origin: 50% 100%;
+    scale: calc(1.22 - 0.22 * var(--a));
+    translate: -50% calc(-50% + 3% * (1 - var(--a)));
+  }
+
+  .hero__dancer {
+    display: block;
+    position: absolute;
+    left: var(--fg-l);
+    top: var(--fg-t);
+    width: var(--fg-w);
+  }
+
+  .hero__dancer img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Vertical: encuadre dirigido; la escena se ancla abajo (suelo del escenario)
+     y el logotipo queda sobre la figura, igual que el cartel en escritorio. */
+  @media (orientation: portrait) {
+    .hero {
+      --logo-y: 30%;
+      --final-y: 62%;
+    }
+    .hero__layer {
+      --ar: 0.947;
+      --fg-l: 21.905%;
+      --fg-w: 56.072%;
+      top: auto;
+      bottom: 0;
+      width: max(100%, min(100svh * var(--ar), 135vw));
+      translate: -50% 0;
+    }
+    .hero__layer--bg img {
+      mask-image: linear-gradient(transparent, #000 14%);
+    }
+    .hero__layer--fg {
+      translate: -50% calc(3% * (1 - var(--a)));
+    }
+  }
+
+  .hero__layer--bg,
+  .hero__layer--fg,
+  .hero__logo {
+    will-change: scale, translate, opacity;
+  }
+
+  /* Logotipo entre fondo y figura (profundidad) — misma caja final que la máscara */
+  /* Al final vuelve con un tinte leve sobre las letras-ventana para legibilidad */
+  .hero__logo {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--logo-y) + (var(--final-y) - var(--logo-y)) * var(--m));
+    width: min(90%, 1180px);
+    color: var(--bone);
+    translate: -50% calc(-50% + 5svh * (var(--a) - var(--m)));
+    scale: calc(1.06 - 0.06 * var(--a));
+    opacity: calc(1 - var(--b) + 0.28 * var(--c));
+    filter: drop-shadow(0 0.4rem 2rem rgb(0 0 0 / 0.35));
+  }
+
+  .hero__logo :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+  }
+
+  .hero__veil-fill {
+    fill: var(--ink);
+  }
+
+  .hero__copy {
+    position: absolute;
+    inset: auto 0 0;
+    top: calc(var(--final-y) + min(90vw, 1180px) * 0.1624 + clamp(1.25rem, 4vw, 2.5rem));
+    display: grid;
+    justify-items: center;
+    padding-inline: var(--gutter);
+    text-align: center;
+  }
+
+  .hero__tagline {
+    font-family: var(--ff-serif);
+    font-style: italic;
+    font-size: clamp(1.9rem, 1.2rem + 3.4vw, 4.5rem);
+    line-height: 1;
+    color: var(--gold);
+    opacity: var(--c);
+    translate: 0 calc(1.5rem * (1 - var(--c)));
+  }
+
+  .hero__cue {
+    position: absolute;
+    left: 50%;
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+    translate: -50% 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bone);
+    text-shadow: 0 1px 10px rgb(0 0 0 / 0.7);
+    opacity: calc(1 - var(--a) * 3);
+    white-space: nowrap;
+  }
+
+  .hero__cue i {
+    position: relative;
+    width: 1px;
+    height: 3rem;
+    overflow: hidden;
+    background: rgb(239 232 220 / 0.25);
+  }
+
+  .hero__cue i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    animation: cue 2.2s var(--ease-in-out) infinite;
+  }
+
+  @keyframes cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* El titular (serif itálica) no se maqueta hasta acercarse a la fase C:
+     así su fuente no compite con el LCP del hero. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero:not(.is-late) .hero__copy {
+      display: none;
+    }
+  }
+
+  /* Sin JS o movimiento reducido: primer fotograma + titular visible */
+  :global(html:not(.js)) .hero__tagline {
+    opacity: 1;
+    translate: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__tagline {
+      opacity: 1;
+      translate: none;
+    }
+    .hero__cue {
+      display: none;
+    }
+    .hero__cue i::after {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,443 @@
+---
+import { Image } from 'astro:assets';
+import butterfly from '@/assets/images/brand/butterfly.webp';
+import Icon from './Icon.astro';
+import { LANG_LABEL, type Alternates, type Lang } from '@/i18n/config';
+import { routes, SECTION, sectionHref } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { site } from '@/data/site';
+import { artists } from '@/data/artists';
+
+interface Props {
+  lang: Lang;
+  alternates: Alternates;
+}
+
+const { lang, alternates } = Astro.props;
+const other: Lang = lang === 'es' ? 'en' : 'es';
+
+const links = [
+  { href: sectionHref(lang, SECTION.about), label: ui.nav.about[lang] },
+  { href: sectionHref(lang, SECTION.artists), label: ui.nav.artists[lang] },
+  { href: sectionHref(lang, SECTION.pieces), label: ui.nav.pieces[lang] },
+  { href: sectionHref(lang, SECTION.videos), label: ui.nav.videos[lang] },
+  { href: sectionHref(lang, SECTION.venues), label: ui.nav.venues[lang] },
+  { href: sectionHref(lang, SECTION.dates), label: ui.nav.dates[lang] },
+];
+const contactHref = sectionHref(lang, SECTION.contact);
+---
+
+<a class="skip-link" href="#main">{ui.skip[lang]}</a>
+
+<header class="site-header" data-header>
+  <div class="site-header__inner">
+    <a class="brand" href={routes.home[lang]} aria-label={`${site.name} — ${ui.home[lang]}`}>
+      <Image src={butterfly} alt="" height={36} densities={[1, 2]} loading="eager" class="brand__mark" />
+      <span class="brand__name">{site.name}</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label={ui.mainNav[lang]}>
+      <ul role="list">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a
+        class="lang-link"
+        href={alternates[other]}
+        hreflang={other}
+        lang={other}
+        title={LANG_LABEL[other].long}
+        aria-label={`${ui.langSwitch[lang]}: ${LANG_LABEL[other].long}`}
+      >
+        {LANG_LABEL[other].short}
+      </a>
+      <a class="btn btn--ghost header-cta" href={contactHref}>{ui.nav.contact[lang]}</a>
+      <button class="menu-btn" type="button" aria-haspopup="dialog" aria-controls="site-menu" data-menu-open>
+        <span class="menu-btn__label">{ui.menu[lang]}</span>
+        <span class="menu-btn__icon" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="menu" id="site-menu" aria-label={ui.mainNav[lang]} data-menu>
+  <div class="menu__top">
+    <span class="menu__brand">{site.name}</span>
+    <button class="menu__close" type="button" data-menu-close>
+      <span>{ui.closeMenu[lang]}</span>
+      <Icon name="close" />
+    </button>
+  </div>
+  <nav class="menu__nav" aria-label={ui.mainNav[lang]}>
+    <ol role="list">
+      {
+        [...links, { href: contactHref, label: ui.nav.contact[lang] }].map((l, i) => (
+          <li style={`--i:${i}`}>
+            <a href={l.href} data-menu-link>
+              <span class="menu__index">{String(i + 1).padStart(2, '0')}</span>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+  <div class="menu__footer">
+    <div class="menu__artists">
+      {
+        artists.map((a) => (
+          <a href={routes.artist(a.slug)[lang]} data-menu-link>
+            {a.fullName}
+          </a>
+        ))
+      }
+    </div>
+    <div class="menu__meta">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={site.instagram.url} target="_blank" rel="noopener">{site.instagram.handle}</a>
+      <a href={alternates[other]} hreflang={other} lang={other}>{LANG_LABEL[other].long}</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { initNavigation } from '@/scripts/nav';
+  initNavigation();
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    transition:
+      transform 0.5s var(--ease-out),
+      background-color 0.4s;
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -2rem;
+    z-index: -1;
+    background: linear-gradient(rgb(12 11 10 / 0.7), transparent);
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+
+  .site-header:global(.is-solid) {
+    background: rgb(12 11 10 / 0.92);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .site-header:global(.is-solid)::before {
+    opacity: 0;
+  }
+
+  .site-header:global(.is-hidden) {
+    transform: translateY(-100%);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    width: min(100% - 2 * var(--gutter), 1600px);
+    margin-inline: auto;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .brand :global(.brand__mark) {
+    width: auto;
+    height: 2.1rem;
+  }
+
+  .brand__name {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .nav-desktop {
+    display: none;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .lang-link {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--bone-dim);
+    transition: color 0.3s;
+  }
+
+  .lang-link:hover {
+    color: var(--gold);
+  }
+
+  .header-cta {
+    display: none;
+    min-height: 2.5rem;
+    padding: 0.5rem 1.2rem;
+    font-size: var(--fs-xs);
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding-inline: 0.5rem 0;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .menu-btn__icon {
+    display: grid;
+    gap: 6px;
+    width: 26px;
+  }
+
+  .menu-btn__icon span {
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .menu-btn__icon span:last-child {
+    width: 65%;
+    justify-self: end;
+  }
+
+  @media (hover: hover) {
+    .menu-btn:hover .menu-btn__icon span:last-child {
+      transform: scaleX(1.54);
+      transform-origin: right;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .nav-desktop {
+      display: block;
+    }
+
+    .nav-desktop ul {
+      display: flex;
+      gap: clamp(1rem, 2vw, 2.25rem);
+    }
+
+    .nav-desktop a {
+      position: relative;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bone-dim);
+      padding-block: 0.75rem;
+      transition: color 0.3s;
+    }
+
+    .nav-desktop a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.4rem;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s var(--ease-out);
+    }
+
+    .nav-desktop a:hover {
+      color: var(--bone);
+    }
+
+    .nav-desktop a:hover::after {
+      transform: none;
+      transform-origin: left;
+    }
+
+    .header-cta {
+      display: inline-flex;
+    }
+
+    .menu-btn {
+      display: none;
+    }
+  }
+
+  /* ---------- Menú overlay (dialog nativo: focus trap + Esc + inert) ---------- */
+  .menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 var(--gutter) max(1.5rem, env(safe-area-inset-bottom));
+    border: 0;
+    background: var(--ink);
+    color: var(--bone);
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .menu[open] {
+    display: flex;
+    animation: menu-in 0.5s var(--ease-out);
+  }
+
+  .menu::backdrop {
+    background: var(--ink);
+  }
+
+  @keyframes menu-in {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  .menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+  }
+
+  .menu__brand {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .menu__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .menu__close :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .menu__nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-block: 2rem;
+  }
+
+  .menu__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.3rem;
+    font-family: var(--ff-serif);
+    font-size: clamp(2.5rem, 11vw, 5.5rem);
+    line-height: 1.05;
+    transition: color 0.3s;
+  }
+
+  .menu__nav a:hover {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .menu__index {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .menu[open] li {
+      animation: item-in 0.7s var(--ease-out) both;
+      animation-delay: calc(120ms + var(--i) * 50ms);
+    }
+  }
+
+  @keyframes item-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+
+  .menu__footer {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-sm);
+  }
+
+  .menu__artists,
+  .menu__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .menu__artists a {
+    font-family: var(--ff-serif);
+    font-size: 1.35rem;
+  }
+
+  .menu__meta a {
+    color: var(--muted);
+  }
+
+  .menu__footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+
+  .menu__footer a:hover {
+    color: var(--gold);
+  }
+</style>

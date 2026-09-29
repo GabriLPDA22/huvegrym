@@ -1,0 +1,146 @@
+---
+import SectionHeading from '@/components/SectionHeading.astro';
+import Icon from '@/components/Icon.astro';
+import { HTML_LANG, type Lang } from '@/i18n/config';
+import { routes, SECTION } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { site } from '@/data/site';
+import { upcomingEvents } from '@/data/events';
+import { getPiece } from '@/data/pieces';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const events = upcomingEvents();
+const fmt = (iso: string, opts: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat(HTML_LANG[lang], { timeZone: 'Europe/Madrid', ...opts }).format(new Date(iso));
+---
+
+<section id={SECTION.dates} class="section dates" aria-labelledby="dates-title">
+  <div class="container">
+    <SectionHeading id="dates-title" index={7} kicker={ui.datesKicker[lang]} lines={ui.datesTitle[lang]} />
+
+    {
+      events.length > 0 ? (
+        <ol class="dates__list" role="list">
+          {events.map((e) => {
+            const piece = e.pieceSlug ? getPiece(e.pieceSlug) : undefined;
+            const title = piece?.title ?? e.title?.[lang] ?? site.name;
+            return (
+              <li class="date" data-reveal>
+                <time class="date__when" datetime={e.date}>
+                  <span class="date__day">{fmt(e.date, { day: '2-digit' })}</span>
+                  <span class="date__month">{fmt(e.date, { month: 'short', year: 'numeric' })}</span>
+                  <span class="date__hour">{fmt(e.date, { hour: '2-digit', minute: '2-digit' })}</span>
+                </time>
+                <div class="date__what">
+                  <p class="date__title">
+                    {piece ? <a href={routes.piece(piece.slug)[lang]}>{title}</a> : title}
+                  </p>
+                  <p class="date__where">
+                    {e.venue} · {e.city}
+                  </p>
+                </div>
+                {e.ticketsUrl && (
+                  <a class="btn btn--ghost" href={e.ticketsUrl} target="_blank" rel="noopener">
+                    {ui.tickets[lang]}
+                    <Icon name="arrow" />
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div class="dates__empty" data-reveal>
+          <p class="lead">{ui.datesEmpty[lang]}</p>
+          <p class="dates__follow">{ui.datesFollow[lang]}</p>
+          <a class="btn" href={site.instagram.url} target="_blank" rel="noopener">
+            <Icon name="instagram" />
+            {ui.datesInstagram[lang]}
+          </a>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .dates {
+    background: var(--ink-2);
+  }
+
+  .dates__empty {
+    display: grid;
+    justify-items: start;
+    gap: 1.25rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding: clamp(1.75rem, 5vw, 4rem);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 100% 0%, rgb(201 169 110 / 0.12), transparent 55%),
+      var(--ink);
+  }
+
+  .dates__empty .lead {
+    max-width: 28ch;
+  }
+
+  .dates__follow {
+    color: var(--bone-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .dates__list {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .date {
+    display: grid;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .date__when {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: var(--fs-sm);
+    color: var(--bone-dim);
+  }
+
+  .date__day {
+    font-family: var(--ff-serif);
+    font-size: clamp(2.8rem, 2rem + 3vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--gold);
+  }
+
+  .date__title {
+    font-family: var(--ff-serif);
+    font-size: var(--fs-h3);
+    line-height: 1.05;
+  }
+
+  .date__title a:hover {
+    color: var(--gold);
+  }
+
+  .date__where {
+    color: var(--muted);
+    margin-top: 0.35rem;
+  }
+
+  @media (min-width: 48em) {
+    .date {
+      grid-template-columns: 16rem 1fr auto;
+      align-items: center;
+    }
+  }
+</style>

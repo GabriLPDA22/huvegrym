@@ -1,0 +1,28 @@
+---
+interface Props {
+  id: string;
+  kicker: string;
+  lines: readonly [string, string] | readonly string[];
+  index?: number;
+  as?: 'h1' | 'h2';
+  class?: string;
+}
+
+const { id, kicker, lines, index, as: Tag = 'h2', class: className } = Astro.props;
+const [first, second] = lines;
+---
+
+<header class:list={['section-heading', className]} data-reveal>
+  <p class="kicker">{index !== undefined && <span class="section-heading__index">{String(index).padStart(2, '0')}</span>}{kicker}</p>
+  <Tag id={id} class="section-title">
+    <span>{first}</span>
+    {second && <span class="accent">{second}</span>}
+  </Tag>
+</header>
+
+<style>
+  .section-heading__index {
+    margin-right: 0.35rem;
+    color: var(--bone-dim);
+  }
+</style>
