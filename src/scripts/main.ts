@@ -16,7 +16,7 @@ initAmbientVideos();
 initPreviews();
 initGalleries();
 
-// Detalles puramente decorativos (grano) solo cuando la página ya ha cargado
+// Tras la carga: activar View Transitions para las navegaciones internas
 declare global {
   interface Window {
     __enableViewTransitions?: () => void;
@@ -26,7 +26,6 @@ declare global {
 const markLoaded = () => {
   const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
   idle(() => {
-    document.documentElement.classList.add('is-loaded');
     window.__enableViewTransitions?.();
   });
 };

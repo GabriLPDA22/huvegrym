@@ -119,19 +119,6 @@ body {
   overflow-x: clip;
 }
 
-/* Grano de película: textura fija muy sutil. Se activa tras la carga (.is-loaded)
-   para no competir con el LCP. */
-.is-loaded body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 55;
-  pointer-events: none;
-  opacity: 0.18;
-  background: url('/media/grain.png') repeat;
-  background-size: 128px;
-}
-
 img,
 picture,
 video,

@@ -83,7 +83,7 @@ se encoge hasta enmarcar la escena dentro de las letras. Es el mismo efecto en m
   web, para no penalizar el LCP de la primera visita.
 - **Vista previa de las obras:** clip corto sin sonido al pasar el ratón (escritorio) o al verse la
   tarjeta (móvil).
-- **Grano de película** sutil y titulares que aparecen línea a línea.
+- Titulares que aparecen línea a línea.
 - Todo respeta `prefers-reduced-motion` y el modo ahorro de datos.
 
 ## Créditos fotográficos
