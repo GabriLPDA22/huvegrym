@@ -11,11 +11,11 @@ import { site } from './site';
  */
 export const legal = {
   /** Nombre y apellidos (o denominación de la asociación/empresa). */
-  holder: null as string | null,
+  holder: 'Hugo Grimalt Arnal' as string | null,
   /** NIF / DNI / CIF. */
-  taxId: null as string | null,
+  taxId: '73413076C' as string | null,
   /** Domicilio a efectos de notificaciones. */
-  address: null as string | null,
+  address: 'Calle María Espinosa, bloque 5, 9.º L, Zaragoza' as string | null,
   /** Solo si es asociación o sociedad: registro e inscripción. Opcional. */
   registry: null as string | null,
   email: site.email,
