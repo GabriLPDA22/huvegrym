@@ -27,6 +27,20 @@ export const seo = {
     },
     ogImage: '/og/huvegrym.jpg',
   },
+  legalNotice: {
+    title: { es: 'Aviso legal | Huvegrym', en: 'Legal notice | Huvegrym' },
+    description: {
+      es: 'Aviso legal de la web de Huvegrym: datos del titular, condiciones de uso y propiedad intelectual.',
+      en: 'Legal notice for the Huvegrym website: owner details, terms of use and intellectual property.',
+    },
+  },
+  privacy: {
+    title: { es: 'Política de privacidad | Huvegrym', en: 'Privacy policy | Huvegrym' },
+    description: {
+      es: 'Cómo trata Huvegrym tus datos personales cuando nos escribes o visitas la web, y cómo ejercer tus derechos.',
+      en: 'How Huvegrym processes your personal data when you contact us or visit the website, and how to exercise your rights.',
+    },
+  },
   cookies: {
     title: { es: 'Política de cookies | Huvegrym', en: 'Cookie policy | Huvegrym' },
     description: {

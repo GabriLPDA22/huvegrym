@@ -106,6 +106,14 @@ en `src/data/*.ts`. Se muestran como píldora enlazada a su Instagram.
   con los nombres completos en la URL: es lo que buscan programadores y público.
 - Redirecciones 301 desde las URLs de la v1 (`/pages/portfolio-hugo.html`, …) en `.htaccess`.
 
+## Textos legales
+
+- `/aviso-legal/`, `/privacidad/` y `/cookies/` (y sus versiones en `/en/`).
+- **Antes de publicar**, rellenar titular, NIF y domicilio en `src/data/legal.ts`. Mientras falten,
+  la web los muestra como «Pendiente» y el build lo avisa por consola.
+- La política de cookies se adapta sola: sin `PUBLIC_GA_ID` declara que la web no usa cookies; con
+  él, detalla las de Google Analytics y cómo retirar el consentimiento.
+
 ## Google Search Console y Analytics
 
 1. **Search Console (imprescindible para el SEO):** alta de la propiedad de dominio `huvegrym.com`

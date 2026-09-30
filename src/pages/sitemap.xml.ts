@@ -15,6 +15,8 @@ export const GET: APIRoute = ({ site }) => {
     { alt: routes.home, priority: '1.0' },
     ...artists.map((a) => ({ alt: routes.artist(a.slug), priority: '0.8' })),
     ...pieces.map((p) => ({ alt: routes.piece(p.slug), priority: '0.8' })),
+    { alt: routes.legalNotice, priority: '0.1' },
+    { alt: routes.privacy, priority: '0.1' },
     { alt: routes.cookies, priority: '0.1' },
   ];
 

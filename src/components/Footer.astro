@@ -88,6 +88,8 @@ const company = [
       <p>&copy; {year} {site.name}. {ui.footerRights[lang]}</p>
       <p class="footer__links">
         <a href={alternates[other]} hreflang={other} lang={other}>{LANG_LABEL[other].long}</a>
+        <a href={routes.legalNotice[lang]}>{ui.legalNotice[lang]}</a>
+        <a href={routes.privacy[lang]}>{ui.privacyPolicy[lang]}</a>
         <a href={routes.cookies[lang]}>{ui.cookiePolicy[lang]}</a>
         {
           analyticsEnabled && (

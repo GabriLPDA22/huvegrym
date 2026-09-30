@@ -1,0 +1,24 @@
+---
+/** Dato del titular: si falta, se marca visiblemente como pendiente. */
+import type { Lang } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+
+interface Props {
+  value: string | null;
+  label: string;
+  lang: Lang;
+}
+const { value, label, lang } = Astro.props;
+---
+
+{value ? <span>{value}</span> : <mark class="legal-pending">[{ui.legalPending[lang]}: {label}]</mark>}
+
+<style>
+  .legal-pending {
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    background: rgb(201 169 110 / 0.18);
+    color: var(--gold-2);
+    font-size: 0.9em;
+  }
+</style>

@@ -7,6 +7,8 @@ import type { Alternates, Lang } from './config';
 export const routes = {
   home: { es: '/', en: '/en/' },
   cookies: { es: '/cookies/', en: '/en/cookies/' },
+  legalNotice: { es: '/aviso-legal/', en: '/en/legal-notice/' },
+  privacy: { es: '/privacidad/', en: '/en/privacy/' },
   artist: (slug: string): Alternates => ({
     es: `/artistas/${slug}/`,
     en: `/en/artists/${slug}/`,

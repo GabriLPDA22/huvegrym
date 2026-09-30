@@ -23,7 +23,8 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
     <>
       <div class="consent" role="region" aria-label={ui.consentLabel[lang]} data-consent data-ga-id={gaId} hidden>
         <p>
-          {ui.consentText[lang]} <a href={routes.cookies[lang]}>{ui.consentMore[lang]}</a>
+          {ui.consentText[lang]} <a href={routes.cookies[lang]}>{ui.consentMore[lang]}</a> ·{' '}
+          <a href={routes.privacy[lang]}>{ui.privacyPolicy[lang]}</a>
         </p>
         <div class="consent__actions">
           <button type="button" class="btn btn--ghost" data-consent-choice="denied">

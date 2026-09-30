@@ -1,0 +1,174 @@
+---
+import LegalPage from './LegalPage.astro';
+import LegalField from './LegalField.astro';
+import type { Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { seo, site } from '@/data/site';
+import { legal } from '@/data/legal';
+import { photographers } from '@/data/credits';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const es = lang === 'es';
+const credits = Object.values(photographers);
+---
+
+<LegalPage
+  lang={lang}
+  title={ui.legalNotice[lang]}
+  metaTitle={seo.legalNotice.title[lang]}
+  description={seo.legalNotice.description[lang]}
+  alternates={routes.legalNotice}
+>
+  {
+    es ? (
+      <>
+        <h2>1. Datos identificativos</h2>
+        <p>
+          En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio
+          Electrónico (LSSI-CE), se informa de los datos del titular de este sitio web:
+        </p>
+        <dl>
+          <dt>Titular</dt>
+          <dd><LegalField value={legal.holder} label="titular" lang={lang} /></dd>
+          <dt>NIF</dt>
+          <dd><LegalField value={legal.taxId} label="NIF" lang={lang} /></dd>
+          <dt>Domicilio</dt>
+          <dd><LegalField value={legal.address} label="domicilio" lang={lang} /></dd>
+          {legal.registry && (
+            <>
+              <dt>Datos registrales</dt>
+              <dd>{legal.registry}</dd>
+            </>
+          )}
+          <dt>Email</dt>
+          <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
+          <dt>Sitio web</dt>
+          <dd>{legal.website}</dd>
+        </dl>
+
+        <h2>2. Objeto</h2>
+        <p>
+          Este sitio web presenta la compañía de danza {site.name}, sus artistas, sus obras y sus actuaciones, y ofrece un
+          canal de contacto para programación, contrataciones y colaboraciones.
+        </p>
+
+        <h2>3. Condiciones de uso</h2>
+        <p>
+          El acceso a la web es gratuito e implica la aceptación de este aviso legal. La persona usuaria se compromete a
+          hacer un uso adecuado de los contenidos, conforme a la ley, la buena fe y el orden público, y a no emplearlos para
+          actividades ilícitas o que puedan dañar la web o a terceros.
+        </p>
+
+        <h2>4. Propiedad intelectual e industrial</h2>
+        <p>
+          Los textos, el logotipo, el diseño, los vídeos y el resto de contenidos de esta web pertenecen a {site.name} o a sus
+          respectivos autores. Las fotografías son obra de los fotógrafos acreditados junto a cada imagen
+          ({credits.map((c) => c.handle).join(', ')}), que conservan sus derechos.
+        </p>
+        <p>
+          Queda prohibida su reproducción, distribución, comunicación pública o transformación sin autorización expresa,
+          salvo para uso privado. Para solicitar permisos de uso (prensa, programación, etc.), escribe a{' '}
+          <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+        </p>
+
+        <h2>5. Enlaces externos</h2>
+        <p>
+          La web contiene enlaces a sitios de terceros (por ejemplo, Instagram). {site.name} no controla ni se responsabiliza
+          de sus contenidos ni de sus políticas de privacidad o de cookies.
+        </p>
+
+        <h2>6. Responsabilidad</h2>
+        <p>
+          Se procura que la información publicada sea exacta y esté actualizada, pero no se garantiza la ausencia de errores
+          ni la disponibilidad ininterrumpida de la web. {site.name} no se responsabiliza de los daños derivados de su uso
+          indebido.
+        </p>
+
+        <h2>7. Protección de datos y cookies</h2>
+        <p>
+          El tratamiento de datos personales se explica en la <a href={routes.privacy[lang]}>política de privacidad</a> y el
+          uso de cookies en la <a href={routes.cookies[lang]}>política de cookies</a>.
+        </p>
+
+        <h2>8. Legislación aplicable</h2>
+        <p>Este aviso legal se rige por la legislación española.</p>
+      </>
+    ) : (
+      <>
+        <h2>1. Owner details</h2>
+        <p>
+          In accordance with article 10 of Spanish Law 34/2002 on Information Society Services and Electronic Commerce
+          (LSSI-CE), the owner of this website is:
+        </p>
+        <dl>
+          <dt>Owner</dt>
+          <dd><LegalField value={legal.holder} label="owner" lang={lang} /></dd>
+          <dt>Tax ID</dt>
+          <dd><LegalField value={legal.taxId} label="tax ID" lang={lang} /></dd>
+          <dt>Address</dt>
+          <dd><LegalField value={legal.address} label="address" lang={lang} /></dd>
+          {legal.registry && (
+            <>
+              <dt>Registry</dt>
+              <dd>{legal.registry}</dd>
+            </>
+          )}
+          <dt>Email</dt>
+          <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
+          <dt>Website</dt>
+          <dd>{legal.website}</dd>
+        </dl>
+
+        <h2>2. Purpose</h2>
+        <p>
+          This website presents the dance company {site.name}, its artists, works and performances, and provides a contact
+          channel for programming, bookings and collaborations.
+        </p>
+
+        <h2>3. Terms of use</h2>
+        <p>
+          Access to the website is free of charge and implies acceptance of this legal notice. Users agree to make
+          appropriate use of the content, in accordance with the law and good faith, and not to use it for unlawful purposes
+          or in ways that may harm the website or third parties.
+        </p>
+
+        <h2>4. Intellectual property</h2>
+        <p>
+          The texts, logo, design, videos and other content on this website belong to {site.name} or to their respective
+          authors. Photographs are the work of the photographers credited next to each image (
+          {credits.map((c) => c.handle).join(', ')}), who retain their rights.
+        </p>
+        <p>
+          Reproduction, distribution, public communication or transformation without express permission is prohibited,
+          except for private use. To request permission (press, programming, etc.), write to{' '}
+          <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+        </p>
+
+        <h2>5. External links</h2>
+        <p>
+          This website links to third-party sites (for example, Instagram). {site.name} does not control and is not
+          responsible for their content or their privacy and cookie policies.
+        </p>
+
+        <h2>6. Liability</h2>
+        <p>
+          We strive to keep the information accurate and up to date, but we do not guarantee that it is error-free or that
+          the website will be available without interruption. {site.name} is not liable for damage arising from misuse.
+        </p>
+
+        <h2>7. Data protection and cookies</h2>
+        <p>
+          The processing of personal data is explained in the <a href={routes.privacy[lang]}>privacy policy</a> and the use
+          of cookies in the <a href={routes.cookies[lang]}>cookie policy</a>.
+        </p>
+
+        <h2>8. Governing law</h2>
+        <p>This legal notice is governed by Spanish law.</p>
+      </>
+    )
+  }
+</LegalPage>

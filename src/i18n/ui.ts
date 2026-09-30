@@ -71,6 +71,11 @@ export const ui = {
   footerCredits: { es: 'Diseño y desarrollo web por', en: 'Web design and development by' },
   cookieSettings: { es: 'Configurar cookies', en: 'Cookie settings' },
   cookiePolicy: { es: 'Política de cookies', en: 'Cookie policy' },
+  legalNotice: { es: 'Aviso legal', en: 'Legal notice' },
+  privacyPolicy: { es: 'Política de privacidad', en: 'Privacy policy' },
+  legalUpdated: { es: 'Última actualización', en: 'Last updated' },
+  legalPending: { es: 'Pendiente de completar', en: 'Pending' },
+  legalLabel: { es: 'Legal', en: 'Legal' },
   photo: { es: 'Foto', en: 'Photo' },
   // Portfolio
   backHome: { es: 'Volver a Huvegrym', en: 'Back to Huvegrym' },

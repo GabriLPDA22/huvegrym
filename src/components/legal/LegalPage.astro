@@ -1,0 +1,177 @@
+---
+/** Plantilla común de los textos legales (aviso legal, privacidad, cookies). */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { HTML_LANG, type Alternates, type Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { seo, site } from '@/data/site';
+import { legal, warnMissingLegal } from '@/data/legal';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  metaTitle: string;
+  description: string;
+  alternates: Alternates;
+}
+
+const { lang, title, metaTitle, description, alternates } = Astro.props;
+
+warnMissingLegal();
+
+const updated = new Intl.DateTimeFormat(HTML_LANG[lang], { dateStyle: 'long' }).format(new Date(legal.updated));
+const links = [
+  { href: routes.legalNotice[lang], label: ui.legalNotice[lang] },
+  { href: routes.privacy[lang], label: ui.privacyPolicy[lang] },
+  { href: routes.cookies[lang], label: ui.cookiePolicy[lang] },
+];
+const current = alternates[lang];
+---
+
+<BaseLayout lang={lang} title={metaTitle} description={description} alternates={alternates} ogImage={seo.home.ogImage}>
+  <article class="section legal">
+    <div class="container legal__inner">
+      <nav class="legal__nav" aria-label={ui.legalLabel[lang]}>
+        {
+          links.map((l) => (
+            <a href={l.href} aria-current={l.href === current ? 'page' : undefined}>
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+      <p class="kicker">{site.name}</p>
+      <h1 class="section-title legal__title">{title}</h1>
+      <p class="legal__updated">{ui.legalUpdated[lang]}: <time datetime={legal.updated}>{updated}</time></p>
+      <div class="prose legal__body">
+        <slot />
+      </div>
+      <slot name="after" />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-top: calc(var(--header-h) + var(--section-y) / 2);
+  }
+
+  .legal__inner {
+    max-width: 52rem;
+  }
+
+  .legal__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+
+  .legal__nav a:hover {
+    color: var(--bone);
+    border-color: var(--bone);
+  }
+
+  .legal__nav a[aria-current='page'] {
+    background: var(--bone);
+    border-color: var(--bone);
+    color: var(--ink);
+  }
+
+  .legal__title {
+    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5rem);
+  }
+
+  .legal__updated {
+    margin-top: 1rem;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+
+  .legal__body {
+    margin-top: 2.5rem;
+    max-width: none;
+  }
+
+  .legal__body :global(h2) {
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+    font-family: var(--ff-serif);
+    font-size: 1.9rem;
+    line-height: 1.15;
+    color: var(--bone);
+  }
+
+  .legal__body :global(ul) {
+    padding-left: 1.25rem;
+    margin-block: 1rem;
+  }
+
+  .legal__body :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .legal__body :global(dl) {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+    margin-block: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+  }
+
+  .legal__body :global(dt) {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .legal__body :global(dd) {
+    margin: 0 0 0.5rem;
+    color: var(--bone);
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 40em) {
+    .legal__body :global(dl) {
+      grid-template-columns: max-content 1fr;
+    }
+    .legal__body :global(dd) {
+      margin: 0;
+    }
+  }
+
+  .legal__body :global(a) {
+    color: var(--gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal__body :global(strong) {
+    color: var(--bone);
+  }
+
+  .legal__body :global(code) {
+    font-size: 0.9em;
+    color: var(--bone);
+  }
+</style>

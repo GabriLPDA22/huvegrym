@@ -1,0 +1,225 @@
+---
+import LegalPage from './LegalPage.astro';
+import LegalField from './LegalField.astro';
+import type { Lang } from '@/i18n/config';
+import { routes } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { seo, site } from '@/data/site';
+import { legal } from '@/data/legal';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const es = lang === 'es';
+const ga = Boolean(import.meta.env.PUBLIC_GA_ID);
+const mail = `mailto:${legal.email}`;
+---
+
+<LegalPage
+  lang={lang}
+  title={ui.privacyPolicy[lang]}
+  metaTitle={seo.privacy.title[lang]}
+  description={seo.privacy.description[lang]}
+  alternates={routes.privacy}
+>
+  {
+    es ? (
+      <>
+        <p>
+          Esta política explica cómo tratamos tus datos personales conforme al Reglamento (UE) 2016/679 (RGPD) y la Ley
+          Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+        </p>
+
+        <h2>1. Responsable del tratamiento</h2>
+        <dl>
+          <dt>Responsable</dt>
+          <dd><LegalField value={legal.holder} label="titular" lang={lang} /></dd>
+          <dt>NIF</dt>
+          <dd><LegalField value={legal.taxId} label="NIF" lang={lang} /></dd>
+          <dt>Domicilio</dt>
+          <dd><LegalField value={legal.address} label="domicilio" lang={lang} /></dd>
+          <dt>Email</dt>
+          <dd><a href={mail}>{legal.email}</a></dd>
+        </dl>
+
+        <h2>2. Qué datos tratamos</h2>
+        <ul>
+          <li>
+            <strong>Datos que nos envías</strong> al escribirnos por email o por mensaje directo: nombre, dirección de email,
+            entidad a la que representas (teatro, festival, medio…) y el contenido del mensaje.
+          </li>
+          <li>
+            <strong>Datos técnicos</strong> que registra el servidor al visitar la web (dirección IP, navegador, fecha y
+            página solicitada), necesarios para su funcionamiento y seguridad.
+          </li>
+          {ga && (
+            <li>
+              <strong>Datos de navegación</strong> recogidos por Google Analytics, solo si aceptas las cookies de analítica.
+            </li>
+          )}
+        </ul>
+        <p>La web no tiene formularios, registro de usuarios ni venta online.</p>
+
+        <h2>3. Finalidades y base jurídica</h2>
+        <ul>
+          <li>
+            <strong>Responder a tus consultas</strong> y gestionar solicitudes de programación, contratación, prensa o
+            colaboración. Base jurídica: tu consentimiento al escribirnos (art. 6.1.a RGPD) y, cuando proceda, la aplicación
+            de medidas precontractuales o la ejecución de un contrato (art. 6.1.b RGPD).
+          </li>
+          <li>
+            <strong>Garantizar la seguridad y el funcionamiento de la web.</strong> Base jurídica: interés legítimo (art.
+            6.1.f RGPD).
+          </li>
+          {ga && (
+            <li>
+              <strong>Elaborar estadísticas de uso</strong> para mejorar la web. Base jurídica: tu consentimiento (art. 6.1.a
+              RGPD), que puedes retirar en cualquier momento.
+            </li>
+          )}
+        </ul>
+
+        <h2>4. Conservación</h2>
+        <p>
+          Conservamos tus mensajes el tiempo necesario para atender tu consulta y, si se inicia una relación profesional,
+          mientras dure y durante los plazos legales aplicables. Los registros técnicos del servidor se conservan el tiempo
+          que fije el proveedor de alojamiento por motivos de seguridad.
+          {ga && ' Los datos de Google Analytics se conservan un máximo de 14 meses.'}
+        </p>
+
+        <h2>5. Destinatarios</h2>
+        <p>
+          No cedemos tus datos a terceros salvo obligación legal. Para prestar el servicio utilizamos proveedores que
+          actúan como encargados del tratamiento: el servicio de correo electrónico (Google Ireland Ltd., Gmail) y el
+          proveedor de alojamiento de la web{ga && ', además de Google Analytics (Google Ireland Ltd.)'}.
+        </p>
+        <p>
+          Google puede transferir datos a Estados Unidos. Estas transferencias se amparan en el Marco de Privacidad de Datos
+          UE-EE. UU. (Data Privacy Framework), en el que Google LLC está certificada.
+        </p>
+
+        <h2>6. Tus derechos</h2>
+        <p>
+          Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y
+          portabilidad, así como retirar tu consentimiento, escribiendo a <a href={mail}>{legal.email}</a> con el asunto
+          «Protección de datos».
+        </p>
+        <p>
+          Si consideras que no hemos atendido correctamente tu solicitud, puedes presentar una reclamación ante la Agencia
+          Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).
+        </p>
+
+        <h2>7. Menores</h2>
+        <p>
+          Esta web no está dirigida a menores de 14 años. Si eres menor de esa edad, no nos envíes datos personales sin el
+          consentimiento de tus padres o tutores.
+        </p>
+
+        <h2>8. Cambios</h2>
+        <p>
+          Podemos actualizar esta política para adaptarla a cambios legales o de la web. La fecha de la última revisión
+          aparece al principio. Más información en el <a href={routes.legalNotice[lang]}>aviso legal</a> y la{' '}
+          <a href={routes.cookies[lang]}>política de cookies</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          This policy explains how we process your personal data in accordance with Regulation (EU) 2016/679 (GDPR) and
+          Spanish Organic Law 3/2018 (LOPDGDD).
+        </p>
+
+        <h2>1. Data controller</h2>
+        <dl>
+          <dt>Controller</dt>
+          <dd><LegalField value={legal.holder} label="owner" lang={lang} /></dd>
+          <dt>Tax ID</dt>
+          <dd><LegalField value={legal.taxId} label="tax ID" lang={lang} /></dd>
+          <dt>Address</dt>
+          <dd><LegalField value={legal.address} label="address" lang={lang} /></dd>
+          <dt>Email</dt>
+          <dd><a href={mail}>{legal.email}</a></dd>
+        </dl>
+
+        <h2>2. What data we process</h2>
+        <ul>
+          <li>
+            <strong>Data you send us</strong> by email or direct message: name, email address, the organisation you
+            represent (theatre, festival, media…) and the content of your message.
+          </li>
+          <li>
+            <strong>Technical data</strong> logged by the server when you visit the website (IP address, browser, date and
+            requested page), needed for it to work securely.
+          </li>
+          {ga && (
+            <li>
+              <strong>Browsing data</strong> collected by Google Analytics, only if you accept analytics cookies.
+            </li>
+          )}
+        </ul>
+        <p>The website has no forms, user accounts or online sales.</p>
+
+        <h2>3. Purposes and legal basis</h2>
+        <ul>
+          <li>
+            <strong>Answering your enquiries</strong> and handling programming, booking, press or collaboration requests.
+            Legal basis: your consent when you contact us (art. 6.1.a GDPR) and, where applicable, pre-contractual steps or
+            the performance of a contract (art. 6.1.b GDPR).
+          </li>
+          <li>
+            <strong>Keeping the website secure and working.</strong> Legal basis: legitimate interest (art. 6.1.f GDPR).
+          </li>
+          {ga && (
+            <li>
+              <strong>Producing usage statistics</strong> to improve the website. Legal basis: your consent (art. 6.1.a
+              GDPR), which you can withdraw at any time.
+            </li>
+          )}
+        </ul>
+
+        <h2>4. Retention</h2>
+        <p>
+          We keep your messages for as long as needed to answer your enquiry and, if a professional relationship begins,
+          for its duration and the applicable legal periods. Server logs are kept for the period set by the hosting provider
+          for security reasons.
+          {ga && ' Google Analytics data is kept for a maximum of 14 months.'}
+        </p>
+
+        <h2>5. Recipients</h2>
+        <p>
+          We do not share your data with third parties unless legally required. We use service providers acting as data
+          processors: the email service (Google Ireland Ltd., Gmail) and the website hosting provider
+          {ga && ', as well as Google Analytics (Google Ireland Ltd.)'}.
+        </p>
+        <p>
+          Google may transfer data to the United States. Such transfers are covered by the EU-U.S. Data Privacy Framework,
+          under which Google LLC is certified.
+        </p>
+
+        <h2>6. Your rights</h2>
+        <p>
+          You can exercise your rights of access, rectification, erasure, objection, restriction and portability, and
+          withdraw your consent, by writing to <a href={mail}>{legal.email}</a> with the subject “Data protection”.
+        </p>
+        <p>
+          If you believe your request has not been properly handled, you can lodge a complaint with the Spanish Data
+          Protection Agency (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).
+        </p>
+
+        <h2>7. Minors</h2>
+        <p>
+          This website is not aimed at children under 14. If you are under that age, do not send us personal data without
+          the consent of your parents or guardians.
+        </p>
+
+        <h2>8. Changes</h2>
+        <p>
+          We may update this policy to reflect legal or website changes. The date of the last review is shown at the top.
+          See also the <a href={routes.legalNotice[lang]}>legal notice</a> and the{' '}
+          <a href={routes.cookies[lang]}>cookie policy</a>.
+        </p>
+      </>
+    )
+  }
+</LegalPage>

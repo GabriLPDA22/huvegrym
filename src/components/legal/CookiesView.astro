@@ -1,140 +1,177 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+/**
+ * Política de cookies. El contenido depende de si Google Analytics está activo
+ * (PUBLIC_GA_ID): sin él, la web no instala ninguna cookie.
+ */
+import LegalPage from './LegalPage.astro';
 import type { Lang } from '@/i18n/config';
 import { routes } from '@/i18n/routes';
 import { ui } from '@/i18n/ui';
 import { seo, site } from '@/data/site';
+import { legal } from '@/data/legal';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const gaEnabled = Boolean(import.meta.env.PUBLIC_GA_ID);
+const ga = Boolean(import.meta.env.PUBLIC_GA_ID);
 const es = lang === 'es';
+const mail = `mailto:${legal.email}`;
 ---
 
-<BaseLayout
+<LegalPage
   lang={lang}
-  title={seo.cookies.title[lang]}
+  title={ui.cookiePolicy[lang]}
+  metaTitle={seo.cookies.title[lang]}
   description={seo.cookies.description[lang]}
   alternates={routes.cookies}
-  ogImage={seo.home.ogImage}
 >
-  <article class="section legal">
-    <div class="container legal__inner">
-      <p class="kicker">{site.name}</p>
-      <h1 class="section-title">{ui.cookiePolicy[lang]}</h1>
-      {
-        es ? (
-          <div class="prose legal__body">
+  {
+    es ? (
+      <>
+        <h2>¿Qué son las cookies?</h2>
+        <p>
+          Son pequeños archivos que una web guarda en tu navegador para recordar información sobre tu visita. Se regulan en
+          el artículo 22.2 de la LSSI-CE y en el RGPD.
+        </p>
+
+        {ga ? (
+          <>
+            <h2>Cookies que usa esta web</h2>
             <p>
-              Esta web ({site.url}) no utiliza cookies propias. Solo emplea cookies de analítica de terceros
-              (Google Analytics 4, de Google Ireland Ltd.) <strong>si das tu consentimiento</strong> en el aviso de cookies.
-              Mientras no aceptes, no se carga ningún script de analítica.
+              {site.name} no utiliza cookies propias. Solo usa cookies de analítica de terceros (Google Analytics 4, de Google
+              Ireland Ltd.) <strong>si das tu consentimiento</strong> en el aviso de cookies. Mientras no aceptes, no se
+              carga ningún script de analítica.
             </p>
-            <h2>¿Qué cookies se usan si aceptas?</h2>
-            <ul>
-              <li><strong>_ga</strong>: distingue usuarios de forma anónima. Duración: 2 años.</li>
-              <li><strong>_ga_&lt;ID&gt;</strong>: mantiene el estado de la sesión. Duración: 2 años.</li>
-            </ul>
+            <dl>
+              <dt>_ga</dt>
+              <dd>Google Analytics · distingue visitantes de forma anónima · 2 años</dd>
+              <dt>_ga_&lt;ID&gt;</dt>
+              <dd>Google Analytics · mantiene el estado de la sesión · 2 años</dd>
+            </dl>
             <p>
-              La finalidad es exclusivamente estadística: saber qué contenidos se visitan para mejorar la web. No se usan
-              con fines publicitarios.
-            </p>
-            <p>
-              Tu elección se guarda en el almacenamiento local de tu navegador (clave <code>hvg-consent-v1</code>), que
-              no es una cookie ni se envía a ningún servidor.
-            </p>
-            <h2>¿Cómo cambiar o retirar el consentimiento?</h2>
-            <p>
-              Puedes cambiar tu decisión en cualquier momento desde el enlace «{ui.cookieSettings.es}» del pie de página,
-              o borrar las cookies desde la configuración de tu navegador.
+              Su finalidad es exclusivamente estadística: saber qué contenidos se visitan para mejorar la web. No se usan con
+              fines publicitarios. Google puede transferir estos datos a EE. UU. al amparo del Marco de Privacidad de Datos
+              UE-EE. UU.; más información en la{' '}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">
+                política de privacidad de Google
+              </a>
+              .
             </p>
             <p>
-              Para cualquier consulta: <a href={`mailto:${site.email}`}>{site.email}</a>.
+              Tu elección se guarda en el almacenamiento local del navegador (clave <code>hvg-consent-v1</code>), que no es
+              una cookie ni se envía a ningún servidor.
             </p>
-          </div>
+
+            <h2>Cómo cambiar o retirar el consentimiento</h2>
+            <p>
+              En cualquier momento desde el botón «{ui.cookieSettings.es}» de esta página o del pie de la web. También puedes
+              borrar las cookies desde la configuración de tu navegador.
+            </p>
+          </>
         ) : (
-          <div class="prose legal__body">
+          <>
+            <h2>Esta web no usa cookies</h2>
             <p>
-              This website ({site.url}) does not use first-party cookies. It only uses third-party analytics cookies
-              (Google Analytics 4, by Google Ireland Ltd.) <strong>if you give your consent</strong> in the cookie notice.
-              Until you accept, no analytics script is loaded.
-            </p>
-            <h2>Which cookies are used if you accept?</h2>
-            <ul>
-              <li><strong>_ga</strong>: distinguishes users anonymously. Duration: 2 years.</li>
-              <li><strong>_ga_&lt;ID&gt;</strong>: keeps session state. Duration: 2 years.</li>
-            </ul>
-            <p>
-              Their only purpose is statistical: understanding which content is visited in order to improve the site. They
-              are not used for advertising.
+              {site.name} no instala cookies propias ni de terceros, ni utiliza herramientas de analítica o publicidad. Por
+              eso no verás ningún aviso de cookies.
             </p>
             <p>
-              Your choice is stored in your browser's local storage (key <code>hvg-consent-v1</code>), which is not a
-              cookie and is never sent to any server.
-            </p>
-            <h2>How to change or withdraw consent?</h2>
-            <p>
-              You can change your decision at any time from the “{ui.cookieSettings.en}” link in the footer, or delete
-              cookies from your browser settings.
+              Los vídeos están alojados en nuestro propio servidor, sin reproductores de terceros. Si sigues un enlace a otra
+              web (por ejemplo, Instagram), se aplicará la política de cookies de ese sitio.
             </p>
             <p>
-              For any questions: <a href={`mailto:${site.email}`}>{site.email}</a>.
+              Si en el futuro incorporamos cookies que no sean estrictamente necesarias, te pediremos consentimiento antes de
+              usarlas y actualizaremos esta política.
             </p>
-          </div>
-        )
-      }
-      {
-        gaEnabled && (
-          <button type="button" class="btn btn--ghost legal__btn" data-consent-open>
-            {ui.cookieSettings[lang]}
-          </button>
-        )
-      }
-    </div>
-  </article>
-</BaseLayout>
+          </>
+        )}
+
+        <h2>Más información</h2>
+        <p>
+          Consulta la <a href={routes.privacy[lang]}>política de privacidad</a> y el{' '}
+          <a href={routes.legalNotice[lang]}>aviso legal</a>, o escríbenos a <a href={mail}>{legal.email}</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <h2>What are cookies?</h2>
+        <p>
+          Cookies are small files that a website stores in your browser to remember information about your visit. They are
+          regulated by article 22.2 of Spanish Law LSSI-CE and by the GDPR.
+        </p>
+
+        {ga ? (
+          <>
+            <h2>Cookies used on this website</h2>
+            <p>
+              {site.name} does not use first-party cookies. It only uses third-party analytics cookies (Google Analytics 4,
+              by Google Ireland Ltd.) <strong>if you give your consent</strong> in the cookie notice. Until you accept, no
+              analytics script is loaded.
+            </p>
+            <dl>
+              <dt>_ga</dt>
+              <dd>Google Analytics · distinguishes visitors anonymously · 2 years</dd>
+              <dt>_ga_&lt;ID&gt;</dt>
+              <dd>Google Analytics · keeps session state · 2 years</dd>
+            </dl>
+            <p>
+              Their only purpose is statistical: understanding which content is visited in order to improve the website. They
+              are not used for advertising. Google may transfer this data to the US under the EU-U.S. Data Privacy
+              Framework; see{' '}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">
+                Google's privacy policy
+              </a>
+              .
+            </p>
+            <p>
+              Your choice is stored in your browser's local storage (key <code>hvg-consent-v1</code>), which is not a cookie
+              and is never sent to any server.
+            </p>
+
+            <h2>How to change or withdraw consent</h2>
+            <p>
+              At any time using the “{ui.cookieSettings.en}” button on this page or in the website footer. You can also
+              delete cookies from your browser settings.
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>This website does not use cookies</h2>
+            <p>
+              {site.name} does not set first-party or third-party cookies, nor does it use analytics or advertising tools.
+              That is why you will not see a cookie notice.
+            </p>
+            <p>
+              Videos are hosted on our own server, with no third-party players. If you follow a link to another website (for
+              example, Instagram), that site's cookie policy applies.
+            </p>
+            <p>
+              If we ever add cookies that are not strictly necessary, we will ask for your consent before using them and
+              update this policy.
+            </p>
+          </>
+        )}
+
+        <h2>More information</h2>
+        <p>
+          See the <a href={routes.privacy[lang]}>privacy policy</a> and the{' '}
+          <a href={routes.legalNotice[lang]}>legal notice</a>, or write to <a href={mail}>{legal.email}</a>.
+        </p>
+      </>
+    )
+  }
+
+  {
+    ga && (
+      <button slot="after" type="button" class="btn btn--ghost legal__btn" data-consent-open>
+        {ui.cookieSettings[lang]}
+      </button>
+    )
+  }
+</LegalPage>
 
 <style>
-  .legal {
-    padding-top: calc(var(--header-h) + var(--section-y) / 2);
-  }
-
-  .legal__inner {
-    max-width: 52rem;
-  }
-
-  .legal .section-title {
-    font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5rem);
-  }
-
-  .legal__body {
-    margin-top: 2.5rem;
-  }
-
-  .legal__body :global(h2) {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-family: var(--ff-serif);
-    font-size: 1.9rem;
-    color: var(--bone);
-  }
-
-  .legal__body :global(ul) {
-    padding-left: 1.25rem;
-    margin-block: 1rem;
-  }
-
-  .legal__body :global(a) {
-    color: var(--gold);
-    text-decoration: underline;
-  }
-
-  .legal__body :global(strong) {
-    color: var(--bone);
-  }
-
   .legal__btn {
     margin-top: 2.5rem;
   }
