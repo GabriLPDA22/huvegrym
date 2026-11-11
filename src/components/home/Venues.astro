@@ -27,7 +27,7 @@ const groups = VENUE_CATEGORIES.map((c) => ({ id: c, items: venues.filter((v) =>
             </h3>
             <ul class="venue-list" role="list">
               {g.items.map((v) => (
-                <li class="venue" id={v.id}>
+                <li class="venue drum drum--lg" id={v.id}>
                   <div class="venue__img">
                     <Picture
                       src={v.image}

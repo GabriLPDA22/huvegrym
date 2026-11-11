@@ -12,6 +12,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "audit": "astro build && astro preview",
+    "mesh": "node scripts/build-logo-mesh.mjs",
     "check": "astro check"
   },
   "dependencies": {
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "earcut": "^3.2.4",
+    "polygon-clipping": "^0.15.7",
     "typescript": "^6.0.3"
   }
 }

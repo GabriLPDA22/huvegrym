@@ -50,7 +50,7 @@ const facts = [
 >
   <article>
     <header class="p-hero">
-      <div class="p-hero__media" style={`view-transition-name: piece-${p.slug}; view-transition-class: morph`}>
+      <div class="p-hero__media recede" style={`view-transition-name: piece-${p.slug}; view-transition-class: morph`}>
         <Picture
           src={p.image}
           formats={['avif']}
@@ -96,7 +96,7 @@ const facts = [
               ))
             }
           </dl>
-          <div class="p-book">
+          <div class="p-book" data-tilt>
             <p class="p-book__title">{ui.bookPiece[lang](p.title)}</p>
             <p class="p-book__text">{ui.bookPieceText[lang]}</p>
             <a class="btn" href={mail}>
@@ -111,7 +111,7 @@ const facts = [
     <section class="section p-video" aria-labelledby="piece-video">
       <div class="container">
         <p class="kicker" id="piece-video" data-reveal>{ui.watchTrailer[lang]}</p>
-        <div class="p-video__player" data-reveal>
+        <div class="p-video__player drum" data-reveal>
           <VideoPlayer video={p.video} title={p.title} lang={lang} sizes="(min-width: 80em) 1200px, 100vw" headingLevel="p" />
         </div>
       </div>
@@ -119,7 +119,7 @@ const facts = [
 
     {
       p.secondaryImage && (
-        <figure class="container p-still" data-reveal>
+        <figure class="container p-still drum" data-reveal>
           <Picture
             src={p.secondaryImage.src}
             formats={['avif']}

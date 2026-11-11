@@ -7,6 +7,7 @@ import { initReveal } from './reveal';
 import { initHero } from './hero';
 import { initAmbientVideos, initPlayers, initPreviews } from './media';
 import { initGalleries } from './gallery';
+import { initTilt } from './tilt';
 
 initNavigation();
 initHero();
@@ -15,6 +16,7 @@ initPlayers();
 initAmbientVideos();
 initPreviews();
 initGalleries();
+initTilt();
 
 // Tras la carga: activar View Transitions para las navegaciones internas
 declare global {

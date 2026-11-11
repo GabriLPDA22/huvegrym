@@ -116,8 +116,9 @@ const { items, lang, title, id } = Astro.props;
     grid-auto-flow: column;
     grid-auto-columns: 85%;
     gap: 1rem;
-    margin-top: clamp(2rem, 4vw, 3rem);
+    margin-top: clamp(0.5rem, 2vw, 1.5rem);
     padding-inline: max(var(--gutter), (100% - var(--maxw)) / 2);
+    padding-block: 1.5rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: max(var(--gutter), (100% - var(--maxw)) / 2);
@@ -153,6 +154,36 @@ const { items, lang, title, id } = Astro.props;
     padding-top: 0.9rem;
     font-size: var(--fs-sm);
     color: var(--muted);
+  }
+
+  /* Coverflow: cada foto gira hacia el centro según su posición en el carrusel.
+     Ligado al scroll horizontal en CSS puro (compositor), sin JavaScript. */
+  @keyframes coverflow {
+    0% {
+      opacity: 0.55;
+      transform: perspective(1000px) translateZ(-140px) rotateY(-34deg);
+    }
+    38%,
+    62% {
+      opacity: 1;
+      transform: perspective(1000px) translateZ(0) rotateY(0deg);
+    }
+    100% {
+      opacity: 0.55;
+      transform: perspective(1000px) translateZ(-140px) rotateY(34deg);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* Propiedades largas a propósito (ver nota en global.css) */
+      .gallery__item > figure {
+        animation-name: coverflow;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view(inline);
+      }
+    }
   }
 
   @media (min-width: 48em) {
