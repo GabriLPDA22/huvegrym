@@ -57,21 +57,23 @@ const words = text.split(' ');
   @media (prefers-reduced-motion: no-preference) {
     :global(.js) .quote__text[data-reveal] {
       opacity: 1;
-      translate: none;
+      transform: none;
+      perspective: 700px;
     }
+    /* Cada palabra llega desde el fondo de la escena */
     :global(.js) .quote__text span {
       display: inline-block;
       white-space: pre;
       opacity: 0;
-      translate: 0 0.5em;
+      transform: translate3d(0, 0.35em, -260px) rotateX(-55deg);
       transition:
-        opacity 0.8s var(--ease-out),
-        translate 0.8s var(--ease-out);
+        opacity 0.7s linear,
+        transform 1s var(--ease-out);
       transition-delay: calc(var(--w) * 45ms);
     }
     :global(.js) .quote__text:global(.is-in) span {
       opacity: 1;
-      translate: none;
+      transform: none;
     }
   }
 

@@ -54,7 +54,7 @@ const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${a.fullName} â
   <article class="artist">
     <!-- Hero -->
     <header class="a-hero">
-      <div class="a-hero__media" style={`view-transition-name: artist-${a.slug}; view-transition-class: morph`}>
+      <div class="a-hero__media recede" style={`view-transition-name: artist-${a.slug}; view-transition-class: morph`}>
         <Picture
           src={a.portrait.src}
           formats={['avif']}
@@ -112,7 +112,7 @@ const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${a.fullName} â
         </div>
 
         <aside class="a-bio__aside" data-reveal>
-          <figure class="a-bio__portrait">
+          <figure class="a-bio__portrait drum">
             <Picture
               src={a.portraitAlt.src}
               formats={['avif']}

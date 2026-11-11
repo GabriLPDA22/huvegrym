@@ -21,8 +21,8 @@ const { lang } = Astro.props;
       <p class="about__body" data-reveal>{about.body[lang]}</p>
     </div>
 
-    <figure class="about__media" data-reveal>
-      <div class="about__frame">
+    <figure class="about__media drum" data-reveal>
+      <div class="about__frame" data-tilt>
         <Picture
           src={duo}
           formats={['avif']}
@@ -81,7 +81,10 @@ const { lang } = Astro.props;
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .about__frame :global(img) {
-        animation: about-parallax linear both;
+        /* Propiedades largas a propósito (ver nota en global.css) */
+        animation-name: about-parallax;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
       }
     }

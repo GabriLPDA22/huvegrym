@@ -22,7 +22,8 @@ const { lang } = Astro.props;
       {
         pieces.map((p, i) => (
           <li class="piece">
-            <a class="piece__media" href={routes.piece(p.slug)[lang]} tabindex="-1" aria-hidden="true" data-reveal style={`view-transition-name: piece-${p.slug}; view-transition-class: morph`}>
+            <div class="piece__frame drum" data-reveal>
+            <a class="piece__media" href={routes.piece(p.slug)[lang]} tabindex="-1" aria-hidden="true" data-tilt style={`view-transition-name: piece-${p.slug}; view-transition-class: morph`}>
               <Picture
                 src={p.image}
                 formats={['avif']}
@@ -46,6 +47,8 @@ const { lang } = Astro.props;
                 tabindex="-1"
               ></video>
             </a>
+            {p.credit && <PhotoCredit credit={p.credit} lang={lang} class="piece__credit" />}
+            </div>
             <div class="piece__body" data-reveal style="--i:1">
               <span class="piece__index">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="piece__title">
@@ -63,9 +66,6 @@ const { lang } = Astro.props;
                 <Icon name="arrow" />
               </a>
             </div>
-            {p.credit && (
-              <PhotoCredit credit={p.credit} lang={lang} class="piece__credit" />
-            )}
           </li>
         ))
       }
@@ -84,6 +84,10 @@ const { lang } = Astro.props;
     position: relative;
     display: grid;
     gap: 1.75rem;
+  }
+
+  .piece__frame {
+    position: relative;
   }
 
   .piece__media {
@@ -179,7 +183,7 @@ const { lang } = Astro.props;
       grid-template-columns: 5fr 7fr;
     }
 
-    .piece:nth-child(even) .piece__media {
+    .piece:nth-child(even) .piece__frame {
       order: 2;
     }
 

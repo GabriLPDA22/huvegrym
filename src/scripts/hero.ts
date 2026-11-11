@@ -25,6 +25,8 @@ const FINAL_MAX_WIDTH = 1180;
 const PHASE_B_START = 0.28;
 const PHASE_B_END = 0.8;
 
+import type { HeroGL } from './hero3d';
+
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
@@ -34,6 +36,7 @@ export function initHero() {
   const veil = hero?.querySelector<SVGSVGElement>('[data-hero-veil]');
   const hole = hero?.querySelector<SVGUseElement>('[data-hero-hole]');
   const reel = hero?.querySelector<HTMLVideoElement>('[data-hero-reel]');
+  const canvas = hero?.querySelector<HTMLCanvasElement>('[data-hero-gl]');
   if (!hero || !sticky || !veil || !hole) return;
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -105,9 +108,48 @@ export function initHero() {
     void reel.play().catch(() => undefined);
   };
 
+  // ---------- Escena 3D (WebGL), en diferido ----------
+  // Diagnóstico: ?gl=0 la desactiva, ?gl=1 la fuerza aunque el equipo vaya justo y
+  // ?gl=still la deja con la cámara quieta (para compararla con la versión DOM).
+  const glParam = new URLSearchParams(location.search).get('gl');
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
+  let gl: HeroGL | null = null;
+  let loaded = false;
+  let glRequested = glParam === '0' || !canvas || (!glParam && (saveData || memory < 2));
+
+  const leaveGL = () => {
+    gl = null;
+    hero.classList.remove('is-gl', 'is-gl-ready');
+  };
+
+  const requestGL = async () => {
+    if (glRequested || !visible || !canvas) return;
+    glRequested = true;
+    try {
+      const { createHeroGL } = await import('./hero3d');
+      gl = await createHeroGL({
+        hero,
+        sticky,
+        canvas,
+        force: glParam === '1',
+        still: glParam === 'still',
+        onFallback: leaveGL,
+      });
+    } catch {
+      gl = null;
+    }
+    if (!gl) return;
+    gl.update(current, false);
+    gl.setVisible(visible);
+    hero.classList.add('is-gl');
+    // El DOM se oculta cuando el fundido del canvas ha terminado
+    window.setTimeout(() => gl && hero.classList.add('is-gl-ready'), 750);
+  };
+
   let late = false;
   const render = () => {
     hero.style.setProperty('--p', current.toFixed(4));
+    gl?.update(current, current > 0.83 && !!reel?.classList.contains('is-playing'));
     if (!late && current > 0.45) {
       late = true;
       hero.classList.add('is-late');
@@ -132,6 +174,8 @@ export function initHero() {
 
   new IntersectionObserver(([entry]) => {
     visible = entry?.isIntersecting ?? true;
+    gl?.setVisible(visible);
+    if (visible && loaded) void requestGL();
     if (visible) onScroll();
     if (reel?.src) {
       if (visible) void reel.play().catch(() => undefined);
@@ -139,7 +183,23 @@ export function initHero() {
     }
   }).observe(hero);
 
-  new ResizeObserver(measure).observe(sticky);
+  new ResizeObserver(() => {
+    measure();
+    gl?.resize();
+  }).observe(sticky);
+
+  // La escena arranca cuando la página ya ha cargado y el navegador está libre
+  const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 300));
+  const whenLoaded = () =>
+    idle(
+      () => {
+        loaded = true;
+        void requestGL();
+      },
+      { timeout: 2500 },
+    );
+  if (document.readyState === 'complete') whenLoaded();
+  else window.addEventListener('load', whenLoaded, { once: true });
   window.addEventListener('scroll', onScroll, { passive: true });
   reduced.addEventListener('change', () => location.reload());
   measure();

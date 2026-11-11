@@ -74,6 +74,27 @@ se encoge hasta enmarcar la escena dentro de las letras. Es el mismo efecto en m
   rasterizar capas gigantes; por eso funciona fluido en móvil).
 - Respeta `prefers-reduced-motion` y funciona sin JavaScript (primer fotograma estático).
 
+## 3D
+
+- **Hero en WebGL** (`src/scripts/hero3d.ts`, sin librerías, ~36 KB que se descargan después de
+  cargar la página): fondo, logotipo extruido de verdad, intérprete por delante y polvo en
+  suspensión con desenfoque. La cámara se mece con el ratón, el giroscopio (Android) o sola, y el
+  scroll es un travelling hacia atrás.
+  - Solo arranca con GPU real; en equipos sin aceleración, con ahorro de datos o poca memoria se
+    queda la versión DOM en capas (misma composición, sin extrusión).
+  - Si el dispositivo no mantiene ~40 fps baja resolución y partículas, y si aun así no llega
+    vuelve a la versión DOM.
+  - Diagnóstico: `?gl=0` (sin WebGL), `?gl=1` (forzar), `?gl=still` (cámara quieta).
+- **Malla del logotipo:** `npm run mesh` la regenera desde `src/assets/brand-wordmark.json`
+  (`scripts/build-logo-mesh.mjs`). Solo hace falta si cambia el logotipo.
+- **Resto de la web en CSS 3D:** las piezas entran inclinadas, quedan planas en el centro y se
+  alejan al salir (clase `.drum`); la galería gira como un coverflow; las cabeceras de artista y
+  obra se alejan al hacer scroll (`.recede`); titulares que se levantan como una bisagra; tarjetas
+  que se inclinan con el ratón (`data-tilt`). Todo con animaciones ligadas al scroll que ejecuta
+  la GPU, sin JavaScript.
+- **Nota técnica:** en las reglas con `animation-timeline` no se usa el atajo `animation` (el
+  minificador lo fusiona y los navegadores descartan la regla). Ver comentario en `global.css`.
+
 ## Efectos
 
 - **Vídeo dentro de las letras:** al final del hero, el logotipo-máscara muestra un clip en bucle

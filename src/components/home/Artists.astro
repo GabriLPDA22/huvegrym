@@ -22,8 +22,8 @@ const { lang } = Astro.props;
   <ul class="artists__list container" role="list">
     {
       artists.map((a, i) => (
-        <li class="artist-card" data-reveal style={`--i:${i}`}>
-          <a class="artist-card__link" href={routes.artist(a.slug)[lang]}>
+        <li class="artist-card drum" data-reveal style={`--i:${i}`}>
+          <a class="artist-card__link" href={routes.artist(a.slug)[lang]} data-tilt>
             <div class="artist-card__media" style={`view-transition-name: artist-${a.slug}; view-transition-class: morph`}>
               <Picture
                 src={a.portrait.src}
@@ -88,11 +88,39 @@ const { lang } = Astro.props;
       filter 0.8s;
   }
 
+  .artist-card__media {
+    position: relative;
+  }
+
+  /* El degradado va en la foto y el texto queda libre para flotar por encima */
+  .artist-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 45% 0 0;
+    background: linear-gradient(transparent, rgb(12 11 10 / 0.9));
+    pointer-events: none;
+  }
+
   .artist-card__body {
     position: absolute;
     inset: auto 0 0;
     padding: clamp(1.25rem, 3vw, 2.5rem);
-    background: linear-gradient(transparent, rgb(12 11 10 / 0.9));
+  }
+
+  /* Con ratón, el nombre flota delante del retrato al inclinar la tarjeta */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .artist-card__link {
+      transform-style: preserve-3d;
+    }
+
+    .artist-card__body {
+      transform: translateZ(0);
+      transition: transform 0.7s var(--ease-out);
+    }
+
+    .artist-card__link:global(.is-tilting) .artist-card__body {
+      transform: translateZ(46px);
+    }
   }
 
   .artist-card__name {
@@ -168,6 +196,15 @@ const { lang } = Astro.props;
     }
     .artist-card:nth-child(2) {
       margin-top: clamp(4rem, 10vw, 9rem);
+    }
+
+    /* Díptico: los dos retratos se miran ligeramente (ver @keyframes drum) */
+    .artist-card:nth-child(1) {
+      --ry: 5deg;
+    }
+
+    .artist-card:nth-child(2) {
+      --ry: -5deg;
     }
   }
 </style>

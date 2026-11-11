@@ -4,7 +4,13 @@
  * con parallax y revelado del logotipo como máscara al hacer scroll.
  * Idéntico en móvil y escritorio; en móvil se usa un encuadre vertical dirigido.
  *
- * Sin JS o con prefers-reduced-motion se muestra el primer fotograma estático.
+ * Las tres capas viven en un espacio de cámara común (.hero__world): cada una
+ * tiene una profundidad (--f) y el scroll es un travelling real (--dolly). La
+ * escena WebGL (scripts/hero3d.ts) usa esa misma cámara, de modo que puede
+ * sustituir al DOM sin saltos y añadir extrusión, balanceo y polvo en suspensión.
+ *
+ * Sin JS o con prefers-reduced-motion se muestra el primer fotograma estático;
+ * sin WebGL, la versión DOM en capas.
  */
 import { getImage } from 'astro:assets';
 import Wordmark from '@/components/Wordmark.astro';
@@ -53,7 +59,8 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
 
 <section class="hero" data-hero aria-labelledby="hero-title">
   <div class="hero__sticky" data-hero-sticky>
-    <div class="hero__layer hero__layer--bg">
+    <div class="hero__world hero__world--bg" data-hero-world="bg">
+      <div class="hero__layer hero__layer--bg" data-hero-plate>
       <picture>
         <source media={PORTRAIT} type="image/avif" srcset={plateP} sizes={sizesPlateP} />
         <source media={PORTRAIT} type="image/webp" srcset={platePw} sizes={sizesPlateP} />
@@ -68,14 +75,18 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
           loading="eager"
         />
       </picture>
+      </div>
     </div>
 
-    <div class="hero__logo" data-hero-logo aria-hidden="true">
-      <Wordmark />
+    <div class="hero__world hero__world--logo">
+      <div class="hero__logo" data-hero-logo aria-hidden="true">
+        <Wordmark />
+      </div>
     </div>
 
-    <div class="hero__layer hero__layer--fg">
-      <picture class="hero__dancer">
+    <div class="hero__world hero__world--fg" data-hero-world="fg">
+      <div class="hero__layer hero__layer--fg">
+      <picture class="hero__dancer" data-hero-dancer>
         <source media={PORTRAIT} type="image/avif" srcset={dancerA} sizes={sizesDancerP} />
         <source media={PORTRAIT} type="image/webp" srcset={dancerW} sizes={sizesDancerP} />
         <source type="image/avif" srcset={dancerA} sizes={sizesDancerL} />
@@ -91,7 +102,11 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
           decoding="async"
         />
       </picture>
+      </div>
     </div>
+
+    <!-- Escena 3D (WebGL). Se activa tras la carga; hasta entonces se ve el DOM -->
+    <canvas class="hero__gl" data-hero-gl aria-hidden="true"></canvas>
 
     <!-- Vídeo que aparece dentro de las letras al final (se carga solo al llegar) -->
     <video
@@ -152,8 +167,13 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     --final-y: 46%;
     /* Ancho del logotipo (% del viewport) y corrección óptica hacia la derecha:
        HUVEGRYM y DANZA cargan el peso a la izquierda. Lo lee scripts/hero.ts */
-    --logo-w: 90;
+    --logo-w: 84;
     --logo-shift: 0.025;
+    /* Travelling: la cámara empieza un 12 % más cerca y retrocede con el scroll */
+    --dolly: 0.12;
+    --k: calc(var(--dolly) * (1 - var(--a)));
+    /* Fundido superior del fondo (solo en vertical). Lo lee scripts/hero3d.ts */
+    --plate-fade: 0;
     position: relative;
     height: 100svh;
     background: var(--ink);
@@ -173,6 +193,27 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     contain: layout paint;
   }
 
+  /*
+   * Espacio de cámara. --f = distancia de la capa a la cámara en reposo (1 = plano
+   * del logotipo; >1 más lejos; <1 más cerca). Al acercarse la cámara (--k) cada
+   * capa crece F/(F−k): perspectiva real, la figura crece más que el fondo.
+   */
+  .hero__world {
+    --f: 1;
+    position: absolute;
+    inset: 0;
+    scale: calc(var(--f) / (var(--f) - var(--k)));
+    pointer-events: none;
+  }
+
+  .hero__world--bg {
+    --f: 1.5;
+  }
+
+  .hero__world--fg {
+    --f: 0.7;
+  }
+
   /* Escena con la misma geometría para fondo y figura → alineación exacta */
   .hero__layer {
     --ar: 1.5784;
@@ -188,20 +229,10 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     pointer-events: none;
   }
 
-  .hero__layer--bg {
-    scale: calc(1.14 - 0.14 * var(--a));
-  }
-
   .hero__layer--bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .hero__layer--fg {
-    transform-origin: 50% 100%;
-    scale: calc(1.22 - 0.22 * var(--a));
-    translate: -50% calc(-50% + 3% * (1 - var(--a)));
   }
 
   .hero__dancer {
@@ -221,9 +252,10 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
      y el logotipo queda sobre la figura, igual que el cartel en escritorio. */
   @media (orientation: portrait) {
     .hero {
-      --logo-y: 30%;
+      --logo-y: 36%;
       --final-y: 44%;
-      --logo-w: 82;
+      --logo-w: 76;
+      --plate-fade: 0.14;
     }
     .hero__layer {
       --ar: 0.947;
@@ -235,17 +267,16 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
       translate: -50% 0;
     }
     .hero__layer--bg img {
-      mask-image: linear-gradient(transparent, #000 14%);
-    }
-    .hero__layer--fg {
-      translate: -50% calc(3% * (1 - var(--a)));
+      mask-image: linear-gradient(transparent, #000 calc(var(--plate-fade) * 100%));
     }
   }
 
-  .hero__layer--bg,
-  .hero__layer--fg,
+  .hero__world {
+    will-change: scale, opacity;
+  }
+
   .hero__logo {
-    will-change: scale, translate, opacity;
+    will-change: translate, opacity;
   }
 
   /* Logotipo entre fondo y figura (profundidad) — misma caja final que la máscara */
@@ -257,7 +288,6 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
     width: min(var(--logo-w) * 1%, 1180px);
     color: var(--bone);
     translate: calc(-50% + var(--logo-shift) * 100%) calc(-50% + 5svh * (var(--a) - var(--m)));
-    scale: calc(1.06 - 0.06 * var(--a));
     opacity: calc(1 - var(--b) + 0.28 * var(--c));
     filter: drop-shadow(0 0.4rem 2rem rgb(0 0 0 / 0.35));
   }
@@ -265,6 +295,36 @@ const sizesDancerL = `calc(${sceneSize(AR_LANDSCAPE)} * ${FG_W_LANDSCAPE})`;
   .hero__logo :global(svg) {
     width: 100%;
     height: auto;
+  }
+
+  /* ---------- Escena WebGL ---------- */
+  .hero__gl {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.7s linear;
+    pointer-events: none;
+  }
+
+  .hero:global(.is-gl) .hero__gl {
+    opacity: 1;
+  }
+
+  /* Con la escena activa el DOM queda debajo, sin pintarse. Se usa opacity y no
+     visibility para que el texto alternativo siga en el árbol de accesibilidad. */
+  .hero:global(.is-gl-ready) .hero__world--bg,
+  .hero:global(.is-gl-ready) .hero__world--fg {
+    opacity: 0;
+    will-change: auto;
+  }
+
+  /* El logotipo (extruido) lo pinta WebGL, incluido el tinte final */
+  .hero:global(.is-gl-ready) .hero__logo {
+    opacity: 0;
+    filter: none;
+    will-change: auto;
   }
 
   .hero__reel {
